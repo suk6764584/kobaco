@@ -68,9 +68,19 @@ th{position:sticky;top:0;background:#f5f1fb;color:#59486d;z-index:1}tbody tr:hov
 details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:13px 15px}summary{cursor:pointer;font-weight:900;color:#4c1d95}
 .reco-score{height:9px;background:#eee9f5;border-radius:999px;overflow:hidden;min-width:110px}.reco-score span{display:block;height:100%;background:linear-gradient(90deg,var(--purple2),var(--pink))}
 .brief{line-height:1.85;color:#3f3350}.brief b{color:#2e1065}
-.video-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;border:1px solid var(--line);background:#eee9f5}.video-fallback{aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg,#4c1d95,#db2777);display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:24px;font-weight:900}.video-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.impact-p{margin:0 0 12px;color:#544662;line-height:1.72}.source-list{display:grid;gap:7px;margin-top:12px}.source-link{display:block;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#5b21b6;font-size:12px;font-weight:800}.source-link:hover{background:#f7f2ff}.museum-meta{margin-top:11px;padding:11px;border-radius:11px;background:#f8f5ff;color:#685a78;font-size:11px;line-height:1.6}.footer{padding:25px 0 40px;text-align:center;color:#9a8ea7;font-size:12px}
+.video-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;border:1px solid var(--line);background:#eee9f5}.video-fallback{aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg,#4c1d95,#db2777);display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:24px;font-weight:900}.video-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.impact-p{margin:0 0 12px;color:#544662;line-height:1.72}.source-list{display:grid;gap:7px;margin-top:12px}.source-link{display:block;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#5b21b6;font-size:12px;font-weight:800}.source-link:hover{background:#f7f2ff}.museum-meta{margin-top:11px;padding:11px;border-radius:11px;background:#f8f5ff;color:#685a78;font-size:11px;line-height:1.6}
+.detail-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}.year-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:11px;font-weight:900;white-space:nowrap}
+.detail-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 12px}.detail-mini{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px}.detail-mini .k{font-size:10px;color:var(--muted);font-weight:800}.detail-mini .v{font-size:15px;color:#3b176d;font-weight:900;margin-top:4px}
+.compact-table{overflow:hidden;border:1px solid var(--line);border-radius:12px}.compact-table table{min-width:0;width:100%;table-layout:fixed}.compact-table th,.compact-table td{white-space:normal;padding:9px 8px}.compact-table th:nth-child(2),.compact-table td:nth-child(2),.compact-table th:nth-child(3),.compact-table td:nth-child(3){text-align:right}
+.pct-cell{display:flex;align-items:center;gap:7px;justify-content:flex-end}.pct-track{width:64px;height:7px;border-radius:999px;background:#eee9f5;overflow:hidden;flex:0 0 auto}.pct-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple2),var(--pink))}
+.trend-wrap{margin-top:10px}.trend-chart{width:100%;height:auto;display:block;overflow:visible}.trend-grid{stroke:#e9e4f0;stroke-width:1}.trend-axis{fill:#7a6d89;font-size:10px}.trend-label{fill:#4f4160;font-size:10px;font-weight:800}.trend-point-label{fill:#4f4160;font-size:9px;font-weight:800}.trend-legend{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 12px}.trend-legend span{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#6f627e;font-weight:800}.trend-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.compact-table .num-cell{text-align:right!important;white-space:nowrap!important}.compact-table th{font-size:11px}.compact-table td{font-size:11px;overflow:hidden;text-overflow:ellipsis}
+#mcrDetailTable table,.detail-table table{min-width:0!important;width:100%;table-layout:fixed}#mcrDetailTable th,#mcrDetailTable td{padding:8px 6px;font-size:11px;white-space:nowrap}
+.ott-detail-grid{align-items:start}.select-loading{opacity:.65;cursor:wait}
+@media(max-width:760px){.ott-detail-grid{grid-template-columns:1fr!important}.compact-table td,.compact-table th{font-size:11px}}
+.raw-data-note{font-size:11px;color:#7d708c;margin-top:8px}.footer{padding:25px 0 40px;text-align:center;color:#9a8ea7;font-size:12px}
 @media(max-width:900px){.form-grid,.cols4,.cols3,.cols2{grid-template-columns:1fr 1fr}.stepbar{grid-template-columns:1fr}.span3{grid-column:span 2}}
-@media(max-width:620px){.shell{width:min(100% - 18px,1240px)}.hero-box{padding:25px 20px;border-radius:20px}.form-grid,.cols4,.cols3,.cols2{grid-template-columns:1fr}.span2,.span3{grid-column:span 1}.nav-inner{overflow:auto}.nav-btn{white-space:nowrap}.bar-row,.dumb-row,.gap-row{grid-template-columns:82px 1fr 68px}}
+@media(max-width:620px){.detail-metrics{grid-template-columns:1fr 1fr}.shell{width:min(100% - 18px,1240px)}.hero-box{padding:25px 20px;border-radius:20px}.form-grid,.cols4,.cols3,.cols2{grid-template-columns:1fr}.span2,.span3{grid-column:span 1}.nav-inner{overflow:auto}.nav-btn{white-space:nowrap}.bar-row,.dumb-row,.gap-row{grid-template-columns:82px 1fr 68px}}
 </style>
 </head>
 <body>
@@ -198,10 +208,10 @@ details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:
         <h4 style="margin-top:18px">실제 집행 사례</h4>
         <div id="mediaCasesTable" class="table-wrap"></div>
         <div class="grid cols2" style="margin-top:12px">
-          <a id="mediaSearchLink" class="btn secondary" target="_blank" rel="noopener noreferrer">🔎 매체 정보 확인</a>
-          <a id="caseSearchLink" class="btn secondary" target="_blank" rel="noopener noreferrer">🔎 실제 광고 사례 확인</a>
+          <a id="mediaSearchLink" class="btn secondary" href="#">🗄️ 이 매체 원자료 보기</a>
+          <a id="caseSearchLink" class="btn secondary" href="#">🧾 선택 사례 원자료 보기</a>
         </div>
-        <p class="small">집행 데이터에는 매체명·광고명·비용·기간이 연결되어 있지만 개별 집행의 노출·클릭·인지도 성과는 포함되어 있지 않습니다.</p>
+        <p class="small">외부 포털 검색 대신 KOBACO 원자료를 바로 확인하도록 연결했습니다. 집행 데이터에는 매체명·광고명·비용·기간이 연결되어 있지만 개별 집행의 노출·클릭·인지도 성과는 포함되어 있지 않습니다.</p>
       </div>
 
       <div class="card" style="margin-top:14px">
@@ -290,11 +300,13 @@ const MCR_FILES={
   2018:["2018년 소비자행태조사 원시데이터_답변.csv","2018#Ub144 #Uc18c#Ube44#Uc790#Ud589#Ud0dc#Uc870#Uc0ac #Uc6d0#Uc2dc#Ub370#Uc774#Ud130_#Ub2f5#Ubcc0.csv"]
 };
 const MCR_YEARS=[2016,2017,2018,2019];
+const MCR_PRECOMPUTED={"2016":{"groups":{"지상파":["B_03_001","B_03_002","B_03_003"],"케이블":["B_03_007","B_03_008","B_03_009"],"위성방송":["B_03_011","B_03_012","B_03_013"],"IPTV":["B_03_014","B_03_015","B_03_016"],"IPTV VOD":["B_03_017","B_03_018","B_03_019"],"라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]},"age":{"전체":{"지상파":{"평일":124.0178,"토요일":171.49,"일요일":185.1506,"주말":178.3203,"평균 이용시간(분)":160.219467},"케이블":{"평일":53.8776,"토요일":71.1342,"일요일":77.1054,"주말":74.1198,"평균 이용시간(분)":67.3724},"위성방송":{"평일":6.2518,"토요일":8.4062,"일요일":8.9948,"주말":8.7005,"평균 이용시간(분)":7.884267},"IPTV":{"평일":28.88,"토요일":40.8332,"일요일":44.099,"주말":42.4661,"평균 이용시간(분)":37.9374},"IPTV VOD":{"평일":10.1252,"토요일":15.82,"일요일":17.0258,"주말":16.4229,"평균 이용시간(분)":14.323667},"라디오":{"평일":22.6904,"토요일":13.102,"일요일":8.5262,"주말":10.8141,"평균 이용시간(분)":14.772867},"DMB":{"평일":6.6672,"토요일":6.4268,"일요일":6.0296,"주말":6.2282,"평균 이용시간(분)":6.374533},"인터넷":{"평일":55.0996,"토요일":51.8302,"일요일":50.1706,"주말":51.0004,"평균 이용시간(분)":52.3668},"모바일":{"평일":92.222,"토요일":102.7198,"일요일":104.6524,"주말":103.6861,"평균 이용시간(분)":99.864733}},"13-19세":{"지상파":{"평일":74.187394,"토요일":126.091993,"일요일":140.603066,"주말":133.34753,"평균 이용시간(분)":113.627484},"케이블":{"평일":34.144804,"토요일":54.674617,"일요일":61.50937,"주말":58.091993,"평균 이용시간(분)":50.109597},"위성방송":{"평일":3.713799,"토요일":7.717206,"일요일":7.989779,"주말":7.853492,"평균 이용시간(분)":6.473595},"IPTV":{"평일":19.683135,"토요일":34.248722,"일요일":38.55707,"주말":36.402896,"평균 이용시간(분)":30.829642},"IPTV VOD":{"평일":6.93356,"토요일":13.969336,"일요일":15.076661,"주말":14.522998,"평균 이용시간(분)":11.993186},"라디오":{"평일":4.55707,"토요일":3.747871,"일요일":3.270869,"주말":3.50937,"평균 이용시간(분)":3.858603},"DMB":{"평일":5.349233,"토요일":5.528109,"일요일":5.792164,"주말":5.660136,"평균 이용시간(분)":5.556502},"인터넷":{"평일":48.091993,"토요일":76.497445,"일요일":82.393526,"주말":79.445486,"평균 이용시간(분)":68.994321},"모바일":{"평일":100.689949,"토요일":134.296422,"일요일":142.444634,"주말":138.370528,"평균 이용시간(분)":125.810335}},"20대":{"지상파":{"평일":95.391304,"토요일":139.728833,"일요일":153.201373,"주말":146.465103,"평균 이용시간(분)":129.440503},"케이블":{"평일":48.717391,"토요일":65.663616,"일요일":71.820366,"주말":68.741991,"평균 이용시간(분)":62.067124},"위성방송":{"평일":4.782609,"토요일":6.670481,"일요일":7.311213,"주말":6.990847,"평균 이용시간(분)":6.254767},"IPTV":{"평일":29.842105,"토요일":43.964531,"일요일":46.78833,"주말":45.37643,"평균 이용시간(분)":40.198322},"IPTV VOD":{"평일":11.820366,"토요일":20.434783,"일요일":23.911899,"주말":22.173341,"평균 이용시간(분)":18.722349},"라디오":{"평일":9.244851,"토요일":5.411899,"일요일":4.942792,"주말":5.177346,"평균 이용시간(분)":6.533181},"DMB":{"평일":10.875286,"토요일":11.430206,"일요일":11.292906,"주말":11.361556,"평균 이용시간(분)":11.199466},"인터넷":{"평일":78.996568,"토요일":83.052632,"일요일":84.964531,"주말":84.008581,"평균 이용시간(분)":82.33791},"모바일":{"평일":135.566362,"토요일":157.175057,"일요일":161.391304,"주말":159.283181,"평균 이용시간(분)":151.377574}},"30대":{"지상파":{"평일":120.344149,"토요일":171.86824,"일요일":184.886922,"주말":178.377581,"평균 이용시간(분)":159.033104},"케이블":{"평일":50.378564,"토요일":69.679449,"일요일":75.582104,"주말":72.630777,"평균 이용시간(분)":65.213373},"위성방송":{"평일":6.591937,"토요일":8.614553,"일요일":9.254671,"주말":8.934612,"평균 이용시간(분)":8.15372},"IPTV":{"평일":35.388397,"토요일":48.770895,"일요일":52.435595,"주말":50.603245,"평균 이용시간(분)":45.531629},"IPTV VOD":{"평일":13.441495,"토요일":19.675516,"일요일":21.07178,"주말":20.373648,"평균 이용시간(분)":18.06293},"라디오":{"평일":27.851524,"토요일":13.875123,"일요일":8.466077,"주말":11.1706,"평균 이용시간(분)":16.730908},"DMB":{"평일":8.79646,"토요일":8.486726,"일요일":6.919371,"주말":7.703048,"평균 이용시간(분)":8.067519},"인터넷":{"평일":68.217306,"토요일":56.774828,"일요일":52.716814,"주말":54.745821,"평균 이용시간(분)":59.236316},"모바일":{"평일":108.800393,"토요일":119.345133,"일요일":120.544739,"주말":119.944936,"평균 이용시간(분)":116.230088}},"40대":{"지상파":{"평일":137.866725,"토요일":185.497387,"일요일":200.084495,"주말":192.790941,"평균 이용시간(분)":174.482869},"케이블":{"평일":56.797909,"토요일":70.96777,"일요일":76.851916,"주말":73.909843,"평균 이용시간(분)":68.205865},"위성방송":{"평일":7.8223,"토요일":9.625436,"일요일":9.904181,"주말":9.764808,"평균 이용시간(분)":9.117305},"IPTV":{"평일":32.60453,"토요일":45.513937,"일요일":48.937282,"주말":47.22561,"평균 이용시간(분)":42.351916},"IPTV VOD":{"평일":10.692509,"토요일":15.696864,"일요일":16.071429,"주말":15.884146,"평균 이용시간(분)":14.1536},"라디오":{"평일":29.705575,"토요일":15.980836,"일요일":10.43554,"주말":13.208188,"평균 이용시간(분)":18.707317},"DMB":{"평일":6.289199,"토요일":5.662021,"일요일":5.561847,"주말":5.611934,"평균 이용시간(분)":5.837689},"인터넷":{"평일":55.68554,"토요일":41.158537,"일요일":37.084495,"주말":39.121516,"평균 이용시간(분)":44.642857},"모바일":{"평일":83.720383,"토요일":84.789199,"일요일":83.101916,"주말":83.945557,"평균 이용시간(분)":83.870499}},"50대":{"지상파":{"평일":147.554379,"토요일":192.873917,"일요일":207.430221,"주말":200.152069,"평균 이용시간(분)":182.619506},"케이블":{"평일":61.999038,"토요일":80.179981,"일요일":86.327238,"주말":83.253609,"평균 이용시간(분)":76.168752},"위성방송":{"평일":7.059673,"토요일":9.441771,"일요일":10.615977,"주말":10.028874,"평균 이용시간(분)":9.03914},"IPTV":{"평일":26.565929,"토요일":36.020212,"일요일":39.46487,"주말":37.742541,"평균 이용시간(분)":34.017004},"IPTV VOD":{"평일":8.835419,"토요일":12.858518,"일요일":13.301251,"주말":13.079885,"평균 이용시간(분)":11.665063},"라디오":{"평일":30.769971,"토요일":20.166506,"일요일":11.637151,"주말":15.901829,"평균 이용시간(분)":20.857876},"DMB":{"평일":3.691049,"토요일":3.029836,"일요일":2.79692,"주말":2.913378,"평균 이용시간(분)":3.172602},"인터넷":{"평일":38.21078,"토요일":30.19153,"일요일":26.297401,"주말":28.244466,"평균 이용시간(분)":31.56657},"모바일":{"평일":64.046198,"토요일":65.215592,"일요일":66.478345,"주말":65.846968,"평균 이용시간(분)":65.246712}},"60대":{"지상파":{"평일":176.713433,"토요일":218.429851,"일요일":227.086567,"주말":222.758209,"평균 이용시간(분)":207.40995},"케이블":{"평일":77.343284,"토요일":91.179104,"일요일":95.113433,"주말":93.146269,"평균 이용시간(분)":87.878607},"위성방송":{"평일":5.61194,"토요일":6.119403,"일요일":6.214925,"주말":6.167164,"평균 이용시간(분)":5.98209},"IPTV":{"평일":17.140299,"토요일":18.991045,"일요일":19.277612,"주말":19.134328,"평균 이용시간(분)":18.469652},"IPTV VOD":{"평일":3.283582,"토요일":4.925373,"일요일":5.014925,"주말":4.970149,"평균 이용시간(분)":4.40796},"라디오":{"평일":24.776119,"토요일":15.432836,"일요일":11.074627,"주말":13.253731,"평균 이용시간(분)":17.094527},"DMB":{"평일":2.059701,"토요일":1.850746,"일요일":1.641791,"주말":1.746269,"평균 이용시간(분)":1.850746},"인터넷":{"평일":15.58209,"토요일":15.820896,"일요일":14.089552,"주말":14.955224,"평균 이용시간(분)":15.164179},"모바일":{"평일":30.492537,"토요일":32.61194,"일요일":34.402985,"주말":33.507463,"평균 이용시간(분)":32.502488}},"70대 이상":{"지상파":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"케이블":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"위성방송":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"IPTV":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"IPTV VOD":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"라디오":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"DMB":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"인터넷":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"모바일":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null}},"50대 이상":{"지상파":{"평일":154.663755,"토요일":199.104803,"일요일":212.222707,"주말":205.663755,"평균 이용시간(분)":188.663755},"케이블":{"평일":65.740175,"토요일":82.861718,"일요일":88.469432,"주말":85.665575,"평균 이용시간(분)":79.023775},"위성방송":{"평일":6.706696,"토요일":8.631732,"일요일":9.54294,"주말":9.087336,"평균 이용시간(분)":8.293789},"IPTV":{"평일":24.267831,"토요일":31.868268,"일요일":34.54294,"주말":33.205604,"평균 이용시간(분)":30.226346},"IPTV VOD":{"평일":7.481805,"토요일":10.924309,"일요일":11.280932,"주말":11.10262,"평균 이용시간(분)":9.895682},"라디오":{"평일":29.308588,"토요일":19.012373,"일요일":11.5,"주말":15.256186,"평균 이용시간(분)":19.94032},"DMB":{"평일":3.293304,"토요일":2.742358,"일요일":2.515284,"주말":2.628821,"평균 이용시간(분)":2.850315},"인터넷":{"평일":32.693595,"토요일":26.687773,"일요일":23.320961,"주말":25.004367,"평균 이용시간(분)":27.567443},"모바일":{"평일":55.865357,"토요일":57.266376,"일요일":58.657933,"주말":57.962154,"평균 이용시간(분)":57.263222}}}},"2017":{"groups":{"지상파":["B_03_001","B_03_002","B_03_003"],"종편":["B_03_004","B_03_005","B_03_006"],"케이블":["B_03_007","B_03_008","B_03_009"],"라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]},"age":{"전체":{"지상파":{"평일":101.8992,"토요일":135.3906,"일요일":147.235,"주말":141.3128,"평균 이용시간(분)":128.174933},"종편":{"평일":55.1452,"토요일":67.9748,"일요일":70.1842,"주말":69.0795,"평균 이용시간(분)":64.434733},"케이블":{"평일":48.9094,"토요일":64.0572,"일요일":66.7316,"주말":65.3944,"평균 이용시간(분)":59.8994},"라디오":{"평일":19.718,"토요일":11.853,"일요일":7.341,"주말":9.597,"평균 이용시간(분)":12.970667},"DMB":{"평일":5.874,"토요일":5.272,"일요일":4.7248,"주말":4.9984,"평균 이용시간(분)":5.290267},"인터넷":{"평일":49.9722,"토요일":44.7086,"일요일":41.1062,"주말":42.9074,"평균 이용시간(분)":45.262333},"모바일":{"평일":72.158,"토요일":76.342,"일요일":75.3546,"주말":75.8483,"평균 이용시간(분)":74.6182}},"13-19세":{"지상파":{"평일":60.811321,"토요일":101.0,"일요일":109.518868,"주말":105.259434,"평균 이용시간(분)":90.443396},"종편":{"평일":34.084906,"토요일":50.783019,"일요일":52.783019,"주말":51.783019,"평균 이용시간(분)":45.883648},"케이블":{"평일":38.764151,"토요일":55.966038,"일요일":59.513208,"주말":57.739623,"평균 이용시간(분)":51.414465},"라디오":{"평일":3.811321,"토요일":2.830189,"일요일":2.566038,"주말":2.698113,"평균 이용시간(분)":3.069182},"DMB":{"평일":4.830189,"토요일":5.509434,"일요일":6.056604,"주말":5.783019,"평균 이용시간(분)":5.465409},"인터넷":{"평일":52.056604,"토요일":75.783019,"일요일":78.660377,"주말":77.221698,"평균 이용시간(분)":68.833333},"모바일":{"평일":83.190566,"토요일":103.424528,"일요일":108.311321,"주말":105.867925,"평균 이용시간(분)":98.308805}},"20대":{"지상파":{"평일":75.863991,"토요일":107.469342,"일요일":118.004459,"주말":112.736901,"평균 이용시간(분)":100.445931},"종편":{"평일":47.987737,"토요일":62.018952,"일요일":64.082497,"주말":63.050725,"평균 이용시간(분)":58.029729},"케이블":{"평일":46.856187,"토요일":63.887402,"일요일":66.210702,"주말":65.049052,"평균 이용시간(분)":58.984764},"라디오":{"평일":8.132664,"토요일":5.602007,"일요일":5.183946,"주말":5.392977,"평균 이용시간(분)":6.306206},"DMB":{"평일":8.188406,"토요일":7.887402,"일요일":7.32553,"주말":7.606466,"평균 이용시간(분)":7.800446},"인터넷":{"평일":69.978818,"토요일":73.647715,"일요일":72.38796,"주말":73.017837,"평균 이용시간(분)":72.004831},"모바일":{"평일":106.525084,"토요일":115.958751,"일요일":116.531773,"주말":116.245262,"평균 이용시간(분)":113.005203}},"30대":{"지상파":{"평일":97.545639,"토요일":132.292089,"일요일":144.719067,"주말":138.505578,"평균 이용시간(분)":124.852265},"종편":{"평일":57.29716,"토요일":71.764706,"일요일":74.772819,"주말":73.268763,"평균 이용시간(분)":67.944895},"케이블":{"평일":51.257606,"토요일":69.239351,"일요일":73.192698,"주말":71.216024,"평균 이용시간(분)":64.563218},"라디오":{"평일":18.8286,"토요일":10.6643,"일요일":7.063895,"주말":8.864097,"평균 이용시간(분)":12.185598},"DMB":{"평일":7.829615,"토요일":6.708925,"일요일":5.329615,"주말":6.01927,"평균 이용시간(분)":6.622718},"인터넷":{"평일":60.948276,"토요일":49.718053,"일요일":45.46146,"주말":47.589757,"평균 이용시간(분)":52.042596},"모바일":{"평일":81.37931,"토요일":83.843813,"일요일":82.154158,"주말":82.998986,"평균 이용시간(분)":82.459094}},"40대":{"지상파":{"평일":107.753738,"토요일":142.509235,"일요일":154.763412,"주말":148.636324,"평균 이용시간(분)":135.008795},"종편":{"평일":61.082674,"토요일":72.538259,"일요일":73.896218,"주말":73.217238,"평균 이용시간(분)":69.172383},"케이블":{"평일":48.937555,"토요일":63.371152,"일요일":64.28496,"주말":63.828056,"평균 이용시간(분)":58.864556},"라디오":{"평일":27.194371,"토요일":15.699208,"일요일":8.240985,"주말":11.970097,"평균 이용시간(분)":17.044855},"DMB":{"평일":5.655233,"토요일":4.626209,"일요일":3.913808,"주말":4.270009,"평균 이용시간(분)":4.73175},"인터넷":{"평일":47.717678,"토요일":33.534741,"일요일":26.931398,"주말":30.233069,"평균 이용시간(분)":36.061272},"모바일":{"평일":66.382586,"토요일":65.043975,"일요일":61.853122,"주말":63.448549,"평균 이용시간(분)":64.426561}},"50대":{"지상파":{"평일":125.517404,"토요일":158.654751,"일요일":173.171214,"주말":165.912982,"평균 이용시간(분)":152.447789},"종편":{"평일":60.545626,"토요일":72.532455,"일요일":75.368768,"주말":73.950611,"평균 이용시간(분)":69.482283},"케이블":{"평일":52.610536,"토요일":65.552211,"일요일":69.146754,"주말":67.349483,"평균 이용시간(분)":62.4365},"라디오":{"평일":28.687676,"토요일":17.126058,"일요일":10.197554,"주말":13.661806,"평균 이용시간(분)":18.67043},"DMB":{"평일":3.711195,"토요일":3.198495,"일요일":3.046096,"주말":3.122295,"평균 이용시간(분)":3.318595},"인터넷":{"평일":35.155221,"토요일":23.010348,"일요일":18.210724,"주말":20.610536,"평균 이용시간(분)":25.458765},"모바일":{"평일":49.19285,"토요일":49.875823,"일요일":47.817498,"주말":48.84666,"평균 이용시간(분)":48.962057}},"60대":{"지상파":{"평일":147.5323,"토요일":170.284238,"일요일":179.689922,"주말":174.98708,"평균 이용시간(분)":165.835487},"종편":{"평일":62.816537,"토요일":69.741602,"일요일":71.320413,"주말":70.531008,"평균 이용시간(분)":67.959518},"케이블":{"평일":51.330749,"토요일":60.237726,"일요일":61.917313,"주말":61.077519,"평균 이용시간(분)":57.828596},"라디오":{"평일":24.018088,"토요일":15.943152,"일요일":9.095607,"주말":12.51938,"평균 이용시간(분)":16.352283},"DMB":{"평일":3.540052,"토요일":2.816537,"일요일":2.325581,"주말":2.571059,"평균 이용시간(분)":2.894057},"인터넷":{"평일":20.103359,"토요일":14.741602,"일요일":10.607235,"주말":12.674419,"평균 이용시간(분)":15.150732},"모바일":{"평일":33.945736,"토요일":34.204134,"일요일":32.75969,"주말":33.481912,"평균 이용시간(분)":33.63652}},"70대 이상":{"지상파":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"종편":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"케이블":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"라디오":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"DMB":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"인터넷":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"모바일":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null}},"50대 이상":{"지상파":{"평일":131.393103,"토요일":161.758621,"일요일":174.911034,"주말":168.334828,"평균 이용시간(분)":156.02092},"종편":{"평일":61.151724,"토요일":71.787586,"일요일":74.288276,"주말":73.037931,"평균 이용시간(분)":69.075862},"케이블":{"평일":52.268966,"토요일":64.133793,"일요일":67.217241,"주말":65.675517,"평균 이용시간(분)":61.206667},"라디오":{"평일":27.441379,"토요일":16.810345,"일요일":9.903448,"주말":13.356897,"평균 이용시간(분)":18.051724},"DMB":{"평일":3.665517,"토요일":3.096552,"일요일":2.853793,"주말":2.975172,"평균 이용시간(분)":3.205287},"인터넷":{"평일":31.137931,"토요일":20.803448,"일요일":16.181379,"주말":18.492414,"평균 이용시간(분)":22.707586},"모바일":{"평일":45.123448,"토요일":45.693103,"일요일":43.798621,"주말":44.745862,"평균 이용시간(분)":44.871724}}}},"2018":{"groups":{"지상파":["B_03_001","B_03_002","B_03_003"],"종편":["B_03_004","B_03_005","B_03_006"],"케이블":["B_03_007","B_03_008","B_03_009"],"라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]},"age":{"전체":{"지상파":{"평일":103.637644,"토요일":136.388732,"일요일":144.01306,"주말":140.200896,"평균 이용시간(분)":128.013146},"종편":{"평일":61.199946,"토요일":76.076861,"일요일":77.590701,"주말":76.833781,"평균 이용시간(분)":71.622503},"케이블":{"평일":54.649093,"토요일":71.010204,"일요일":71.520692,"주말":71.265448,"평균 이용시간(분)":65.726663},"라디오":{"평일":63.862403,"토요일":37.36531,"일요일":21.952519,"주말":29.658915,"평균 이용시간(분)":41.060078},"DMB":{"평일":40.627063,"토요일":38.30033,"일요일":34.455446,"주말":36.377888,"평균 이용시간(분)":37.794279},"인터넷":{"평일":66.859601,"토요일":57.624169,"일요일":51.078608,"주말":54.351388,"평균 이용시간(분)":58.520793},"모바일":{"평일":83.431202,"토요일":87.393054,"일요일":86.352013,"주말":86.872534,"평균 이용시간(분)":85.725423}},"13-19세":{"지상파":{"평일":63.263889,"토요일":100.194444,"일요일":106.263889,"주말":103.229167,"평균 이용시간(분)":89.907407},"종편":{"평일":42.030769,"토요일":62.246154,"일요일":62.323077,"주말":62.284615,"평균 이용시간(분)":55.533333},"케이블":{"평일":44.618902,"토요일":68.365854,"일요일":66.890244,"주말":67.628049,"평균 이용시간(분)":59.958333},"라디오":{"평일":42.6,"토요일":22.8,"일요일":19.2,"주말":21.0,"평균 이용시간(분)":28.2},"DMB":{"평일":38.28125,"토요일":46.40625,"일요일":42.65625,"주말":44.53125,"평균 이용시간(분)":42.447917},"인터넷":{"평일":59.123867,"토요일":81.510574,"일요일":81.41994,"주말":81.465257,"평균 이용시간(분)":74.018127},"모바일":{"평일":103.16622,"토요일":126.233244,"일요일":132.841823,"주말":129.537534,"평균 이용시간(분)":120.747096}},"20대":{"지상파":{"평일":75.559758,"토요일":108.32829,"일요일":118.282905,"주말":113.305598,"평균 이용시간(분)":100.723651},"종편":{"평일":54.444444,"토요일":72.075117,"일요일":75.403756,"주말":73.739437,"평균 이용시간(분)":67.307773},"케이블":{"평일":51.856436,"토요일":68.960396,"일요일":69.50495,"주말":69.232673,"평균 이용시간(분)":63.440594},"라디오":{"평일":56.22973,"토요일":36.621622,"일요일":32.702703,"주말":34.662162,"평균 이용시간(분)":41.851351},"DMB":{"평일":49.761905,"토요일":54.444444,"일요일":53.968254,"주말":54.206349,"평균 이용시간(분)":52.724868},"인터넷":{"평일":77.105263,"토요일":77.555178,"일요일":72.78438,"주말":75.169779,"평균 이용시간(분)":75.814941},"모바일":{"평일":115.267341,"토요일":123.569364,"일요일":124.212428,"주말":123.890896,"평균 이용시간(분)":121.016378}},"30대":{"지상파":{"평일":92.161785,"토요일":127.7894,"일요일":137.217573,"주말":132.503487,"평균 이용시간(분)":119.056253},"종편":{"평일":60.505051,"토요일":79.698413,"일요일":80.388167,"주말":80.04329,"평균 이용시간(분)":73.530544},"케이블":{"평일":54.102564,"토요일":73.914027,"일요일":75.07089,"주말":74.492459,"평균 이용시간(분)":67.695827},"라디오":{"평일":56.880531,"토요일":31.99115,"일요일":23.429204,"주말":27.710177,"평균 이용시간(분)":37.433628},"DMB":{"평일":34.758065,"토요일":35.483871,"일요일":31.451613,"주말":33.467742,"평균 이용시간(분)":33.897849},"인터넷":{"평일":65.600707,"토요일":50.432862,"일요일":43.326855,"주말":46.879859,"평균 이용시간(분)":53.120141},"모바일":{"평일":92.842466,"토요일":97.808219,"일요일":94.335616,"주말":96.071918,"평균 이용시간(분)":94.995434}},"40대":{"지상파":{"평일":104.247312,"토요일":140.352449,"일요일":147.60454,"주말":143.978495,"평균 이용시간(분)":130.734767},"종편":{"평일":63.699137,"토요일":77.133169,"일요일":81.140567,"주말":79.136868,"평균 이용시간(분)":73.990958},"케이블":{"평일":56.472483,"토요일":71.422819,"일요일":74.315436,"주말":72.869128,"평균 이용시간(분)":67.403579},"라디오":{"평일":68.003195,"토요일":35.945687,"일요일":16.837061,"주말":26.391374,"평균 이용시간(분)":40.261981},"DMB":{"평일":37.884615,"토요일":31.025641,"일요일":22.948718,"주말":26.987179,"평균 이용시간(분)":30.619658},"인터넷":{"평일":64.010508,"토요일":45.131349,"일요일":34.623468,"주말":39.877408,"평균 이용시간(분)":47.921775},"모바일":{"평일":76.467456,"토요일":76.739645,"일요일":73.47929,"주말":75.109467,"평균 이용시간(분)":75.56213}},"50대":{"지상파":{"평일":122.682324,"토요일":152.772559,"일요일":159.327565,"주말":156.050062,"평균 이용시간(분)":144.927482},"종편":{"평일":64.397668,"토요일":77.67487,"일요일":76.632124,"주말":77.153497,"평균 이용시간(분)":72.901554},"케이블":{"평일":55.952381,"토요일":71.421769,"일요일":70.092517,"주말":70.757143,"평균 이용시간(분)":65.822222},"라디오":{"평일":64.547038,"토요일":40.940767,"일요일":20.940767,"주말":30.940767,"평균 이용시간(분)":42.142857},"DMB":{"평일":44.117647,"토요일":30.784314,"일요일":28.137255,"주말":29.460784,"평균 이용시간(분)":34.346405},"인터넷":{"평일":67.075718,"토요일":39.673629,"일요일":31.958225,"주말":35.815927,"평균 이용시간(분)":46.235857},"모바일":{"평일":59.942708,"토요일":57.377604,"일요일":56.268229,"주말":56.822917,"평균 이용시간(분)":57.862847}},"60대":{"지상파":{"평일":152.399232,"토요일":177.024952,"일요일":182.543186,"주말":179.784069,"평균 이용시간(분)":170.65579},"종편":{"평일":74.781705,"토요일":81.174636,"일요일":82.334719,"주말":81.754678,"평균 이용시간(분)":79.430353},"케이블":{"평일":61.363636,"토요일":70.066519,"일요일":70.088692,"주말":70.077605,"평균 이용시간(분)":67.172949},"라디오":{"평일":74.906542,"토요일":47.196262,"일요일":29.719626,"주말":38.457944,"평균 이용시간(분)":50.607477},"DMB":{"평일":34.705882,"토요일":29.411765,"일요일":29.411765,"주말":29.411765,"평균 이용시간(분)":31.176471},"인터넷":{"평일":56.452991,"토요일":44.230769,"일요일":36.367521,"주말":40.299145,"평균 이용시간(분)":45.683761},"모바일":{"평일":52.035623,"토요일":49.045802,"일요일":47.201018,"주말":48.12341,"평균 이용시간(분)":49.427481}},"70대 이상":{"지상파":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"종편":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"케이블":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"라디오":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"DMB":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"인터넷":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null},"모바일":{"평일":null,"토요일":null,"일요일":null,"주말":null,"평균 이용시간(분)":null}},"50대 이상":{"지상파":{"평일":134.323308,"토요일":162.272932,"일요일":168.421805,"주말":165.347368,"평균 이용시간(분)":155.006015},"종편":{"평일":68.383879,"토요일":79.018356,"일요일":78.821229,"주말":78.919792,"평균 이용시간(분)":75.407821},"케이블":{"평일":58.010118,"토요일":70.906408,"일요일":70.091062,"주말":70.498735,"평균 이용시간(분)":66.335863},"라디오":{"평일":67.360406,"토요일":42.639594,"일요일":23.324873,"주말":32.982234,"평균 이용시간(분)":44.441624},"DMB":{"평일":41.764706,"토요일":30.441176,"일요일":28.455882,"주말":29.448529,"평균 이용시간(분)":33.553922},"인터넷":{"평일":64.59,"토요일":40.74,"일요일":32.99,"주말":36.865,"평균 이용시간(분)":46.106667},"모바일":{"평일":57.26615,"토요일":54.557278,"일요일":53.198966,"주말":53.878122,"평균 이용시간(분)":55.007465}}}}};
+const MCR_DETAIL_AGES=["13-19세","20대","30대","40대","50대 이상"];
 const EXTRA_DATASETS=["mcr_2016","mcr_2017","mcr_2018","menu4_campaign_impact"];
 const DATASETS=[...TABLES,...EXTRA_DATASETS].sort();
 const loaded=new Set();
 let db,conn;
-let APP={};
+let APP={mcrCache:new Map(),ottCache:new Map(),mcrDetailCache:new Map(),mediaRefreshSeq:0,ottYears:[]};
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
@@ -303,6 +315,10 @@ const num=x=>{if(typeof x==="bigint")return Number(x);const n=Number(x);return N
 const fmt1=x=>num(x)===null?"-":Number(x).toLocaleString("ko-KR",{maximumFractionDigits:1});
 const money=v=>{v=num(v)||0;if(Math.abs(v)>=1e8)return(v/1e8).toLocaleString("ko-KR",{maximumFractionDigits:2})+"억 원";return(v/1e4).toLocaleString("ko-KR",{maximumFractionDigits:0})+"만 원"};
 const pct=x=>num(x)===null?"-":Number(x).toFixed(1)+"%";
+const isAllYear=y=>String(y).toUpperCase()==="ALL";
+const yearLabel=(y,prefix="")=>isAllYear(y)?`${prefix}전체`:`${prefix}${Number(y)}년`;
+const yearShort=y=>isAllYear(y)?"전체":String(Number(y));
+const avgNums=vals=>{const a=vals.map(num).filter(v=>v!==null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null};
 function rows(table){const cols=table.schema.fields.map(f=>f.name);return table.toArray().map(r=>{const o={};cols.forEach((c,i)=>{let v;try{v=r[c]}catch{v=r[i]}if(typeof v==="bigint")v=Number(v);o[c]=v});return o})}
 async function query(sql){return rows(await conn.query(sql))}
 function setBootMessage(m){const b=$("boot");if(!b)return;const t=b.querySelector("span:last-child");if(t)t.textContent=m}
@@ -394,11 +410,12 @@ async function boot(){
       ["public_ad_topic_social_issue","사회이슈 주제 데이터를 불러오고 있습니다."],
       ["public_ad_topic_expert_opinion","전문가 의견 데이터를 불러오고 있습니다."],
       ["public_ad_topic_needed","국민 필요도 데이터를 불러오고 있습니다."],
-      ["public_ad_effect_channel","공익광고 효과조사 인지경로를 불러오고 있습니다."]
+      ["public_ad_effect_channel","공익광고 효과조사 인지경로를 불러오고 있습니다."],
+      ["mcr_2019_summary","2019 MCR 기준 데이터를 준비하고 있습니다."]
     ];
     for(const [n,m] of startup){setBootMessage(m);await ensureView(n)}
     setBootMessage("영상·파급효과 보강자료를 확인하고 있습니다.");await loadCampaignImpactJson();
-    setBootMessage("선택 항목을 구성하고 있습니다.");await initSupport();initDb();$("boot").classList.add("hidden")
+    setBootMessage("선택 항목을 구성하고 있습니다.");await initSupport();initDb();$("boot").classList.add("hidden");setTimeout(()=>{getMediaProfiles("전체",2019).catch(()=>{});getOttProfiles("전체","전체",APP.ottYears.at(-1)||"ALL").catch(()=>{})},50)
   }catch(e){$("boot").classList.add("hidden");$("bootError").textContent="데이터 초기화 실패\n\n"+(e?.message||e)+"\n\n새로고침 후에도 계속되면 F12 → Console의 첫 번째 오류를 확인해주세요.";$("bootError").classList.remove("hidden");console.error("[KOBACO boot error]",e)}
 }
 
@@ -411,12 +428,13 @@ async function initSupport(){
   const ages=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' ORDER BY 1`);options($("targetAge"),["전체",...ages.map(x=>x.v).filter(Boolean)]);
   const sex=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' ORDER BY 1`);options($("targetSex"),["전체",...sex.map(x=>x.v).filter(Boolean)]);
   const mcrYears=MCR_YEARS.map(y=>({y}));
-  options($("mcrYear"),mcrYears,x=>x.y,x=>x.y);if($("mcrYear").options.length)$("mcrYear").selectedIndex=$("mcrYear").options.length-1;
+  options($("mcrYear"),[{y:"ALL"},...mcrYears],x=>x.y,x=>isAllYear(x.y)?"전체":`${x.y}년`);$("mcrYear").value="2019";
   const ottYears=await query(`SELECT DISTINCT TRY_CAST(연도 AS INTEGER) y FROM ott_usage_by_demographic WHERE TRY_CAST(연도 AS INTEGER) IS NOT NULL ORDER BY y`);
-  options($("ottYear"),ottYears,x=>x.y,x=>x.y);if($("ottYear").options.length)$("ottYear").selectedIndex=$("ottYear").options.length-1;
+  APP.ottYears=ottYears.map(x=>Number(x.y)).filter(Number.isFinite);
+  options($("ottYear"),[{y:"ALL"},...ottYears],x=>x.y,x=>isAllYear(x.y)?"전체":`${x.y}년`);if(APP.ottYears.length)$("ottYear").value=String(APP.ottYears[APP.ottYears.length-1]);
   const mcrList=mcrYears.map(x=>Number(x.y)).filter(Number.isFinite);
-  const ottList=ottYears.map(x=>Number(x.y)).filter(Number.isFinite);
-  $("mediaYearNote").innerHTML=`MCR 탑재 연도: <b>${mcrList.join(", ")||"없음"}</b> · OTT 탑재 연도: <b>${ottList.join(", ")||"없음"}</b><br><span class="small">KOBACO MCR은 2019년 조사를 마지막으로 종료된 조사입니다. 현재 탑재된 2016~2019 원자료만 사용합니다. 2016년은 종편 문항 대신 위성방송·IPTV·IPTV VOD 문항이 있어 해당 연도 실제 문항만 표시합니다.</span>`;
+  const ottList=APP.ottYears;
+  $("mediaYearNote").innerHTML=`MCR 탑재 연도: <b>전체 · ${mcrList.length?mcrList.map(y=>y+"년").join(" · "):"없음"}</b> · OTT 탑재 연도: <b>전체 · ${ottList.length?ottList.map(y=>y+"년").join(" · "):"없음"}</b><br><span class="small">‘전체’는 탑재 연도를 한꺼번에 합산한 값이 아니라 <b>연도별 지표의 단순평균</b>입니다. MCR 전체는 2016~2019에 공통으로 존재하는 매체만 비교합니다. 2016년 개별 선택 시에는 위성방송·IPTV·IPTV VOD도 표시합니다.</span>`;
   const topics=await query(`SELECT DISTINCT 분야,주제,출처 FROM(
     SELECT TRIM(분야) 분야,TRIM(주제) 주제,'사회이슈 조사' 출처 FROM public_ad_topic_social_issue WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
     UNION ALL SELECT TRIM(분야),TRIM(주제),'전문가 의견' FROM public_ad_topic_expert_opinion WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
@@ -426,10 +444,12 @@ async function initSupport(){
   APP.topicRows=topics;options($("topicField"),[...new Set(topics.map(x=>x.분야))]);refreshTopics();await refreshInstitutions();
   $("institutionType").addEventListener("change",refreshInstitutions);$("region").addEventListener("change",refreshInstitutions);$("topicField").addEventListener("change",refreshTopics);
   $("runSupport").addEventListener("click",runSupport);$("detailMedia").addEventListener("change",renderSelectedMediaDetail);
+  $("mediaSearchLink").addEventListener("click",e=>{e.preventDefault();openMediaRawData(false)});
+  $("caseSearchLink").addEventListener("click",e=>{e.preventDefault();openMediaRawData(true)});
   $("includeRelated").addEventListener("change",()=>{buildEffectCampaignOptions();renderEffectCampaign()});$("effectCampaign").addEventListener("change",renderEffectCampaign);
   $("toggleMcrDetail").addEventListener("click",()=>$("mcrDetail").classList.toggle("hidden"));$("toggleOttDetail").addEventListener("click",()=>$("ottDetail").classList.toggle("hidden"));
-  $("mcrYear").addEventListener("change",refreshMediaYears);
-  $("ottYear").addEventListener("change",refreshMediaYears);
+  $("mcrYear").addEventListener("change",()=>refreshMediaYears("mcr"));
+  $("ottYear").addEventListener("change",()=>refreshMediaYears("ott"));
   $("downloadBrief").addEventListener("click",downloadBrief)
 }
 function refreshTopics(){const f=$("topicField").value;options($("topic"),(APP.topicRows||[]).filter(x=>x.분야===f).map(x=>x.주제))}
@@ -438,19 +458,26 @@ async function refreshInstitutions(){
   const rs=await query(`SELECT DISTINCT TRIM(기관명) 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} ORDER BY 1 LIMIT 2000`);options($("institution"),rs,x=>x.기관명,x=>x.기관명)
 }
 
-async function getMediaProfiles(age,year){
-  year=Number(year);const view=await ensureMcrView(year);
-  const groupMap=year===2016?{
-    "지상파":["B_03_001","B_03_002","B_03_003"],
-    "케이블":["B_03_007","B_03_008","B_03_009"],
-    "위성방송":["B_03_011","B_03_012","B_03_013"],
-    "IPTV":["B_03_014","B_03_015","B_03_016"],
-    "IPTV VOD":["B_03_017","B_03_018","B_03_019"],
-    "라디오":["B_03_020","B_03_021","B_03_022"],
-    "DMB":["B_03_023","B_03_024","B_03_025"],
-    "인터넷":["B_03_026","B_03_027","B_03_028"],
-    "모바일":["B_03_029","B_03_030","B_03_031"]
-  }:{
+function finalizeMcrProfile(profile,allProfile){
+  const lookup=Object.fromEntries((allProfile||[]).map(x=>[x.매체,x["평균 이용시간(분)"]]));
+  profile.forEach(x=>{x["전체 평균(분)"]=lookup[x.매체]??null;x["전체 대비(분)"]=x["전체 평균(분)"]===null?null:x["평균 이용시간(분)"]-x["전체 평균(분)"];x["주말 변화(분)"]=x.평일===null||x.주말===null?null:x.주말-x.평일});
+  return profile
+}
+function summaryRowsForYear(year,age){
+  const src=MCR_PRECOMPUTED[String(year)];if(!src)return null;
+  const key=src.age[age]?age:"전체",selected=src.age[key]||{},all=src.age["전체"]||{};
+  const toRows=o=>Object.entries(o).map(([매체,v])=>({매체,...v})).filter(x=>num(x["평균 이용시간(분)"])!==null);
+  const profile=finalizeMcrProfile(toRows(selected),toRows(all));
+  const allProfile=toRows(all);
+  const detailRowsByMedia={};
+  Object.keys(src.groups).forEach(media=>{
+    detailRowsByMedia[media]=MCR_DETAIL_AGES.map(연령대=>({연령대,...(src.age[연령대]?.[media]||{})})).filter(r=>num(r["평균 이용시간(분)"])!==null)
+  });
+  return{year:Number(year),profile,allProfile,groups:src.groups,detailRowsByMedia,source:"embedded"}
+}
+async function dynamicMcrRows(year,age){
+  const view=await ensureMcrView(year);
+  const groupMap={
     "지상파":["B_03_001","B_03_002","B_03_003"],"종편":["B_03_004","B_03_005","B_03_006"],"케이블":["B_03_007","B_03_008","B_03_009"],
     "라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]
   };
@@ -458,45 +485,88 @@ async function getMediaProfiles(age,year){
   const b=ageBounds(age),ageClause=b?` WHERE TRY_CAST(A_003 AS INTEGER) BETWEEN ${b[0]} AND ${b[1]}`:"";
   const cur=(await query(`SELECT ${build()} FROM "${view}"${ageClause}`))[0]||{},all=(await query(`SELECT ${build()} FROM "${view}"`))[0]||{};
   const toProfile=r=>Object.keys(groupMap).map(name=>{const wd=num(r[name+"_평일"]),sa=num(r[name+"_토"]),su=num(r[name+"_일"]);const vals=[wd,sa,su].filter(v=>v!==null),weekend=[sa,su].filter(v=>v!==null);return{매체:name,평일:wd,토요일:sa,일요일:su,주말:weekend.length?weekend.reduce((a,b)=>a+b,0)/weekend.length:null,"평균 이용시간(분)":vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null}}).filter(x=>x["평균 이용시간(분)"]!==null);
-  const p=toProfile(cur),pa=toProfile(all),lookup=Object.fromEntries(pa.map(x=>[x.매체,x["평균 이용시간(분)"]]));
-  p.forEach(x=>{x["전체 평균(분)"]=lookup[x.매체]??null;x["전체 대비(분)"]=x["전체 평균(분)"]===null?null:x["평균 이용시간(분)"]-x["전체 평균(분)"];x["주말 변화(분)"]=x.평일===null||x.주말===null?null:x.주말-x.평일});
-  return{year,profile:p,allProfile:pa,groups:groupMap}
+  const profile=finalizeMcrProfile(toProfile(cur),toProfile(all)),allProfile=toProfile(all);
+  const detailExpr=Object.entries(groupMap).map(([name,c])=>`AVG(TRY_CAST(${c[0]} AS DOUBLE)) "${name}_평일",AVG(TRY_CAST(${c[1]} AS DOUBLE)) "${name}_토요일",AVG(TRY_CAST(${c[2]} AS DOUBLE)) "${name}_일요일"`).join(",");
+  const detailRaw=await query(`SELECT CASE WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 13 AND 19 THEN '13-19세' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 20 AND 29 THEN '20대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 30 AND 39 THEN '30대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 40 AND 49 THEN '40대' WHEN TRY_CAST(A_003 AS INTEGER)>=50 THEN '50대 이상' ELSE NULL END 연령대,${detailExpr} FROM "${view}" GROUP BY 1 HAVING 연령대 IS NOT NULL`);
+  const detailRowsByMedia={};
+  Object.keys(groupMap).forEach(media=>{detailRowsByMedia[media]=MCR_DETAIL_AGES.map(label=>{const r=detailRaw.find(x=>x.연령대===label)||{};const wd=num(r[media+"_평일"]),sa=num(r[media+"_토요일"]),su=num(r[media+"_일요일"]),vals=[wd,sa,su].filter(v=>v!==null),weekend=[sa,su].filter(v=>v!==null);return{연령대:label,평일:wd,토요일:sa,일요일:su,주말:weekend.length?avgNums(weekend):null,"3일 평균":vals.length?avgNums(vals):null,"평균 이용시간(분)":vals.length?avgNums(vals):null}}).filter(r=>num(r["3일 평균"])!==null)});
+  return{year:Number(year),profile,allProfile,groups:groupMap,detailRowsByMedia,source:"duckdb"}
+}
+function aggregateMcrYears(parts,age){
+  if(!parts.length)return{year:"ALL",profile:[],allProfile:[],groups:{},detailRowsByMedia:{},years:[]};
+  const common=[...new Set(parts[0].profile.map(x=>x.매체))].filter(m=>parts.every(p=>p.profile.some(x=>x.매체===m)));
+  const metrics=["평일","토요일","일요일","주말","평균 이용시간(분)"];
+  const make=(key)=>common.map(media=>{const out={매체:media};metrics.forEach(k=>out[k]=avgNums(parts.map(p=>p[key].find(x=>x.매체===media)?.[k])));return out});
+  const profile=finalizeMcrProfile(make("profile"),make("allProfile")),allProfile=make("allProfile");
+  const detailRowsByMedia={};
+  common.forEach(media=>{detailRowsByMedia[media]=MCR_DETAIL_AGES.map(label=>{const rows=parts.map(p=>(p.detailRowsByMedia?.[media]||[]).find(r=>r.연령대===label)).filter(Boolean);const out={연령대:label};["평일","토요일","일요일","주말"].forEach(k=>out[k]=avgNums(rows.map(r=>r[k])));out["3일 평균"]=avgNums(rows.map(r=>r["3일 평균"]??r["평균 이용시간(분)"]));out["평균 이용시간(분)"]=out["3일 평균"];return out}).filter(r=>num(r["3일 평균"])!==null)});
+  return{year:"ALL",profile,allProfile,groups:{},detailRowsByMedia,years:parts.map(p=>p.year),source:"year-average"}
+}
+async function getMediaProfiles(age,year){
+  const y=isAllYear(year)?"ALL":Number(year),key=`${y}|${age}`;
+  if(APP.mcrCache?.has(key))return APP.mcrCache.get(key);
+  let result;
+  if(y==="ALL"){const parts=await Promise.all(MCR_YEARS.map(yy=>getMediaProfiles(age,yy)));result=aggregateMcrYears(parts,age)}
+  else result=summaryRowsForYear(y,age)||await dynamicMcrRows(y,age);
+  APP.mcrCache.set(key,result);return result
 }
 async function getOttProfiles(age,sex,year){
-  const ageRows=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' AND TRY_CAST(연도 AS INTEGER)=${Number(year)}`);
-  const sexRows=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' AND TRY_CAST(연도 AS INTEGER)=${Number(year)}`);
-  if(!ageRows.length)return{long:[],ageRows,sexRows,platforms:[],basis:"전체"};
-  const meta=new Set(["연도","구분1","구분2","사례수","OTT 비이용","기타"]),platforms=Object.keys(ageRows[0]).filter(c=>!meta.has(c));
+  const y=isAllYear(year)?"ALL":Number(year),key=`${y}|${age}|${sex}`;
+  if(APP.ottCache?.has(key))return APP.ottCache.get(key);
+  const yearClause=y==="ALL"?"":` AND TRY_CAST(연도 AS INTEGER)=${y}`;
+  const ageRowsRaw=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별'${yearClause}`);
+  const sexRowsRaw=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별'${yearClause}`);
+  if(!ageRowsRaw.length){const empty={long:[],ageRows:[],sexRows:[],platforms:[],basis:"전체",year:y};APP.ottCache.set(key,empty);return empty}
+  const meta=new Set(["연도","구분1","구분2","사례수","OTT 비이용","기타"]),platforms=Object.keys(ageRowsRaw[0]).filter(c=>!meta.has(c));
   const weighted=(rs,label)=>platforms.map(p=>{let sw=0,sv=0;rs.forEach(r=>{const v=num(r[p]),w=num(r["사례수"]);if(v!==null&&w!==null&&w>0){sv+=v*w;sw+=w}});return sw?{기준:label,플랫폼:p,이용비율:sv/sw}:null}).filter(Boolean);
-  let long=weighted(ageRows,"전체");
-  if(age!=="전체"){const r=ageRows.filter(x=>String(x.구분2).trim()===String(age).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:age,플랫폼:p,이용비율:v})}))}
-  if(sex!=="전체"){const r=sexRows.filter(x=>String(x.구분2).trim()===String(sex).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:sex,플랫폼:p,이용비율:v})}))}
-  return{long,ageRows,sexRows,platforms,basis:age!=="전체"?age:(sex!=="전체"?sex:"전체")}
+  let ageRows=ageRowsRaw,sexRows=sexRowsRaw,long=[];
+  if(y==="ALL"){
+    const years=APP.ottYears?.length?APP.ottYears:[...new Set(ageRowsRaw.map(r=>Number(r.연도)).filter(Number.isFinite))];
+    const yearlyOverall=years.map(yy=>weighted(ageRowsRaw.filter(r=>Number(r.연도)===yy),String(yy)));
+    long=platforms.map(p=>({기준:"전체",플랫폼:p,이용비율:avgNums(yearlyOverall.map(arr=>arr.find(x=>x.플랫폼===p)?.이용비율))})).filter(x=>x.이용비율!==null);
+    const aggregateRows=(rs,labelKey)=>[...new Set(rs.map(r=>String(r.구분2).trim()).filter(Boolean))].map(label=>{
+      const same=rs.filter(r=>String(r.구분2).trim()===label),out={구분2:label,사례수:same.reduce((a,r)=>a+(num(r.사례수)||0),0)};
+      platforms.forEach(p=>out[p]=avgNums(same.map(r=>r[p])));return out
+    });
+    ageRows=aggregateRows(ageRowsRaw,"연령대");sexRows=aggregateRows(sexRowsRaw,"성별");
+    if(age!=="전체"){const r=ageRows.filter(x=>String(x.구분2).trim()===String(age).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:age,플랫폼:p,이용비율:v})}))}
+    if(sex!=="전체"){const r=sexRows.filter(x=>String(x.구분2).trim()===String(sex).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:sex,플랫폼:p,이용비율:v})}))}
+  }else{
+    long=weighted(ageRows,"전체");
+    if(age!=="전체"){const r=ageRows.filter(x=>String(x.구분2).trim()===String(age).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:age,플랫폼:p,이용비율:v})}))}
+    if(sex!=="전체"){const r=sexRows.filter(x=>String(x.구분2).trim()===String(sex).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:sex,플랫폼:p,이용비율:v})}))}
+  }
+  const result={long,ageRows,sexRows,platforms,basis:age!=="전체"?age:(sex!=="전체"?sex:"전체"),year:y};
+  APP.ottCache.set(key,result);return result
 }
 function renderDumbbell(el,data,aKey,bKey,labelKey){
   if(!data.length){el.innerHTML='<p class="small">자료가 없습니다.</p>';return}const max=Math.max(...data.flatMap(x=>[num(x[aKey])||0,num(x[bKey])||0]),1)*1.12;
   el.innerHTML=data.map(x=>{const a=(num(x[aKey])||0)/max*100,b=(num(x[bKey])||0)/max*100;return`<div class="dumb-row"><div class="bar-label">${esc(x[labelKey])}</div><div class="dumb-track"><div class="dumb-line"></div><span class="dotA" style="left:${a}%"></span><span class="dotB" style="left:${b}%"></span></div><div class="bar-val">${fmt1(x[aKey])} / ${fmt1(x[bKey])}</div></div>`}).join("")
 }
 async function renderMcrDetail(mediaName){
-  const cols=APP.mcr.groups[mediaName];if(!cols)return;const view=`mcr_${Number(APP.input.mcrYear)}`;
-  const cur=APP.mcr.profile.find(x=>x.매체===mediaName);
-  $("mcrSelectedDetail").innerHTML=`<h4>🕒 ${esc(mediaName)}</h4><div class="chips"><span class="chip">3일 평균 ${fmt1(cur?.["평균 이용시간(분)"])}분</span><span class="chip">평일 ${fmt1(cur?.평일)}분</span><span class="chip">토요일 ${fmt1(cur?.토요일)}분</span><span class="chip">일요일 ${fmt1(cur?.일요일)}분</span></div>`;
-  const q=`SELECT CASE WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 13 AND 19 THEN '13-19세' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 20 AND 29 THEN '20대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 30 AND 39 THEN '30대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 40 AND 49 THEN '40대' WHEN TRY_CAST(A_003 AS INTEGER)>=50 THEN '50대 이상' ELSE NULL END 연령대,
-  AVG(TRY_CAST(${cols[0]} AS DOUBLE)) 평일,AVG(TRY_CAST(${cols[1]} AS DOUBLE)) 토요일,AVG(TRY_CAST(${cols[2]} AS DOUBLE)) 일요일,
-  (AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/2 주말,
-  (AVG(TRY_CAST(${cols[0]} AS DOUBLE))+AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/3 "3일 평균"
-  FROM "${view}" GROUP BY 1 HAVING 연령대 IS NOT NULL ORDER BY CASE 연령대 WHEN '13-19세' THEN 1 WHEN '20대' THEN 2 WHEN '30대' THEN 3 WHEN '40대' THEN 4 ELSE 5 END`;
-  const rs=await query(q);renderTable($("mcrDetail"),rs,{cols:["연령대","평일","토요일","일요일","주말","3일 평균"],format:Object.fromEntries(["평일","토요일","일요일","주말","3일 평균"].map(k=>[k,v=>fmt1(v)+"분"]))})
+  if(!mediaName)return;const y=APP.input.mcrYear,yl=yearLabel(y,"MCR "),cur=APP.mcr.profile.find(x=>x.매체===mediaName);
+  $("mcrSelectedDetail").innerHTML=`<div class="detail-heading"><h4>🕒 ${esc(mediaName)}</h4><span class="year-badge">${esc(yl)}</span></div><div class="chips"><span class="chip">3일 평균 ${fmt1(cur?.["평균 이용시간(분)"])}분</span><span class="chip">평일 ${fmt1(cur?.평일)}분</span><span class="chip">토요일 ${fmt1(cur?.토요일)}분</span><span class="chip">일요일 ${fmt1(cur?.일요일)}분</span></div>`;
+  $("toggleMcrDetail").textContent=`🔎 ${mediaName} 상세 데이터 보기 · ${yl}`;
+  let rs=APP.mcr.detailRowsByMedia?.[mediaName]||[];
+  $("mcrDetail").innerHTML=`<div class="detail-heading"><h4>🔎 ${esc(mediaName)} 연령대별 상세 데이터</h4><span class="year-badge">${esc(yl)}</span></div>
+    <div class="detail-metrics"><div class="detail-mini"><div class="k">현재 관점 3일 평균</div><div class="v">${fmt1(cur?.["평균 이용시간(분)"])}분</div></div><div class="detail-mini"><div class="k">평일</div><div class="v">${fmt1(cur?.평일)}분</div></div><div class="detail-mini"><div class="k">토요일</div><div class="v">${fmt1(cur?.토요일)}분</div></div><div class="detail-mini"><div class="k">일요일</div><div class="v">${fmt1(cur?.일요일)}분</div></div></div>
+    <div id="mcrDetailTable" class="table-wrap detail-table"></div><p class="small">${isAllYear(y)?"2016~2019년 공통 매체의 연도별 평균입니다. 각 연도 평균을 동일 가중치로 평균하며 응답자를 한 표본처럼 합산하지 않습니다.":`${Number(y)}년 MCR 원자료의 연령대별 응답자 평균 이용시간입니다.`} 성별 선택은 MCR 이용시간 표에 교차 적용하지 않습니다.</p>`;
+  renderTable($("mcrDetailTable"),rs,{cols:["연령대","평일","토요일","일요일","주말","3일 평균"],format:Object.fromEntries(["평일","토요일","일요일","주말","3일 평균"].map(k=>[k,v=>fmt1(v)+"분"]))})
+}
+function compactOttTable(rows,labelKey){
+  if(!rows.length)return '<p class="small">자료가 없습니다.</p>';
+  return `<div class="compact-table"><table><colgroup><col style="width:32%"><col style="width:34%"><col style="width:34%"></colgroup><thead><tr><th>${esc(labelKey)}</th><th>사례수</th><th>이용률</th></tr></thead><tbody>${rows.map(r=>{const v=num(r["이용률(%)"]);return`<tr><td><b>${esc(r[labelKey])}</b></td><td class="num-cell">${Number(num(r.사례수)||0).toLocaleString()}명</td><td class="num-cell"><b>${pct(v)}</b></td></tr>`}).join("")}</tbody></table></div>`
 }
 function renderOttDetails(platform){
-  const overall=APP.ott.long.filter(x=>x.기준==="전체").find(x=>x.플랫폼===platform)?.이용비율;
+  const y=APP.input.ottYear,yl=yearLabel(y,"OTT "),overall=APP.ott.long.filter(x=>x.기준==="전체").find(x=>x.플랫폼===platform)?.이용비율;
   const selected=APP.ott.long.filter(x=>x.기준===APP.ott.basis).find(x=>x.플랫폼===platform)?.이용비율??overall;
-  $("ottSelectedDetail").innerHTML=`<h4>📱 ${esc(platform)}</h4><div class="chips"><span class="chip">${esc(APP.ott.basis)} ${pct(selected)}</span>${APP.ott.basis!=="전체"?`<span class="chip">전체 대비 ${((selected||0)-(overall||0)).toFixed(1)}%p</span>`:""}</div>`;
-  const age=APP.ott.ageRows.map(r=>({연령대:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
-  const sex=APP.ott.sexRows.map(r=>({성별:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
-  $("ottDetail").innerHTML='<div class="grid cols2"><div><h4>연령대별 이용률</h4><div id="ottAgeTbl" class="table-wrap"></div></div><div><h4>성별 이용률</h4><div id="ottSexTbl" class="table-wrap"></div></div></div>';
-  renderTable($("ottAgeTbl"),age,{cols:["연령대","사례수","이용률(%)"],format:{"이용률(%)":v=>pct(v)}});renderTable($("ottSexTbl"),sex,{cols:["성별","사례수","이용률(%)"],format:{"이용률(%)":v=>pct(v)}})
+  $("ottSelectedDetail").innerHTML=`<div class="detail-heading"><h4>📱 ${esc(platform)}</h4><span class="year-badge">${esc(yl)}</span></div><div class="chips"><span class="chip">${esc(APP.ott.basis)} ${pct(selected)}</span>${APP.ott.basis!=="전체"?`<span class="chip">전체 대비 ${((selected||0)-(overall||0)).toFixed(1)}%p</span>`:""}</div>`;
+  $("toggleOttDetail").textContent=`🔎 ${platform} 상세 데이터 보기 · ${yl}`;
+  const age=APP.ott.ageRows.map(r=>({연령대:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).filter(r=>num(r["이용률(%)"])!==null).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
+  const sex=APP.ott.sexRows.map(r=>({성별:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).filter(r=>num(r["이용률(%)"])!==null).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
+  $("ottDetail").innerHTML=`<div class="detail-heading"><h4>🔎 ${esc(platform)} 연령·성별 상세 데이터</h4><span class="year-badge">${esc(yl)}</span></div><div class="grid cols2 ott-detail-grid"><div><h4>연령대별 이용률</h4>${compactOttTable(age,"연령대")}</div><div><h4>성별 이용률</h4>${compactOttTable(sex,"성별")}</div></div><p class="small">${isAllYear(y)?"탑재된 OTT 조사연도의 연도별 이용률을 단순평균한 값입니다. 사례수는 각 연도 사례수를 합산해 표시합니다.":`${Number(y)}년 OTT 조사 기준입니다.`} 연령별·성별 표는 각각 별도 집계이며 성별×연령 교차 이용률로 해석하지 않습니다.</p>`;
 }
+
 
 async function buildPeerData(inst,type,region,topic,years){
   const ysql=years.join(","),instE=sqlText(inst),typeE=sqlText(type),terms=topicTerms(topic),topicCond=terms.length?" AND ("+terms.map(t=>`광고명 ILIKE '%${sqlText(t)}%'`).join(" OR ")+")":"";
@@ -528,18 +598,40 @@ async function getMediaStats(peer){
 }
 async function renderSelectedMediaDetail(){
   if(!APP.mediaStats?.length)return;const name=$("detailMedia").value,row=APP.mediaStats.find(x=>String(x.매체명)===name);if(!row)return;
-  $("mediaDetailChips").innerHTML=[row.매체군,`사용기관 ${row.사용기관}곳`,`집행 ${row.집행건수}건`,`1건 중앙값 ${money(row.중앙집행액)}`,`1건 평균 ${money(row.평균집행액)}`,`총 집행 ${money(row.총집행액)}`,`최근 ${row.최근집행연도||"-"}년`].map(x=>`<span class="chip">${esc(x)}</span>`).join("");
+  $("mediaDetailChips").innerHTML=[row.매체군,`사용기관 ${Number(row.사용기관||0).toLocaleString()}곳`,`집행 ${Number(row.집행건수||0).toLocaleString()}건`,`1건 중앙값 ${money(row.중앙집행액)}`,`1건 평균 ${money(row.평균집행액)}`,`총 집행 ${money(row.총집행액)}`,`최근 ${row.최근집행연도||"-"}년`].map(x=>`<span class="chip">${esc(x)}</span>`).join("");
   const q=`SELECT CASE WHEN TRIM(기관명)='${APP.peer.instE}' THEN '선택기관' ELSE '유사기관' END 비교구분,TRIM(기관명) 기관명,TRIM(광고명) 광고명,TRIM(매체구분) 매체구분,TRY_CAST(광고료 AS DOUBLE) 광고료,TRY_CAST(수수료 AS DOUBLE) 수수료,TRY_CAST("총계(VAT포함)" AS DOUBLE) 총계,CAST(광고시작일 AS VARCHAR) 광고시작일,CAST(광고종료일 AS VARCHAR) 광고종료일,TRY_CAST(집행년도 AS INTEGER) 집행년도 FROM gov_ad_execution_2023_2026 WHERE TRIM(매체명)='${sqlText(name)}' AND ((TRIM(기관명)='${APP.peer.instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${APP.peer.ysql})) OR (${APP.peer.where})) ORDER BY 집행년도 DESC,총계 DESC LIMIT 12`;
-  const cases=await query(q);renderTable($("mediaCasesTable"),cases,{cols:["비교구분","기관명","광고명","매체구분","광고료","수수료","총계","광고시작일","광고종료일","집행년도"],labels:{총계:"VAT포함 총액"},format:{광고료:v=>money(v),수수료:v=>money(v),총계:v=>money(v)}})
-  $("mediaSearchLink").href="https://search.naver.com/search.naver?query="+encodeURIComponent(name+" 광고 매체 정보");
-  const c=cases[0];$("caseSearchLink").href="https://search.naver.com/search.naver?query="+encodeURIComponent(c?`${c.기관명} ${c.광고명}`:name)
+  const cases=await query(q);APP.selectedMediaCases=cases;
+  renderTable($("mediaCasesTable"),cases,{cols:["비교구분","기관명","광고명","매체구분","광고료","수수료","총계","광고시작일","광고종료일","집행년도"],labels:{총계:"VAT포함 총액"},format:{광고료:v=>money(v),수수료:v=>money(v),총계:v=>money(v)}});
+  $("mediaSearchLink").href="#";$("caseSearchLink").href="#";
+}
+async function openMediaRawData(caseOnly=false){
+  const name=$("detailMedia").value;if(!name)return;
+  const c=APP.selectedMediaCases?.[0];let where=`TRIM(매체명)='${sqlText(name)}'`;
+  if(caseOnly&&c)where+=` AND TRIM(기관명)='${sqlText(c.기관명)}' AND TRIM(광고명)='${sqlText(c.광고명)}'`;
+  const q=`SELECT TRIM(기관분류) 기관분류,TRIM(기관명) 기관명,TRIM(매체구분) 매체구분,TRIM(매체명) 매체명,TRIM(광고명) 광고명,TRY_CAST(광고료 AS DOUBLE) 광고료,TRY_CAST(수수료 AS DOUBLE) 수수료,TRY_CAST("총계(VAT포함)" AS DOUBLE) "VAT포함 총액",CAST(광고시작일 AS VARCHAR) 광고시작일,CAST(광고종료일 AS VARCHAR) 광고종료일,TRY_CAST(집행년도 AS INTEGER) 집행년도 FROM gov_ad_execution_2023_2026 WHERE ${where} ORDER BY 집행년도 DESC,"VAT포함 총액" DESC LIMIT 100`;
+  const btn=document.querySelector('.nav-btn[data-page="db"]');if(btn)btn.click();
+  if($("dbTable")){$("dbTable").value="gov_ad_execution_2023_2026";$("sql").value=q;await runSql();}
+  $("page-db")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderTrendChart(rs,years,buckets){
+  const W=940,H=360,L=58,R=28,T=28,B=48,innerW=W-L-R,innerH=H-T-B;
+  const max=Math.max(10,...rs.map(x=>num(x.구성비)||0));const yMax=Math.ceil(max/10)*10;
+  const x=i=>years.length===1?L+innerW/2:L+(i/(years.length-1))*innerW;const y=v=>T+innerH-(Math.max(0,num(v)||0)/yMax)*innerH;
+  const palette=["#6d28d9","#2563eb","#0f766e","#d97706","#db2777","#64748b","#7c3aed"];
+  const grid=[0,.25,.5,.75,1].map(f=>{const yy=T+innerH-innerH*f,v=yMax*f;return`<line class="trend-grid" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="trend-axis" x="${L-10}" y="${yy+3}" text-anchor="end">${v.toFixed(0)}%</text>`}).join("");
+  const xlabels=years.map((yr,i)=>`<text class="trend-axis" x="${x(i)}" y="${H-16}" text-anchor="middle">${yr}년</text>`).join("");
+  let paths="",legend="";
+  buckets.forEach((b,bi)=>{const color=palette[bi%palette.length],pts=years.map((yr,i)=>{const row=rs.find(r=>Number(r.연도)===Number(yr)&&r.매체군===b);return{x:x(i),y:y(row?.구성비||0),v:num(row?.구성비)||0}});paths+=`<polyline fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pts.map(p=>`${p.x},${p.y}`).join(" ")}"/>`+pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${color}" stroke="#fff" stroke-width="2"/><text class="trend-point-label" x="${p.x}" y="${Math.max(12,p.y-9)}" text-anchor="middle">${p.v.toFixed(1)}%</text>`).join("");legend+=`<span><i style="background:${color}"></i>${esc(b)}</span>`});
+  return `<div class="trend-wrap"><div class="trend-legend">${legend}</div><svg class="trend-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="유사기관 매체구성 연도별 추이">${grid}${xlabels}${paths}</svg></div>`
 }
 async function renderPeerTrend(peer){
-  const b=mediaBucketExpr();const rs=await query(`WITH r AS(SELECT TRY_CAST(집행년도 AS INTEGER) 연도,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액 FROM gov_ad_execution_2023_2026 WHERE ${peer.where}),g AS(SELECT 연도,매체군,SUM(금액) 금액 FROM r GROUP BY 1,2),t AS(SELECT 연도,SUM(금액) total FROM r GROUP BY 1) SELECT g.연도,g.매체군,CASE WHEN t.total>0 THEN g.금액/t.total*100 ELSE 0 END 구성비 FROM g JOIN t USING(연도) ORDER BY 연도,매체군`);
-  const years=[...new Set(rs.map(x=>x.연도))].sort(),buckets=["방송","디지털","옥외","인쇄","라디오","해외","기타"].filter(b=>rs.some(x=>x.매체군===b));
-  if(years.length<2){$("peerTrend").innerHTML='<p class="small">선택 범위에서 연도별 비교가 가능한 자료가 부족합니다.</p>';return}
-  $("peerTrend").innerHTML=`<div class="table-wrap"><table><thead><tr><th>매체군</th>${years.map(y=>`<th>${y}</th>`).join("")}</tr></thead><tbody>${buckets.map(b=>`<tr><td><b>${b}</b></td>${years.map(y=>`<td>${pct(rs.find(x=>x.매체군===b&&x.연도===y)?.구성비||0)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
+  const b=mediaBucketExpr();const rs=await query(`WITH r AS(SELECT TRY_CAST(집행년도 AS INTEGER) 연도,TRIM(기관명) 기관명,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액 FROM gov_ad_execution_2023_2026 WHERE ${peer.where}),g AS(SELECT 연도,매체군,SUM(금액) 금액 FROM r GROUP BY 1,2),t AS(SELECT 연도,SUM(금액) total,CAST(COUNT(DISTINCT 기관명) AS DOUBLE) 기관수 FROM r GROUP BY 1) SELECT g.연도,g.매체군,CASE WHEN t.total>0 THEN g.금액/t.total*100 ELSE 0 END 구성비,t.기관수 FROM g JOIN t USING(연도) ORDER BY 연도,매체군`);
+  const years=[...new Set(rs.map(x=>Number(x.연도)).filter(Number.isFinite))].sort((a,b)=>a-b),buckets=["방송","디지털","옥외","인쇄","라디오","해외","기타"].filter(b=>rs.some(x=>x.매체군===b));
+  if(years.length<2){$("peerTrend").innerHTML='<p class="small">선택 범위에서 연도별 비교가 가능한 자료가 부족합니다. 1단계의 기관 집행실적 연도를 2개 이상 선택해주세요.</p>';return}
+  const counts=years.map(y=>`${y}년 ${Number(rs.find(x=>Number(x.연도)===y)?.기관수||0).toLocaleString()}개 기관`).join(" · ");
+  $("peerTrend").innerHTML=`${renderTrendChart(rs,years,buckets)}<div class="table-wrap"><table><thead><tr><th>매체군</th>${years.map(y=>`<th>${y}년</th>`).join("")}</tr></thead><tbody>${buckets.map(b=>`<tr><td><b>${b}</b></td>${years.map(y=>`<td>${pct(rs.find(x=>x.매체군===b&&Number(x.연도)===y)?.구성비||0)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="raw-data-note">연도별 비교기관 수: ${esc(counts)}</p>`
 }
+
 
 async function buildCampaignCatalog(){
   await ensureView("public_ad_master");
@@ -620,7 +712,7 @@ async function renderMarket(){
 async function runSupport(){
   $("supportError").classList.add("hidden");$("results").classList.add("hidden");$("supportStatus").classList.remove("hidden");
   try{
-    const inst=$("institution").value,type=$("institutionType").value,region=$("region").value,topic=$("topic").value,years=[...$("years").selectedOptions].map(o=>Number(o.value)),age=$("targetAge").value,sex=$("targetSex").value,mcrYear=Number($("mcrYear").value),ottYear=Number($("ottYear").value);
+    const inst=$("institution").value,type=$("institutionType").value,region=$("region").value,topic=$("topic").value,years=[...$("years").selectedOptions].map(o=>Number(o.value)),age=$("targetAge").value,sex=$("targetSex").value,mcrYear=$("mcrYear").value,ottYear=$("ottYear").value;
     if(!inst||!years.length)throw new Error("분석 기관과 집행연도를 선택해주세요.");
     APP.input={inst,type,region,topic,topicField:$("topicField").value,years,age,sex,mcrYear,ottYear,budget:Number($("budget").value||0)};
     const peer=await buildPeerData(inst,type,region,topic,years);APP.peer=peer;
@@ -636,31 +728,32 @@ async function runSupport(){
   }catch(e){$("supportError").textContent="분석 오류: "+(e?.message||e);$("supportError").classList.remove("hidden");console.error(e)}
   finally{$("supportStatus").classList.add("hidden")}
 }
-async function refreshMediaYears(){
+async function refreshMediaYears(kind="both"){
   if(!APP.input||!APP.peer)return;
+  const seq=++APP.mediaRefreshSeq;
+  const mcrSelect=$("mcrYear"),ottSelect=$("ottYear");
   try{
-    const mcrYear=Number($("mcrYear").value),ottYear=Number($("ottYear").value);
+    const mcrYear=mcrSelect.value,ottYear=ottSelect.value;
     APP.input.mcrYear=mcrYear;APP.input.ottYear=ottYear;
-    const [mcr,ott]=await Promise.all([
-      getMediaProfiles(APP.input.age,mcrYear),
-      getOttProfiles(APP.input.age,APP.input.sex,ottYear)
-    ]);
-    APP.mcr=mcr;APP.ott=ott;
-    renderMediaSection();
-    renderRecommendation();
+    if(kind==="mcr"||kind==="both"){mcrSelect.disabled=true;mcrSelect.classList.add("select-loading");APP.mcr=await getMediaProfiles(APP.input.age,mcrYear)}
+    if(seq!==APP.mediaRefreshSeq)return;
+    if(kind==="ott"||kind==="both"){ottSelect.disabled=true;ottSelect.classList.add("select-loading");APP.ott=await getOttProfiles(APP.input.age,APP.input.sex,ottYear)}
+    if(seq!==APP.mediaRefreshSeq)return;
+    renderMediaSection();renderRecommendation();
   }catch(e){
     $("supportError").textContent="미디어 연도 변경 오류: "+(e?.message||e);
-    $("supportError").classList.remove("hidden");
-    console.error(e);
+    $("supportError").classList.remove("hidden");console.error(e);
+  }finally{
+    mcrSelect.disabled=false;ottSelect.disabled=false;mcrSelect.classList.remove("select-loading");ottSelect.classList.remove("select-loading")
   }
 }
 function renderMediaSection(){
   const p=APP.mcr.profile,basis=APP.ott.basis,overall=APP.ott.long.filter(x=>x.기준==="전체"),selected=APP.ott.long.filter(x=>x.기준===basis),topMedia=p.slice().sort((a,b)=>b["평균 이용시간(분)"]-a["평균 이용시간(분)"])[0],shift=p.slice().sort((a,b)=>Math.abs(b["주말 변화(분)"])-Math.abs(a["주말 변화(분)"]))[0];
   const ottComp=overall.map(o=>({플랫폼:o.플랫폼,전체:o.이용비율,선택:selected.find(x=>x.플랫폼===o.플랫폼)?.이용비율??o.이용비율})).sort((a,b)=>b.선택-a.선택).slice(0,8);const topOtt=ottComp[0];
   APP.topMedia=topMedia;APP.topOtt=topOtt;
-  $("mediaMetrics").innerHTML=metric("가장 오래 쓰는 매체",topMedia?.매체||"-",topMedia?fmt1(topMedia["평균 이용시간(분)"])+"분":"")+metric("평일↔주말 변화 최대",shift?.매체||"-",shift?(shift["주말 변화(분)"]>=0?"+":"")+fmt1(shift["주말 변화(분)"])+"분":"")+metric(`OTT 1위 · ${APP.input.ottYear}`,topOtt?.플랫폼||"-",topOtt?pct(topOtt.선택):"")+metric("분석 관점",`${APP.input.age} · ${APP.input.sex}`);
-  $("mcrTitle").textContent=`🕒 평일·주말 미디어 사용 패턴 · MCR ${APP.input.mcrYear}`;renderDumbbell($("mcrDumbbell"),p.slice().sort((a,b)=>a["평균 이용시간(분)"]-b["평균 이용시간(분)"]),"평일","주말","매체");renderMcrDetail(topMedia?.매체||"모바일");
-  $("ottTitle").textContent=`📱 OTT 플랫폼 위치 · ${APP.input.ottYear}`;
+  $("mediaMetrics").innerHTML=metric("가장 오래 쓰는 매체",topMedia?.매체||"-",topMedia?fmt1(topMedia["평균 이용시간(분)"])+"분":"")+metric("평일↔주말 변화 최대",shift?.매체||"-",shift?(shift["주말 변화(분)"]>=0?"+":"")+fmt1(shift["주말 변화(분)"])+"분":"")+metric(`OTT 1위 · ${yearLabel(APP.input.ottYear)}`,topOtt?.플랫폼||"-",topOtt?pct(topOtt.선택):"")+metric("분석 관점",`${APP.input.age} · ${APP.input.sex}`);
+  $("mcrTitle").textContent=`🕒 평일·주말 미디어 사용 패턴 · ${yearLabel(APP.input.mcrYear,"MCR ")}`;renderDumbbell($("mcrDumbbell"),p.slice().sort((a,b)=>a["평균 이용시간(분)"]-b["평균 이용시간(분)"]),"평일","주말","매체");renderMcrDetail(topMedia?.매체||"모바일");
+  $("ottTitle").textContent=`📱 OTT 플랫폼 위치 · ${yearLabel(APP.input.ottYear)}`;
   if(basis==="전체")bars($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,이용비율:x.전체})),"이용비율","플랫폼","%");
   else renderDumbbell($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,전체:x.전체,선택:x.선택})),"전체","선택","플랫폼");
   renderOttDetails(topOtt?.플랫폼||APP.ott.platforms[0])
@@ -699,11 +792,11 @@ function renderRecommendation(){
 function renderRecommendationUI(){
   const I=APP.input,R=APP.recommendation,rec=R.rows,primary=rec[0],secondary=rec[1],targetText=[I.age!=="전체"?I.age:null,I.sex!=="전체"?I.sex:null].filter(Boolean).join(" · ")||"전체",yearText=I.years.join(", ");
   renderTable($("conditionTable"),[
-    {항목:"기관 분류",설정값:I.type},{항목:"지역",설정값:I.region},{항목:"분석 기관",설정값:I.inst},{항목:"광고 분야",설정값:I.topicField},{항목:"세부 주제 / 정책 목표",설정값:I.topic},{항목:"핵심 연령",설정값:I.age},{항목:"성별 참고",설정값:I.sex},{항목:"MCR 조사연도",설정값:String(I.mcrYear)},{항목:"OTT 조사연도",설정값:String(I.ottYear)},{항목:"가용 예산",설정값:`${I.budget.toLocaleString()}백만원`},{항목:"기관 집행실적 연도",설정값:yearText}
+    {항목:"기관 분류",설정값:I.type},{항목:"지역",설정값:I.region},{항목:"분석 기관",설정값:I.inst},{항목:"광고 분야",설정값:I.topicField},{항목:"세부 주제 / 정책 목표",설정값:I.topic},{항목:"핵심 연령",설정값:I.age},{항목:"성별 참고",설정값:I.sex},{항목:"MCR 조사연도",설정값:yearLabel(I.mcrYear)},{항목:"OTT 조사연도",설정값:yearLabel(I.ottYear)},{항목:"가용 예산",설정값:`${I.budget.toLocaleString()}백만원`},{항목:"기관 집행실적 연도",설정값:yearText}
   ],{cols:["항목","설정값"]});
   const topM=APP.topMedia,topO=APP.topOtt,instTop=APP.selectedMix[0],gap=(APP.bucketCompare||[]).slice().sort((a,b)=>Math.abs(b.차이)-Math.abs(a.차이))[0],e=APP.effect,ec=e.choice;
   const mediaSummary=topM?`${topM.매체} 하루 평균 ${fmt1(topM["평균 이용시간(분)"])}분`:"확인 가능한 MCR 자료 없음";
-  const ottSummary=topO?`${APP.ott.basis} 기준 ${topO.플랫폼} 이용률 ${fmt1(topO.선택)}% · ${I.ottYear}년`:"확인 가능한 OTT 자료 없음";
+  const ottSummary=topO?`${APP.ott.basis} 기준 ${topO.플랫폼} 이용률 ${fmt1(topO.선택)}% · ${yearLabel(I.ottYear)}`:"확인 가능한 OTT 자료 없음";
   const instSummary=instTop?`선택기간 총 집행액 ${money(APP.stats.총액)} · 상위 매체군 ${instTop.매체군} ${fmt1(instTop.비중)}%`:"선택 기관의 집행실적 없음";
   const peerSummary=gap?`비교 표본 ${APP.peer.institutions.toLocaleString()}개 기관 · 차이 최대 ${gap.매체군} (우리기관 ${gap.우리기관.toFixed(1)}% / 유사기관 중앙값 ${gap["유사기관 중앙값"].toFixed(1)}%, ${gap.차이>=0?"+":""}${gap.차이.toFixed(1)}%p)`:"비교 가능한 유사기관 자료 없음";
   const effectSummary=ec?`${ec.주제||ec.theme||"연결 캠페인"} · ${ec.조사}`:(APP.selectedMaster||APP.selectedImpact?"영상·파급자료는 확인했으나 직접 연결되는 효과조사 수치가 없어 정량 점수에서 제외":"관련 과거 효과조사를 선택하지 않아 해당 근거는 추천점수에서 제외");
@@ -722,7 +815,7 @@ function renderRecommendationUI(){
     recoParts.push(`실행 시에는 ${detailChannel(pBucket)}을 핵심 접점으로 먼저 검토합니다.`);if(secondary)recoParts.push(`보조 매체군은 ${secondary.매체군}(${detailChannel(secondary.매체군)})입니다(추천 근거점수 ${fmt1(secondary["추천 근거점수"])}/100). 주매체 한 곳에 예산을 전부 배분하기보다 보조 접점을 함께 두어 타깃 접촉 경로를 분산하는 안을 검토할 수 있습니다.`);
     if(pOur!=null&&pPeer!=null){const g=pOur-pPeer;if(g>=10)recoParts.push(`다만 우리기관의 기존 ${pBucket} 비중은 ${fmt1(pOur)}%로 유사기관 참고값보다 ${fmt1(g)}%p 높으므로, 추가 확대보다 실제 집행단가와 성과확인 후 유지·조정하는 방식을 검토할 필요가 있습니다.`);else if(g<=-10)recoParts.push(`우리기관의 기존 ${pBucket} 비중은 ${fmt1(pOur)}%로 유사기관 참고값보다 ${fmt1(Math.abs(g))}%p 낮아, 현재 타깃 적합 근거와 함께 우선 확대를 검토할 수 있는 영역입니다.`)}
   }else recoParts.push("추천 근거가 부족해 단일 우선매체를 제안하지 않습니다.");
-  APP.briefText=`[KOBACO 지자체 광고 집행 추천 브리프]\n\n1. 요청 조건\n- 기관: ${I.inst} (${I.type})\n- 지역: ${I.region}\n- 광고 분야 / 주제: ${I.topicField} / ${I.topic}\n- 핵심 타깃: ${targetText}\n- 가용 예산: ${I.budget.toLocaleString()}백만원\n- MCR 조사연도: ${I.mcrYear}\n- OTT 조사연도: ${I.ottYear}\n- 기관 집행실적 검토연도: ${yearText}\n\n2. 타깃 미디어 특성\n- ${targetSentence}\n\n3. 기관·유사기관 집행 현황\n- ${institutionSentence}\n\n4. 과거 관련 공익광고 반응\n- ${effectSentence}\n\n5. 최종 추천\n- ${recoParts.join(" ")}\n\n[해석 주의]\n- 추천 근거점수는 타깃 MCR 상대구성 50%, 과거 공익광고 인지경로 30%, 유사기관 집행구성 20%를 기본 가중치로 사용함.\n- 특정 근거자료가 없으면 존재하는 근거끼리 가중치를 비례 재배분함.\n- OTT 최상위 플랫폼은 세부 채널 후보를 정하는 참고값이며 추천 근거점수에 직접 합산하지 않음.\n- 가용 예산은 조건 및 과거 실제 집행비용 비교에만 사용하며 자동 예산배분액은 산출하지 않음.\n- 영상별 파급·외부 반응 자료는 정성 참고자료이며 추천 근거점수에는 직접 가산하지 않음.\n- 서로 다른 조사·집행자료를 이용한 의사결정 지원용 휴리스틱이며 미래 성과·ROI를 예측하지 않음.`;
+  APP.briefText=`[KOBACO 지자체 광고 집행 추천 브리프]\n\n1. 요청 조건\n- 기관: ${I.inst} (${I.type})\n- 지역: ${I.region}\n- 광고 분야 / 주제: ${I.topicField} / ${I.topic}\n- 핵심 타깃: ${targetText}\n- 가용 예산: ${I.budget.toLocaleString()}백만원\n- MCR 조사연도: ${yearLabel(I.mcrYear)}\n- OTT 조사연도: ${yearLabel(I.ottYear)}\n- 기관 집행실적 검토연도: ${yearText}\n\n2. 타깃 미디어 특성\n- ${targetSentence}\n\n3. 기관·유사기관 집행 현황\n- ${institutionSentence}\n\n4. 과거 관련 공익광고 반응\n- ${effectSentence}\n\n5. 최종 추천\n- ${recoParts.join(" ")}\n\n[해석 주의]\n- 추천 근거점수는 타깃 MCR 상대구성 50%, 과거 공익광고 인지경로 30%, 유사기관 집행구성 20%를 기본 가중치로 사용함.\n- 특정 근거자료가 없으면 존재하는 근거끼리 가중치를 비례 재배분함.\n- OTT 최상위 플랫폼은 세부 채널 후보를 정하는 참고값이며 추천 근거점수에 직접 합산하지 않음.\n- 가용 예산은 조건 및 과거 실제 집행비용 비교에만 사용하며 자동 예산배분액은 산출하지 않음.\n- 영상별 파급·외부 반응 자료는 정성 참고자료이며 추천 근거점수에는 직접 가산하지 않음.\n- 서로 다른 조사·집행자료를 이용한 의사결정 지원용 휴리스틱이며 미래 성과·ROI를 예측하지 않음.`;
   $("brief").innerHTML=`<h3>📄 ${esc(I.inst)} · ${esc(I.topic)} 광고 집행 추천 브리프</h3><b>1. 요청 조건</b><br>${esc(I.region)} · ${esc(I.type)} · ${esc(I.inst)}을 대상으로 <b>${esc(I.topicField)} / ${esc(I.topic)}</b> 광고를 검토합니다. 핵심 타깃은 <b>${esc(targetText)}</b>, 가용 예산은 <b>${I.budget.toLocaleString()}백만원</b>, 기관 집행실적 검토연도는 <b>${esc(yearText)}</b>입니다.<br><br><b>2. 타깃 미디어 특성</b><br>${esc(targetSentence)}<br><br><b>3. 기관·유사기관 집행 현황</b><br>${esc(institutionSentence)}<br><br><b>4. 과거 관련 공익광고 반응</b><br>${esc(effectSentence)}<br><br><b>5. 최종 추천</b><br>${esc(recoParts.join(" "))}`;
   const weightText=Object.entries(R.weights).map(([k,v])=>`${k} ${(v*100).toFixed(0)}%`).join(" / ")||"가용 근거 없음";
   $("weightRule").textContent=`- 타깃 미디어 이용: 선택 연령의 MCR 이용시간을 방송·디지털·라디오 매체군 안에서 상대비중으로 환산\n- 과거 공익광고 인지경로: 선택한 관련 캠페인의 인지경로 응답을 매체군으로 묶어 상대비중으로 환산\n- 유사기관 집행구성: 비교기관의 매체군 중앙값을 다시 100% 기준 상대비중으로 환산\n- 현재 적용 가중치: ${weightText}\n- 기본 가중치는 타깃 50% · 과거 인지경로 30% · 유사기관 20%이며, 누락 자료가 있으면 가용 근거끼리 비례 재배분\n- OTT 최상위 플랫폼은 디지털 세부 실행 채널을 제안하는 참고 근거로만 사용하고 점수에는 직접 합산하지 않음\n- 우리기관 과거 집행비중은 현재 편중 상태 확인용으로 표시하며 추천점수에는 직접 가중하지 않음\n- 가용 예산은 조건 및 실제 과거 집행비용 비교에만 사용하며 매체별 자동 배분액은 임의 산출하지 않음\n- menu4_campaign_impact.json의 외부 반응·수상·활용 사례는 정성 참고자료이며 추천 근거점수에는 직접 가산하지 않음\n- 본 추천은 통계모형의 미래효과 예측이 아니라 관측 근거 기반의 의사결정 우선순위임`
