@@ -131,8 +131,7 @@ details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:
         <div class="field"><label>성별 참고</label><select id="targetSex"></select></div>
 
         <div class="field"><label>가용 예산 (백만원)</label><input id="budget" type="number" min="1" max="10000" value="50" step="10"></div>
-        <div class="field"><label>OTT 조사연도</label><select id="ottYear"></select></div>
-        <div class="field span2"><label>기관 집행실적 연도</label><select id="years" multiple size="4"></select></div>
+        <div class="field span3"><label>기관 집행실적 연도</label><select id="years" multiple size="4"></select></div>
         <div class="full"><p class="small">정부광고 집행연도는 기관 집행실적 비교에만 적용됩니다. MCR·OTT는 각 조사자료의 기준연도를 별도로 표시합니다.</p></div>
         <div class="full"><button id="runSupport" class="btn">📊 집행 근거 분석 시작</button></div>
       </div>
@@ -146,6 +145,13 @@ details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:
     <section class="section">
       <h2 class="section-title">2️⃣ 타깃의 하루에서 광고 접점을 찾습니다</h2>
       <p class="sub">평일·주말 이용 패턴과 OTT 플랫폼 이용률을 각각 확인합니다. MCR 이용시간과 OTT 이용률은 같은 점수로 합산하지 않습니다.</p>
+      <div class="card" style="margin-bottom:14px">
+        <div class="form-grid">
+          <div class="field"><label>MCR 조사연도</label><select id="mcrYear"></select></div>
+          <div class="field"><label>OTT 조사연도</label><select id="ottYear"></select></div>
+          <div class="field span2"><label>연도 해석</label><div id="mediaYearNote" class="notice">MCR·OTT 원자료에 실제 존재하는 연도만 선택할 수 있습니다.</div></div>
+        </div>
+      </div>
       <div class="grid cols4" id="mediaMetrics"></div>
       <div class="grid cols2">
         <div class="card">
@@ -172,8 +178,8 @@ details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:
       <div class="grid cols4" id="spendMetrics"></div>
 
       <div class="card">
-        <h3>🎯 포트폴리오 편중 · 유사기관과의 차이</h3>
-        <p class="small">우리기관 비중 - 유사기관 중앙값(%p). 유사기관 중앙값은 각 기관의 매체군 비중을 먼저 계산한 뒤 중앙값을 구합니다.</p>
+        <h3>🎯 매체 배분 차이 · 우리기관 vs 유사기관 중앙값</h3>
+        <p class="small"><b>0%p</b>이면 유사기관과 비슷한 수준입니다. <b>오른쪽(+)</b>은 우리기관이 해당 매체군에 더 높은 비중을 배분했다는 뜻이고, <b>왼쪽(-)</b>은 더 낮게 배분했다는 뜻입니다. 유사기관은 각 기관의 매체군 비중을 먼저 계산한 뒤 중앙값으로 비교합니다.</p>
         <div id="portfolioGap"></div>
         <div id="portfolioDetail" class="detailbox"></div>
       </div>
@@ -207,7 +213,7 @@ details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:
       <p class="sub">동일 주제명이 있으면 해당 캠페인을 먼저 보여주고, 필요할 때만 연관 주제로 범위를 넓힙니다.</p>
       <div class="card">
         <div class="form-grid">
-          <div class="field"><label>연관 주제 포함</label><select id="includeRelated"><option value="no">동일 주제 우선</option><option value="yes">연관 주제 함께 보기</option></select></div>
+          <div class="field"><label>과거 캠페인 연결 범위</label><select id="includeRelated"><option value="no">동일 주제 우선</option><option value="yes">동일 + 연관 주제</option><option value="all">전체 효과조사에서 직접 선택</option></select></div>
           <div class="field span3"><label>비교할 과거 효과조사 캠페인</label><select id="effectCampaign"></select></div>
         </div>
         <div id="effectCallout" class="notice" style="margin-top:14px"></div>
@@ -348,7 +354,13 @@ async function initSupport(){
   options($("years"),years,x=>x.y,x=>x.y);[...$("years").options].forEach(o=>o.selected=true);
   const ages=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' ORDER BY 1`);options($("targetAge"),["전체",...ages.map(x=>x.v).filter(Boolean)]);
   const sex=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' ORDER BY 1`);options($("targetSex"),["전체",...sex.map(x=>x.v).filter(Boolean)]);
-  const ottYears=await query(`SELECT DISTINCT TRY_CAST(연도 AS INTEGER) y FROM ott_usage_by_demographic WHERE TRY_CAST(연도 AS INTEGER) IS NOT NULL ORDER BY y`);options($("ottYear"),ottYears,x=>x.y,x=>x.y);if($("ottYear").options.length)$("ottYear").selectedIndex=$("ottYear").options.length-1;
+  const mcrYears=await query(`SELECT DISTINCT TRY_CAST(YEAR AS INTEGER) y FROM mcr_2019_summary WHERE TRY_CAST(YEAR AS INTEGER) IS NOT NULL ORDER BY y`);
+  options($("mcrYear"),mcrYears,x=>x.y,x=>x.y);if($("mcrYear").options.length)$("mcrYear").selectedIndex=$("mcrYear").options.length-1;
+  const ottYears=await query(`SELECT DISTINCT TRY_CAST(연도 AS INTEGER) y FROM ott_usage_by_demographic WHERE TRY_CAST(연도 AS INTEGER) IS NOT NULL ORDER BY y`);
+  options($("ottYear"),ottYears,x=>x.y,x=>x.y);if($("ottYear").options.length)$("ottYear").selectedIndex=$("ottYear").options.length-1;
+  const mcrList=mcrYears.map(x=>Number(x.y)).filter(Number.isFinite);
+  const ottList=ottYears.map(x=>Number(x.y)).filter(Number.isFinite);
+  $("mediaYearNote").innerHTML=`MCR 탑재 연도: <b>${mcrList.join(", ")||"없음"}</b> · OTT 탑재 연도: <b>${ottList.join(", ")||"없음"}</b><br><span class="small">KOBACO MCR은 2019년 조사를 마지막으로 종료된 조사입니다. 2019년 이후 값은 MCR로 임의 보완하지 않습니다.</span>`;
   const topics=await query(`SELECT DISTINCT 분야,주제,출처 FROM(
     SELECT TRIM(분야) 분야,TRIM(주제) 주제,'사회이슈 조사' 출처 FROM public_ad_topic_social_issue WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
     UNION ALL SELECT TRIM(분야),TRIM(주제),'전문가 의견' FROM public_ad_topic_expert_opinion WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
@@ -360,6 +372,8 @@ async function initSupport(){
   $("runSupport").addEventListener("click",runSupport);$("detailMedia").addEventListener("change",renderSelectedMediaDetail);
   $("includeRelated").addEventListener("change",()=>{buildEffectCampaignOptions();renderEffectCampaign()});$("effectCampaign").addEventListener("change",renderEffectCampaign);
   $("toggleMcrDetail").addEventListener("click",()=>$("mcrDetail").classList.toggle("hidden"));$("toggleOttDetail").addEventListener("click",()=>$("ottDetail").classList.toggle("hidden"));
+  $("mcrYear").addEventListener("change",refreshMediaYears);
+  $("ottYear").addEventListener("change",refreshMediaYears);
   $("downloadBrief").addEventListener("click",downloadBrief)
 }
 function refreshTopics(){const f=$("topicField").value;options($("topic"),(APP.topicRows||[]).filter(x=>x.분야===f).map(x=>x.주제))}
@@ -368,16 +382,20 @@ async function refreshInstitutions(){
   const rs=await query(`SELECT DISTINCT TRIM(기관명) 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} ORDER BY 1 LIMIT 2000`);options($("institution"),rs,x=>x.기관명,x=>x.기관명)
 }
 
-async function getMediaProfiles(age){
+async function getMediaProfiles(age,year){
   await ensureView("mcr_2019_summary");
-  const y=(await query(`SELECT MAX(TRY_CAST(YEAR AS INTEGER)) y FROM mcr_2019_summary WHERE TRY_CAST(YEAR AS INTEGER) IS NOT NULL`))[0]?.y||2019;
+  const available=(await query(`SELECT DISTINCT TRY_CAST(YEAR AS INTEGER) y FROM mcr_2019_summary WHERE TRY_CAST(YEAR AS INTEGER) IS NOT NULL ORDER BY y`)).map(x=>Number(x.y)).filter(Number.isFinite);
+  const y=available.includes(Number(year))?Number(year):(available.at(-1)||2019);
   const groups={
     "지상파":["B_03_001","B_03_002","B_03_003"],"종편":["B_03_004","B_03_005","B_03_006"],"케이블":["B_03_007","B_03_008","B_03_009"],
     "라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]
   };
   const build=where=>Object.entries(groups).map(([name,c])=>`AVG(TRY_CAST(${c[0]} AS DOUBLE)) ${name}_평일,AVG(TRY_CAST(${c[1]} AS DOUBLE)) ${name}_토,AVG(TRY_CAST(${c[2]} AS DOUBLE)) ${name}_일`).join(",");
-  const b=ageBounds(age);const where=b?` WHERE TRY_CAST(A_003 AS INTEGER) BETWEEN ${b[0]} AND ${b[1]}`:"";
-  const cur=(await query(`SELECT ${build()} FROM mcr_2019_summary${where}`))[0]||{},all=(await query(`SELECT ${build()} FROM mcr_2019_summary`))[0]||{};
+  const b=ageBounds(age);
+  const ageClause=b?` AND TRY_CAST(A_003 AS INTEGER) BETWEEN ${b[0]} AND ${b[1]}`:"";
+  const yearClause=`TRY_CAST(YEAR AS INTEGER)=${Number(y)}`;
+  const cur=(await query(`SELECT ${build()} FROM mcr_2019_summary WHERE ${yearClause}${ageClause}`))[0]||{};
+  const all=(await query(`SELECT ${build()} FROM mcr_2019_summary WHERE ${yearClause}`))[0]||{};
   const toProfile=r=>Object.keys(groups).map(name=>{const wd=num(r[name+"_평일"]),sa=num(r[name+"_토"]),su=num(r[name+"_일"]);const vals=[wd,sa,su].filter(v=>v!==null);const weekend=[sa,su].filter(v=>v!==null);return{매체:name,평일:wd||0,토요일:sa||0,일요일:su||0,주말:weekend.length?weekend.reduce((a,b)=>a+b,0)/weekend.length:0,"평균 이용시간(분)":vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0}}).filter(x=>Number.isFinite(x["평균 이용시간(분)"]));
   const p=toProfile(cur),pa=toProfile(all),lookup=Object.fromEntries(pa.map(x=>[x.매체,x["평균 이용시간(분)"]]));
   p.forEach(x=>{x["전체 평균(분)"]=lookup[x.매체]||0;x["전체 대비(분)"]=x["평균 이용시간(분)"]-x["전체 평균(분)"];x["주말 변화(분)"]=x.주말-x.평일});
@@ -404,7 +422,7 @@ async function renderMcrDetail(mediaName){
   AVG(TRY_CAST(${cols[0]} AS DOUBLE)) 평일,AVG(TRY_CAST(${cols[1]} AS DOUBLE)) 토요일,AVG(TRY_CAST(${cols[2]} AS DOUBLE)) 일요일,
   (AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/2 주말,
   (AVG(TRY_CAST(${cols[0]} AS DOUBLE))+AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/3 "3일 평균"
-  FROM mcr_2019_summary GROUP BY 1 HAVING 연령대 IS NOT NULL ORDER BY CASE 연령대 WHEN '13-19세' THEN 1 WHEN '20대' THEN 2 WHEN '30대' THEN 3 WHEN '40대' THEN 4 ELSE 5 END`;
+  FROM mcr_2019_summary WHERE TRY_CAST(YEAR AS INTEGER)=${Number(APP.input.mcrYear)} GROUP BY 1 HAVING 연령대 IS NOT NULL ORDER BY CASE 연령대 WHEN '13-19세' THEN 1 WHEN '20대' THEN 2 WHEN '30대' THEN 3 WHEN '40대' THEN 4 ELSE 5 END`;
   const rs=await query(q);renderTable($("mcrDetail"),rs,{cols:["연령대","평일","토요일","일요일","주말","3일 평균"],format:Object.fromEntries(["평일","토요일","일요일","주말","3일 평균"].map(k=>[k,v=>fmt1(v)+"분"]))})
 }
 function renderOttDetails(platform){
@@ -424,7 +442,7 @@ async function buildPeerData(inst,type,region,topic,years){
   const scopes=[];if(region!=="전체"&&regionCond){if(terms.length)scopes.push([`${region} · 동일 기관분류 · 주제 유사`,base+regionCond+topicCond]);scopes.push([`${region} · 동일 기관분류 · 전체 광고`,base+regionCond])}
   if(terms.length)scopes.push(["전국 · 동일 기관분류 · 주제 유사",base+topicCond]);scopes.push(["전국 · 동일 기관분류 · 전체 광고",base]);
   let chosen=null;const candidates=[];
-  for(const [label,w] of scopes){const c=(await query(`SELECT COUNT(DISTINCT TRIM(기관명)) n FROM (SELECT 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} LIMIT 12000)`))[0]?.n||0;candidates.push([label,w,Number(c)]);if(Number(c)>=5){chosen=candidates[candidates.length-1];break}}
+  for(const [label,w] of scopes){const c=(await query(`SELECT CAST(COUNT(DISTINCT TRIM(기관명)) AS DOUBLE) n FROM (SELECT 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} LIMIT 12000)`))[0]?.n||0;candidates.push([label,w,Number(c)]);if(Number(c)>=5){chosen=candidates[candidates.length-1];break}}
   if(!chosen)chosen=candidates.sort((a,b)=>b[2]-a[2])[0]||["비교자료 없음","1=0",0];
   return{label:chosen[0],where:chosen[1],institutions:chosen[2],ysql,instE,typeE}
 }
@@ -437,11 +455,11 @@ async function getPeerMix(peer){
   inst AS(SELECT DISTINCT 기관명 FROM r), buckets(매체군) AS(VALUES ('방송'),('디지털'),('옥외'),('인쇄'),('라디오'),('해외'),('기타')),
   sums AS(SELECT 기관명,매체군,SUM(금액) amt FROM r GROUP BY 1,2), totals AS(SELECT 기관명,SUM(금액) total FROM r GROUP BY 1),
   shares AS(SELECT i.기관명,b.매체군,CASE WHEN t.total>0 THEN COALESCE(s.amt,0)/t.total*100 ELSE 0 END sh,CASE WHEN COALESCE(s.amt,0)>0 THEN 1 ELSE 0 END used FROM inst i CROSS JOIN buckets b JOIN totals t ON t.기관명=i.기관명 LEFT JOIN sums s ON s.기관명=i.기관명 AND s.매체군=b.매체군)
-  SELECT 매체군,MEDIAN(sh) 비중,AVG(sh) 평균비중,QUANTILE_CONT(sh,.25) Q25,QUANTILE_CONT(sh,.75) Q75,SUM(used) 기관수 FROM shares GROUP BY 1 ORDER BY 비중 DESC`)
+  SELECT 매체군,MEDIAN(sh) 비중,AVG(sh) 평균비중,QUANTILE_CONT(sh,.25) Q25,QUANTILE_CONT(sh,.75) Q75,CAST(SUM(used) AS DOUBLE) 기관수 FROM shares GROUP BY 1 ORDER BY 비중 DESC`)
 }
 async function getMediaStats(peer){
   const b=mediaBucketExpr();return query(`WITH r AS(SELECT TRIM(기관명) 기관명,TRIM(매체구분) 매체구분,TRIM(매체명) 매체명,TRIM(광고명) 광고명,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 총계,TRY_CAST(집행년도 AS INTEGER) 집행년도 FROM gov_ad_execution_2023_2026 WHERE ${peer.where} LIMIT 12000),
-  a AS(SELECT 매체명,MODE(매체군) 매체군,MODE(매체구분) 매체구분,COUNT(DISTINCT 기관명) 사용기관,COUNT(*) 집행건수,MEDIAN(총계) 중앙집행액,AVG(총계) 평균집행액,SUM(총계) 총집행액,MAX(집행년도) 최근집행연도 FROM r WHERE 매체명 IS NOT NULL AND 총계 IS NOT NULL GROUP BY 1),
+  a AS(SELECT 매체명,MODE(매체군) 매체군,MODE(매체구분) 매체구분,CAST(COUNT(DISTINCT 기관명) AS DOUBLE) 사용기관,CAST(COUNT(*) AS DOUBLE) 집행건수,MEDIAN(총계) 중앙집행액,AVG(총계) 평균집행액,SUM(총계) 총집행액,MAX(집행년도) 최근집행연도 FROM r WHERE 매체명 IS NOT NULL AND 총계 IS NOT NULL GROUP BY 1),
   rep AS(SELECT 매체명,광고명 최근대표광고,기관명 최근집행기관 FROM(SELECT *,ROW_NUMBER() OVER(PARTITION BY 매체명 ORDER BY 집행년도 DESC,총계 DESC) rn FROM r) WHERE rn=1)
   SELECT a.*,rep.최근대표광고,rep.최근집행기관 FROM a LEFT JOIN rep USING(매체명) ORDER BY 사용기관 DESC,집행건수 DESC,총집행액 DESC LIMIT 40`)
 }
@@ -461,15 +479,61 @@ async function renderPeerTrend(peer){
 }
 
 function buildEffectCampaignOptions(){
-  const topic=$("topic").value,key=topicKey(topic);const all=(APP.effectCampaigns||[]).map(r=>{const [theme,campaign]=splitCampaign(r.주제);return{...r,theme,campaign,similarity:topicSimilarity(topic,theme),exact:topicKey(theme)===key}});
-  const exact=all.filter(x=>x.exact),related=all.filter(x=>!x.exact&&x.similarity>=.34);let chosen=exact.length?exact:(related.length?related:[]);
-  if(exact.length&&$("includeRelated").value==="yes")chosen=[...exact,...related];
+  const topic=$("topic").value,key=topicKey(topic),mode=$("includeRelated").value;
+  const all=(APP.effectCampaigns||[]).map(r=>{
+    const [theme,campaign]=splitCampaign(r.주제);
+    return {...r,theme,campaign,similarity:topicSimilarity(topic,theme),exact:topicKey(theme)===key};
+  });
+  const exact=all.filter(x=>x.exact);
+  const related=all.filter(x=>!x.exact&&x.similarity>=.34).sort((a,b)=>b.similarity-a.similarity);
+
+  let chosen=[],fallbackManual=false;
+  if(mode==="all"){
+    chosen=all.slice();
+    fallbackManual=true;
+  }else if(exact.length){
+    chosen=mode==="yes"?[...exact,...related]:exact.slice();
+  }else if(related.length){
+    chosen=related.slice();
+  }else{
+    // 자동 연결이 하나도 없으면 화면을 비워두지 않고,
+    // 전체 효과조사 목록을 열되 사용자가 직접 고르기 전까지 추천점수에는 반영하지 않는다.
+    chosen=all.slice();
+    fallbackManual=true;
+  }
+
   APP.effectChoices=chosen.sort((a,b)=>(b.exact-a.exact)||(b.similarity-a.similarity)||String(b.조사).localeCompare(String(a.조사)));
-  if(!APP.effectChoices.length){$("effectCampaign").innerHTML='<option value="">연결 가능한 캠페인 없음</option>';$("effectCallout").textContent=`현재 효과조사에서 ‘${topic}’과 동일하거나 직접 연결되는 과거 캠페인을 찾지 못했습니다.`;return}
-  options($("effectCampaign"),APP.effectChoices.map((x,i)=>({i,label:`[${x.exact?"동일 주제":"연관 주제"}] ${x.theme} | ${x.campaign||"캠페인명 미분리"} · ${x.조사}`})),x=>x.i,x=>x.label)
+  APP.effectManualMode=fallbackManual;
+
+  if(!APP.effectChoices.length){
+    $("effectCampaign").innerHTML='<option value="-1">효과조사 데이터 없음</option>';
+    $("effectCallout").textContent="공익광고 효과조사 캠페인 목록을 불러오지 못했습니다.";
+    return;
+  }
+
+  const labels=APP.effectChoices.map((x,i)=>{
+    const match=x.exact?"동일 주제":(x.similarity>=.34?"연관 주제":"직접 선택");
+    return {i,label:`[${match}] ${x.theme} | ${x.campaign||"캠페인명 미분리"} · ${x.조사}`};
+  });
+  const placeholder=fallbackManual?`<option value="-1">관련 캠페인이 없어 전체 목록을 열었습니다 · 직접 선택</option>`:"";
+  $("effectCampaign").innerHTML=placeholder+labels.map(x=>`<option value="${x.i}">${esc(x.label)}</option>`).join("");
+
+  if(fallbackManual){
+    $("effectCampaign").value="-1";
+    $("effectCallout").innerHTML=`현재 효과조사에서 <b>‘${esc(topic)}’</b>과 동일하거나 직접 연결되는 과거 캠페인을 찾지 못했습니다.<br><span class="small">전체 효과조사 목록을 열었습니다. 관련성이 있다고 판단되는 캠페인이 있을 때만 직접 선택하세요. 선택 전에는 5단계 추천에서 효과조사 가중치를 제외하고 나머지 근거에 재배분합니다.</span>`;
+  }
 }
 async function renderEffectCampaign(){
-  const idx=Number($("effectCampaign").value),r=APP.effectChoices?.[idx];if(!r){APP.effect={channel:[],share:{}};$("effectMetrics").innerHTML=[1,2,3,4].map(()=>metric("-","-")).join("");$("effectBars").innerHTML='<p class="small">자료가 없습니다.</p>';$("awarenessHeat").innerHTML='<p class="small">자료가 없습니다.</p>';return}
+  const idx=Number($("effectCampaign").value),r=(Number.isInteger(idx)&&idx>=0)?APP.effectChoices?.[idx]:null;
+  if(!r){
+    APP.effect={channel:[],seen:null,positive:null,satisfaction:null,acceptance:null,choice:null};
+    $("effectMetrics").innerHTML=metric("광고 본 적 있음","-")+metric("긍정 반응","-")+metric("전반적 만족도","-")+metric("수용도","-");
+    $("effectBars").innerHTML='<p class="small">관련 캠페인을 직접 선택하면 인지경로가 표시됩니다.</p>';
+    $("awarenessHeat").innerHTML='<p class="small">관련 캠페인을 직접 선택하면 성별×연령 인지도가 표시됩니다.</p>';
+    try{await renderMarket()}catch(e){console.warn("[market]",e)}
+    renderRecommendation();
+    return;
+  }
   await Promise.all(["public_ad_effect_reception","public_ad_effect_sentiment","public_ad_effect_persuasiveness","public_ad_effect_awareness"].map(ensureView));
   const s=sqlText(r.조사),t=sqlText(r.주제);
   const [channel,reception,sentiment,persuasion,awareness]=await Promise.all([
@@ -482,10 +546,13 @@ async function renderEffectCampaign(){
   const mv=(rs,c,v,key="비율")=>num(rs.find(x=>String(x[c]).trim()===v)?.[key]);
   const seen=mv(reception,"구분","본 적 있다"),positive=mv(sentiment,"구분","긍정"),overall=persuasion.filter(x=>String(x.구분).trim()==="전체"),satisfaction=mv(overall,"세부","전반적 만족도"),acceptance=mv(overall,"세부","수용도");
   APP.effect={choice:r,channel,seen,positive,satisfaction,acceptance};
-  $("effectCallout").innerHTML=`<b>${r.exact?"동일 주제":"연관 주제"}</b> · <b>주제</b> ${esc(r.theme)} · <b>캠페인명</b> ${esc(r.campaign||"-")} · <b>조사</b> ${esc(r.조사)}<br><span class="small">원자료의 주제 컬럼은 ‘주제-캠페인명’ 결합 문자열로 저장되어 있어 첫 번째 하이픈을 기준으로 나눠 표시합니다.</span>`;
+  const matchLabel=r.exact?"동일 주제":(r.similarity>=.34?"연관 주제":"직접 선택");
+  $("effectCallout").innerHTML=`<b>${matchLabel}</b> · <b>주제</b> ${esc(r.theme)} · <b>캠페인명</b> ${esc(r.campaign||"-")} · <b>조사</b> ${esc(r.조사)}<br><span class="small">원자료의 주제 컬럼은 ‘주제-캠페인명’ 결합 문자열로 저장되어 있어 첫 번째 하이픈을 기준으로 나눠 표시합니다.</span>`;
   $("effectMetrics").innerHTML=metric("광고 본 적 있음",pct(seen))+metric("긍정 반응",pct(positive))+metric("전반적 만족도",pct(satisfaction))+metric("수용도",pct(acceptance));
   bars($("effectBars"),channel.slice().sort((a,b)=>(num(b.비중)||0)-(num(a.비중)||0)),"비중","매체","%");
-  renderHeatmap(awareness);await renderMarket();renderRecommendation()
+  renderHeatmap(awareness);
+  try{await renderMarket()}catch(e){console.warn("[market]",e)}
+  renderRecommendation()
 }
 function renderHeatmap(rs){
   if(!rs.length){$("awarenessHeat").innerHTML='<p class="small">인지도 교차자료가 없습니다.</p>';return}
@@ -503,14 +570,14 @@ async function renderMarket(){
 async function runSupport(){
   $("supportError").classList.add("hidden");$("results").classList.add("hidden");$("supportStatus").classList.remove("hidden");
   try{
-    const inst=$("institution").value,type=$("institutionType").value,region=$("region").value,topic=$("topic").value,years=[...$("years").selectedOptions].map(o=>Number(o.value)),age=$("targetAge").value,sex=$("targetSex").value,ottYear=Number($("ottYear").value);
+    const inst=$("institution").value,type=$("institutionType").value,region=$("region").value,topic=$("topic").value,years=[...$("years").selectedOptions].map(o=>Number(o.value)),age=$("targetAge").value,sex=$("targetSex").value,mcrYear=Number($("mcrYear").value),ottYear=Number($("ottYear").value);
     if(!inst||!years.length)throw new Error("분석 기관과 집행연도를 선택해주세요.");
-    APP.input={inst,type,region,topic,topicField:$("topicField").value,years,age,sex,ottYear,budget:Number($("budget").value||0)};
+    APP.input={inst,type,region,topic,topicField:$("topicField").value,years,age,sex,mcrYear,ottYear,budget:Number($("budget").value||0)};
     const peer=await buildPeerData(inst,type,region,topic,years);APP.peer=peer;
     const [selectedMix,peerMix,stats,mcr,ott,mediaStats,effectCampaigns]=await Promise.all([
       getSelectedMix(peer.instE,peer.ysql),getPeerMix(peer),
-      query(`SELECT SUM(TRY_CAST("총계(VAT포함)" AS DOUBLE)) 총액,COUNT(DISTINCT 광고명) 광고수,COUNT(DISTINCT 매체명) 매체수,COUNT(*) 집행건수 FROM gov_ad_execution_2023_2026 WHERE TRIM(기관명)='${peer.instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${peer.ysql})`).then(r=>r[0]||{}),
-      getMediaProfiles(age),getOttProfiles(age,sex,ottYear),getMediaStats(peer),
+      query(`SELECT SUM(TRY_CAST("총계(VAT포함)" AS DOUBLE)) 총액,CAST(COUNT(DISTINCT 광고명) AS DOUBLE) 광고수,CAST(COUNT(DISTINCT 매체명) AS DOUBLE) 매체수,CAST(COUNT(*) AS DOUBLE) 집행건수 FROM gov_ad_execution_2023_2026 WHERE TRIM(기관명)='${peer.instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${peer.ysql})`).then(r=>r[0]||{}),
+      getMediaProfiles(age,mcrYear),getOttProfiles(age,sex,ottYear),getMediaStats(peer),
       query(`SELECT DISTINCT TRIM(조사) 조사,TRIM(주제) 주제 FROM public_ad_effect_channel WHERE 주제 IS NOT NULL ORDER BY 조사,주제`)
     ]);
     APP.selectedMix=selectedMix;APP.peerMix=peerMix;APP.stats=stats;APP.mcr=mcr;APP.ott=ott;APP.mediaStats=mediaStats;APP.effectCampaigns=effectCampaigns;
@@ -519,12 +586,30 @@ async function runSupport(){
   }catch(e){$("supportError").textContent="분석 오류: "+(e?.message||e);$("supportError").classList.remove("hidden");console.error(e)}
   finally{$("supportStatus").classList.add("hidden")}
 }
+async function refreshMediaYears(){
+  if(!APP.input||!APP.peer)return;
+  try{
+    const mcrYear=Number($("mcrYear").value),ottYear=Number($("ottYear").value);
+    APP.input.mcrYear=mcrYear;APP.input.ottYear=ottYear;
+    const [mcr,ott]=await Promise.all([
+      getMediaProfiles(APP.input.age,mcrYear),
+      getOttProfiles(APP.input.age,APP.input.sex,ottYear)
+    ]);
+    APP.mcr=mcr;APP.ott=ott;
+    renderMediaSection();
+    renderRecommendation();
+  }catch(e){
+    $("supportError").textContent="미디어 연도 변경 오류: "+(e?.message||e);
+    $("supportError").classList.remove("hidden");
+    console.error(e);
+  }
+}
 function renderMediaSection(){
   const p=APP.mcr.profile,basis=APP.ott.basis,overall=APP.ott.long.filter(x=>x.기준==="전체"),selected=APP.ott.long.filter(x=>x.기준===basis),topMedia=p.slice().sort((a,b)=>b["평균 이용시간(분)"]-a["평균 이용시간(분)"])[0],shift=p.slice().sort((a,b)=>Math.abs(b["주말 변화(분)"])-Math.abs(a["주말 변화(분)"]))[0];
   const ottComp=overall.map(o=>({플랫폼:o.플랫폼,전체:o.이용비율,선택:selected.find(x=>x.플랫폼===o.플랫폼)?.이용비율??o.이용비율})).sort((a,b)=>b.선택-a.선택).slice(0,8);const topOtt=ottComp[0];
   APP.topMedia=topMedia;APP.topOtt=topOtt;
   $("mediaMetrics").innerHTML=metric("가장 오래 쓰는 매체",topMedia?.매체||"-",topMedia?fmt1(topMedia["평균 이용시간(분)"])+"분":"")+metric("평일↔주말 변화 최대",shift?.매체||"-",shift?(shift["주말 변화(분)"]>=0?"+":"")+fmt1(shift["주말 변화(분)"])+"분":"")+metric(`OTT 1위 · ${APP.input.ottYear}`,topOtt?.플랫폼||"-",topOtt?pct(topOtt.선택):"")+metric("분석 관점",`${APP.input.age} · ${APP.input.sex}`);
-  $("mcrTitle").textContent=`🕒 평일·주말 미디어 사용 패턴 · MCR ${APP.mcr.year}`;renderDumbbell($("mcrDumbbell"),p.slice().sort((a,b)=>a["평균 이용시간(분)"]-b["평균 이용시간(분)"]),"평일","주말","매체");renderMcrDetail(topMedia?.매체||"모바일");
+  $("mcrTitle").textContent=`🕒 평일·주말 미디어 사용 패턴 · MCR ${APP.input.mcrYear}`;renderDumbbell($("mcrDumbbell"),p.slice().sort((a,b)=>a["평균 이용시간(분)"]-b["평균 이용시간(분)"]),"평일","주말","매체");renderMcrDetail(topMedia?.매체||"모바일");
   $("ottTitle").textContent=`📱 OTT 플랫폼 위치 · ${APP.input.ottYear}`;
   if(basis==="전체")bars($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,이용비율:x.전체})),"이용비율","플랫폼","%");
   else renderDumbbell($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,전체:x.전체,선택:x.선택})),"전체","선택","플랫폼");
@@ -543,7 +628,7 @@ function renderGap(data){
   if(!data.length){$("portfolioGap").innerHTML='<p class="small">매체군 비교자료가 없습니다.</p>';return}const max=Math.max(...data.map(x=>Math.abs(x.차이)),1);
   $("portfolioGap").innerHTML=data.slice().sort((a,b)=>a.차이-b.차이).map(x=>{const w=Math.abs(x.차이)/max*50;return`<div class="gap-row"><div class="bar-label">${esc(x.매체군)}</div><div class="gap-track"><div class="gap-zero"></div><div class="${x.차이>=0?"gap-fill-pos":"gap-fill-neg"}" style="width:${w}%"></div></div><div class="bar-val">${x.차이>=0?"+":""}${x.차이.toFixed(1)}%p</div></div>`}).join("");
   const x=data.slice().sort((a,b)=>Math.abs(b.차이)-Math.abs(a.차이))[0],sel=APP.selectedMix.find(r=>r.매체군===x.매체군),interval=x.Q25!==null&&x.Q75!==null?`${x.Q25.toFixed(1)}% ~ ${x.Q75.toFixed(1)}%`:"-";
-  $("portfolioDetail").innerHTML=`<h4>${esc(x.매체군)} 편중값은 이렇게 계산했습니다</h4><b>① 우리기관 ${esc(x.매체군)} 비중</b><br>${money(sel?.집행액||0)} ÷ ${money(APP.stats.총액||0)} = <b>${x.우리기관.toFixed(1)}%</b><br><br><b>② 유사기관 기준</b><br>각 기관마다 ${esc(x.매체군)} 집행액 ÷ 그 기관 전체 집행액을 계산한 뒤 ${APP.peer.institutions.toLocaleString()}개 비교기관의 중앙값을 사용했습니다. → 중앙값 <b>${x["유사기관 중앙값"].toFixed(1)}%</b> · 25~75% 범위 <b>${interval}</b> · 실제 사용기관 <b>${x.기관수.toLocaleString()}곳</b><br><br><b>③ 포트폴리오 차이</b><br>${x.우리기관.toFixed(1)}% − ${x["유사기관 중앙값"].toFixed(1)}% = <b>${x.차이>=0?"+":""}${x.차이.toFixed(1)}%p</b>`
+  $("portfolioDetail").innerHTML=`<h4>${esc(x.매체군)} 배분 차이는 이렇게 계산합니다</h4><b>① 우리기관 ${esc(x.매체군)} 비중</b><br>${money(sel?.집행액||0)} ÷ ${money(APP.stats.총액||0)} = <b>${x.우리기관.toFixed(1)}%</b><br><br><b>② 유사기관 중앙값</b><br>비교기관마다 먼저 <b>${esc(x.매체군)} 집행액 ÷ 해당 기관 전체 집행액</b>을 계산하고, 그 기관별 비중의 중앙값을 사용합니다. → 비교기관 <b>${APP.peer.institutions.toLocaleString()}곳</b> · 중앙값 <b>${x["유사기관 중앙값"].toFixed(1)}%</b> · 25~75% 범위 <b>${interval}</b> · 이 매체군 실제 사용기관 <b>${Math.round(x.기관수).toLocaleString()}곳</b><br><br><b>③ 우리기관 - 유사기관 차이</b><br>${x.우리기관.toFixed(1)}% − ${x["유사기관 중앙값"].toFixed(1)}% = <b>${x.차이>=0?"+":""}${x.차이.toFixed(1)}%p</b><br><span class="small">${x.차이>0?"우리기관이 유사기관 중앙값보다 이 매체군 비중을 더 높게 배분했습니다.":x.차이<0?"우리기관이 유사기관 중앙값보다 이 매체군 비중을 더 낮게 배분했습니다.":"우리기관과 유사기관 중앙값의 배분비중이 같습니다."}</span>`
 }
 
 function detailChannel(bucket){if(bucket==="디지털")return APP.topOtt?.플랫폼?`${APP.topOtt.플랫폼} 중심 디지털 접점`:(["인터넷","모바일"].includes(APP.topMedia?.매체)?`${APP.topMedia.매체} 중심 디지털 접점`:"인터넷·모바일 중심 디지털 접점");if(bucket==="방송")return["지상파","종편","케이블","DMB"].includes(APP.topMedia?.매체)?`${APP.topMedia.매체} 중심 방송 접점`:"지상파·종편·케이블 중 타깃 이용 상위 채널";if(bucket==="라디오")return"라디오 접점";if(bucket==="옥외")return"옥외·교통 접점";if(bucket==="인쇄")return"신문·인쇄 접점";return`${bucket} 접점`}
@@ -564,14 +649,14 @@ function renderRecommendation(){
 function renderRecommendationUI(){
   const I=APP.input,R=APP.recommendation,rec=R.rows,primary=rec[0],secondary=rec[1],targetText=[I.age!=="전체"?I.age:null,I.sex!=="전체"?I.sex:null].filter(Boolean).join(" · ")||"전체",yearText=I.years.join(", ");
   renderTable($("conditionTable"),[
-    {항목:"기관 분류",설정값:I.type},{항목:"지역",설정값:I.region},{항목:"분석 기관",설정값:I.inst},{항목:"광고 분야",설정값:I.topicField},{항목:"세부 주제 / 정책 목표",설정값:I.topic},{항목:"핵심 연령",설정값:I.age},{항목:"성별 참고",설정값:I.sex},{항목:"가용 예산",설정값:`${I.budget.toLocaleString()}백만원`},{항목:"기관 집행실적 연도",설정값:yearText}
+    {항목:"기관 분류",설정값:I.type},{항목:"지역",설정값:I.region},{항목:"분석 기관",설정값:I.inst},{항목:"광고 분야",설정값:I.topicField},{항목:"세부 주제 / 정책 목표",설정값:I.topic},{항목:"핵심 연령",설정값:I.age},{항목:"성별 참고",설정값:I.sex},{항목:"MCR 조사연도",설정값:String(I.mcrYear)},{항목:"OTT 조사연도",설정값:String(I.ottYear)},{항목:"가용 예산",설정값:`${I.budget.toLocaleString()}백만원`},{항목:"기관 집행실적 연도",설정값:yearText}
   ],{cols:["항목","설정값"]});
   const topM=APP.topMedia,topO=APP.topOtt,instTop=APP.selectedMix[0],gap=(APP.bucketCompare||[]).slice().sort((a,b)=>Math.abs(b.차이)-Math.abs(a.차이))[0],e=APP.effect,ec=e.choice;
   const mediaSummary=topM?`${topM.매체} 하루 평균 ${fmt1(topM["평균 이용시간(분)"])}분`:"확인 가능한 MCR 자료 없음";
   const ottSummary=topO?`${APP.ott.basis} 기준 ${topO.플랫폼} 이용률 ${fmt1(topO.선택)}% · ${I.ottYear}년`:"확인 가능한 OTT 자료 없음";
   const instSummary=instTop?`선택기간 총 집행액 ${money(APP.stats.총액)} · 상위 매체군 ${instTop.매체군} ${fmt1(instTop.비중)}%`:"선택 기관의 집행실적 없음";
   const peerSummary=gap?`비교 표본 ${APP.peer.institutions.toLocaleString()}개 기관 · 차이 최대 ${gap.매체군} (우리기관 ${gap.우리기관.toFixed(1)}% / 유사기관 중앙값 ${gap["유사기관 중앙값"].toFixed(1)}%, ${gap.차이>=0?"+":""}${gap.차이.toFixed(1)}%p)`:"비교 가능한 유사기관 자료 없음";
-  const effectSummary=ec?`${ec.theme}${ec.campaign?` - ${ec.campaign}`:""} · ${ec.조사}`:"선택 주제와 연결된 효과조사 자료 없음";
+  const effectSummary=ec?`${ec.theme}${ec.campaign?` - ${ec.campaign}`:""} · ${ec.조사}`:"관련 과거 효과조사를 선택하지 않아 해당 근거는 추천점수에서 제외";
   const metricParts=[["본 적 있음",e.seen],["긍정 반응",e.positive],["전반적 만족도",e.satisfaction],["수용도",e.acceptance]].filter(x=>x[1]!==null&&x[1]!==undefined).map(x=>`${x[0]} ${Number(x[1]).toFixed(1)}%`);
   const ch=e.channel?.[0],channelSummary=ch?`인지경로 상위 ${ch.매체} ${fmt1(ch.비중)}%`:"인지경로 자료 없음";
   $("evidenceCards").innerHTML=`<div class="card"><h4>🎯 타깃 미디어 이용</h4><p><b>${esc(mediaSummary)}</b><br><br>${esc(ottSummary)}</p></div><div class="card"><h4>🏢 기관 집행 비교</h4><p><b>${esc(instSummary)}</b><br><br>${esc(peerSummary)}</p></div><div class="card"><h4>📢 과거 공익광고 효과</h4><p><b>${esc(effectSummary)}</b><br><br>${esc(metricParts.join(" · ")||"효과지표 확인 불가")}<br>${esc(channelSummary)}</p></div>`;
