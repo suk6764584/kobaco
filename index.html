@@ -7,592 +7,596 @@
 <meta name="description" content="KOBACO 공공데이터 기반 공공광고 업무지원 및 DuckDB 데이터 탐색">
 <style>
 :root{
-  --bg:#f8f7fc; --panel:#fff; --ink:#21163a; --muted:#746b86;
-  --line:#e8e1f2; --purple:#6d28d9; --purple2:#8b5cf6; --pink:#ec4899;
-  --soft:#f4effd; --teal:#0f766e; --amber:#b45309; --danger:#b91c1c;
-  --shadow:0 18px 45px rgba(55,33,92,.08);
+  --bg:#f8f7fc;--panel:#fff;--ink:#21163a;--muted:#746b86;--line:#e8e1f2;
+  --purple:#6d28d9;--purple2:#8b5cf6;--pink:#ec4899;--soft:#f4effd;
+  --blue:#2563eb;--teal:#0f766e;--amber:#d97706;--slate:#64748b;
+  --green:#15803d;--danger:#b91c1c;--shadow:0 18px 45px rgba(55,33,92,.08)
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;
-  font-family:Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
-  color:var(--ink);
-  background:
-    radial-gradient(circle at 10% 0,rgba(139,92,246,.10),transparent 28rem),
-    radial-gradient(circle at 100% 15%,rgba(236,72,153,.08),transparent 24rem),
-    var(--bg);
+  margin:0;font-family:Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 10% 0,rgba(139,92,246,.10),transparent 28rem),
+  radial-gradient(circle at 100% 15%,rgba(236,72,153,.08),transparent 24rem),var(--bg)
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.shell{width:min(1240px,calc(100% - 32px));margin:0 auto}
-.hero{padding:30px 0 16px}
-.hero-box{
-  color:#fff;border-radius:26px;padding:34px 38px;
-  background:linear-gradient(135deg,#3b176d 0%,#6d28d9 55%,#db2777 100%);
-  box-shadow:0 24px 55px rgba(109,40,217,.22);
-}
-.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;opacity:.8}
-.hero h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.04em;margin:8px 0 10px}
-.hero p{margin:0;color:#f5e9ff;line-height:1.65;max-width:850px}
-.nav{
-  position:sticky;top:0;z-index:20;padding:12px 0;
-  backdrop-filter:blur(14px);background:rgba(248,247,252,.82);
-}
-.nav-inner{display:flex;gap:8px;padding:7px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(46,16,101,.05)}
-.nav-btn{
-  border:0;background:transparent;color:#675978;font-weight:800;padding:12px 16px;border-radius:11px
-}
-.nav-btn.active{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff}
-.page{display:none;padding:12px 0 70px}.page.active{display:block}
-.section-title{margin:22px 0 12px;font-size:25px;letter-spacing:-.03em}
-.sub{margin:-4px 0 18px;color:var(--muted);line-height:1.65}
-.grid{display:grid;gap:14px}.grid.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.cols4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.shell{width:min(1240px,calc(100% - 32px));margin:0 auto}.hero{padding:30px 0 16px}
+.hero-box{color:#fff;border-radius:26px;padding:34px 38px;background:linear-gradient(135deg,#3b176d 0%,#6d28d9 55%,#db2777 100%);box-shadow:0 24px 55px rgba(109,40,217,.22)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;opacity:.8}.hero h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.04em;margin:8px 0 10px}
+.hero p{margin:0;color:#f5e9ff;line-height:1.65;max-width:880px}
+.nav{position:sticky;top:0;z-index:20;padding:12px 0;backdrop-filter:blur(14px);background:rgba(248,247,252,.82)}
+.nav-inner{display:flex;gap:8px;padding:7px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.90);box-shadow:0 8px 24px rgba(46,16,101,.05)}
+.nav-btn{border:0;background:transparent;color:#675978;font-weight:800;padding:12px 16px;border-radius:11px}.nav-btn.active{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff}
+.page{display:none;padding:12px 0 70px}.page.active{display:block}.section{margin-top:28px}
+.section-title{margin:22px 0 7px;font-size:25px;letter-spacing:-.03em}.sub{margin:0 0 18px;color:var(--muted);line-height:1.65}
+.grid{display:grid;gap:14px}.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}.cols4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
 .card h3,.card h4{margin:0 0 8px}.card p{color:var(--muted);line-height:1.65}
-.notice{border-left:4px solid var(--purple2);background:#f8f5ff;padding:14px 16px;border-radius:10px;color:#564669;line-height:1.6}
-.stepbar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0 22px}
-.step{padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12px;color:#6b5b7a}
-.step b{display:block;color:var(--purple);margin-bottom:4px}
-.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.field{display:flex;flex-direction:column;gap:7px}
-.field label{font-size:12px;font-weight:800;color:#655571}
-.field select,.field input,.field textarea{
-  width:100%;border:1px solid #dcd2ea;background:#fff;color:var(--ink);
-  border-radius:11px;padding:11px 12px;outline:none
-}
+.notice{border-left:4px solid var(--purple2);background:#f8f5ff;padding:14px 16px;border-radius:10px;color:#564669;line-height:1.65}
+.callout{border:1px solid #ded3f4;background:linear-gradient(145deg,#fff,#faf7ff);border-radius:15px;padding:16px;line-height:1.75}
+.stepbar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0 22px}.step{padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12px;color:#6b5b7a}
+.step b{display:block;color:var(--purple);margin-bottom:4px}.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:7px}.field label{font-size:12px;font-weight:800;color:#655571}
+.field select,.field input,.field textarea{width:100%;border:1px solid #dcd2ea;background:#fff;color:var(--ink);border-radius:11px;padding:11px 12px;outline:none}
 .field select:focus,.field input:focus,.field textarea:focus{border-color:var(--purple2);box-shadow:0 0 0 3px rgba(139,92,246,.10)}
-.full{grid-column:1/-1}
-.btn{
-  border:0;border-radius:12px;padding:12px 16px;font-weight:900;color:#fff;
-  background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 10px 20px rgba(109,40,217,.14)
-}
-.btn.secondary{background:#fff;color:var(--purple);border:1px solid #d9ccf1;box-shadow:none}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}
-.metric .label{font-size:12px;color:var(--muted);font-weight:800}.metric .value{font-size:23px;font-weight:900;margin-top:7px;color:#3b176d}.metric .delta{font-size:11px;color:#8b7b9e;margin-top:5px}
-.bar-row{display:grid;grid-template-columns:90px 1fr 70px;gap:10px;align-items:center;margin:10px 0}
-.bar-label{font-size:12px;font-weight:800;color:#5f526d}.track{height:13px;background:#eee9f5;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple2),var(--pink))}
+.full{grid-column:1/-1}.span2{grid-column:span 2}.span3{grid-column:span 3}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 10px 20px rgba(109,40,217,.14)}
+.btn.secondary{background:#fff;color:var(--purple);border:1px solid #d9ccf1;box-shadow:none}.btn.smallbtn{padding:8px 11px;font-size:12px}.btn:disabled{opacity:.5;cursor:not-allowed}
+.metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.metric .label{font-size:12px;color:var(--muted);font-weight:800}
+.metric .value{font-size:22px;font-weight:900;margin-top:7px;color:#3b176d}.metric .delta{font-size:11px;color:#8b7b9e;margin-top:5px;line-height:1.45}
+.bar-row{display:grid;grid-template-columns:105px 1fr 78px;gap:10px;align-items:center;margin:10px 0}.bar-label{font-size:12px;font-weight:800;color:#5f526d;overflow-wrap:anywhere}
+.track{height:13px;background:#eee9f5;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple2),var(--pink))}
 .bar-val{text-align:right;font-size:12px;font-weight:800;color:#5e4f70}
+.dumb-row{display:grid;grid-template-columns:90px 1fr 82px;gap:10px;align-items:center;margin:12px 0}.dumb-track{position:relative;height:18px}.dumb-line{position:absolute;left:0;right:0;top:8px;height:3px;border-radius:3px;background:#e8e1f2}
+.dotA,.dotB{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;transform:translateX(-50%);border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.18)}.dotA{background:var(--blue)}.dotB{background:var(--amber)}
+.legend{display:flex;gap:14px;align-items:center;font-size:11px;color:var(--muted);margin:8px 0 3px}.legend i{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:4px}
 .tag{display:inline-block;padding:5px 8px;border-radius:999px;background:var(--soft);color:var(--purple);font-size:11px;font-weight:800;margin:2px}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;background:#fff}
-table{width:100%;border-collapse:collapse;min-width:660px}
-th,td{padding:10px 12px;border-bottom:1px solid #eee9f4;text-align:left;font-size:12px;white-space:nowrap}
-th{position:sticky;top:0;background:#f5f1fb;color:#59486d;z-index:1}
-tbody tr:hover{background:#fbf9ff}
-.loader{display:flex;align-items:center;gap:10px;color:#6d5d7d;font-size:13px}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--purple2);animation:pulse 1s infinite alternate}
-@keyframes pulse{to{transform:scale(1.5);opacity:.45}}
-.hidden{display:none!important}
-.error{color:var(--danger);background:#fff1f2;border:1px solid #fecdd3;padding:12px;border-radius:10px;white-space:pre-wrap}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;background:#fff;max-height:560px}
+table{width:100%;border-collapse:collapse;min-width:680px}th,td{padding:10px 12px;border-bottom:1px solid #eee9f4;text-align:left;font-size:12px;white-space:nowrap}
+th{position:sticky;top:0;background:#f5f1fb;color:#59486d;z-index:1}tbody tr:hover{background:#fbf9ff}
+.loader{display:flex;align-items:center;gap:10px;color:#6d5d7d;font-size:13px}.dot{width:10px;height:10px;border-radius:50%;background:var(--purple2);animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.5);opacity:.45}}
+.hidden{display:none!important}.error{color:var(--danger);background:#fff1f2;border:1px solid #fecdd3;padding:12px;border-radius:10px;white-space:pre-wrap}
 .ok{color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;padding:12px;border-radius:10px}
-.sql{min-height:150px;font-family:Consolas,monospace;font-size:13px}
-.small{font-size:11px;color:#8a7d99;line-height:1.6}
-.footer{padding:25px 0 40px;text-align:center;color:#9a8ea7;font-size:12px}
-@media(max-width:900px){
-  .form-grid,.grid.cols4,.grid.cols2{grid-template-columns:1fr 1fr}
-  .stepbar{grid-template-columns:1fr}
-}
-@media(max-width:620px){
-  .shell{width:min(100% - 18px,1240px)}
-  .hero-box{padding:25px 20px;border-radius:20px}
-  .form-grid,.grid.cols4,.grid.cols2{grid-template-columns:1fr}
-  .nav-inner{overflow:auto}.nav-btn{white-space:nowrap}
-}
+.sql{min-height:150px;font-family:Consolas,monospace;font-size:13px}.small{font-size:11px;color:#8a7d99;line-height:1.6}
+.hr{height:1px;background:var(--line);margin:30px 0}.detailbox{border:1px solid #ddd3ee;background:#fbf9ff;border-radius:14px;padding:16px;margin-top:14px}
+.detailbox h4{margin:0 0 9px}.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#efe9fb;color:#5b21b6}
+.gap-row{display:grid;grid-template-columns:90px 1fr 70px;gap:10px;align-items:center;margin:11px 0}.gap-track{height:13px;position:relative;background:#eee9f5;border-radius:999px}
+.gap-zero{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:#9ca3af}.gap-fill-pos,.gap-fill-neg{position:absolute;top:0;height:13px;border-radius:999px}
+.gap-fill-pos{left:50%;background:var(--teal)}.gap-fill-neg{right:50%;background:var(--pink)}
+.heat{border-collapse:separate;border-spacing:3px;min-width:0}.heat th,.heat td{position:static;border:0;border-radius:8px;text-align:center;white-space:normal}.heat td{font-weight:800}
+details{border:1px solid var(--line);border-radius:14px;background:#fff;padding:13px 15px}summary{cursor:pointer;font-weight:900;color:#4c1d95}
+.reco-score{height:9px;background:#eee9f5;border-radius:999px;overflow:hidden;min-width:110px}.reco-score span{display:block;height:100%;background:linear-gradient(90deg,var(--purple2),var(--pink))}
+.brief{line-height:1.85;color:#3f3350}.brief b{color:#2e1065}.footer{padding:25px 0 40px;text-align:center;color:#9a8ea7;font-size:12px}
+@media(max-width:900px){.form-grid,.cols4,.cols3,.cols2{grid-template-columns:1fr 1fr}.stepbar{grid-template-columns:1fr}.span3{grid-column:span 2}}
+@media(max-width:620px){.shell{width:min(100% - 18px,1240px)}.hero-box{padding:25px 20px;border-radius:20px}.form-grid,.cols4,.cols3,.cols2{grid-template-columns:1fr}.span2,.span3{grid-column:span 1}.nav-inner{overflow:auto}.nav-btn{white-space:nowrap}.bar-row,.dumb-row,.gap-row{grid-template-columns:82px 1fr 68px}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <section class="hero">
-    <div class="hero-box">
-      <div class="eyebrow">KOBACO PUBLIC DATA WORKSPACE</div>
-      <h1>공공광고 업무지원 · 데이터 탐색</h1>
-      <p>공공광고 담당자가 조건을 설정하면 실제 집행 내역, 미디어 이용 현황, 과거 공익광고 효과를 확인하고 같은 원자료를 DuckDB에서 직접 탐색할 수 있습니다.</p>
-    </div>
-  </section>
+<section class="hero"><div class="hero-box">
+  <div class="eyebrow">KOBACO PUBLIC DATA WORKSPACE</div>
+  <h1>공공광고 업무지원 · 데이터 탐색</h1>
+  <p>지역·기관·광고 주제·타깃·예산 조건을 설정한 뒤 타깃 미디어 이용, 유사기관 실제 집행, 과거 공익광고 효과조사를 함께 비교해 실행 우선순위와 추천 브리프를 확인합니다.</p>
+</div></section>
 
-  <nav class="nav">
-    <div class="nav-inner">
-      <button class="nav-btn active" data-page="support">📋 공공광고 업무지원</button>
-      <button class="nav-btn" data-page="db">🗄️ 데이터 탐색</button>
-    </div>
-  </nav>
+<nav class="nav"><div class="nav-inner">
+  <button class="nav-btn active" data-page="support">📋 공공광고 업무지원</button>
+  <button class="nav-btn" data-page="db">🗄️ 데이터 탐색</button>
+</div></nav>
 
-  <div id="boot" class="card loader"><span class="dot"></span><span>브라우저 데이터 엔진을 준비하고 있습니다.</span></div>
-  <div id="bootError" class="error hidden"></div>
+<div id="boot" class="card loader"><span class="dot"></span><span>브라우저 데이터 엔진을 준비하고 있습니다.</span></div>
+<div id="bootError" class="error hidden"></div>
 
-  <section id="page-support" class="page active">
-    <h2 class="section-title">📋 조건 기반 광고 집행 의사결정 지원</h2>
-    <p class="sub">실제 관측 데이터를 한 화면에서 비교합니다. 매체 단가·ROI·도달수는 임의 생성하지 않습니다.</p>
+<section id="page-support" class="page active">
+  <h2 class="section-title">📋 조건 기반 광고 집행 추천</h2>
+  <p class="sub">공공기관 광고 담당자가 지역·기관·광고 주제·타깃·예산을 정한 뒤, 실제 관측자료를 바탕으로 어디에 얼마를 집행할지 검토하는 의사결정 화면입니다.</p>
 
-    <div class="grid cols2">
-      <div class="card">
-        <h3>📌 메뉴 개요</h3>
-        <p>조건 설정 → 타깃의 미디어 이용 → 선택 기관·동일 분류 기관 집행 비교 → 과거 공익광고 인지경로 → 추천 브리프 순으로 확인합니다.</p>
-      </div>
-      <div class="card">
-        <h3>🗂️ 사용 데이터</h3>
-        <p>정부광고 집행내역, MCR 미디어 이용, 성·연령별 OTT 이용, 공익광고 효과조사 등 공개데이터 원자료를 사용합니다.</p>
-      </div>
-    </div>
+  <div class="grid cols2">
+    <div class="card"><h3>📌 메뉴 개요</h3><p><b>① 조건 설정</b> → <b>② 타깃 미디어 이용</b> → <b>③ 기관·유사사례 비교</b> → <b>④ 과거 공익광고 효과 확인</b> → <b>⑤ 추천 브리프</b><br><br>타깃 이용·유사기관 집행·과거 광고 인지경로를 종합해 우선 매체와 보조 접점을 제안합니다.</p></div>
+    <div class="card"><h3>🗂️ 사용 데이터</h3><p><b>정부광고 집행내역</b> · <b>MCR 미디어 이용</b> · <b>성별/연령별 OTT</b> · <b>공익광고 효과조사</b> · <b>방송광고 시장규모</b> · <b>광고유형별 매출</b><br><br>실제 집행금액과 조사 관측값을 사용하며 공식 매체 단가·예상 ROI·도달수는 임의 생성하지 않습니다.</p></div>
+  </div>
 
-    <div class="stepbar">
-      <div class="step"><b>01 조건</b>지역·기관·주제·타깃</div>
-      <div class="step"><b>02 이용</b>MCR·OTT 이용</div>
-      <div class="step"><b>03 비교</b>기관 집행 현황</div>
-      <div class="step"><b>04 효과</b>과거 인지경로</div>
-      <div class="step"><b>05 브리프</b>근거 기반 정리</div>
-    </div>
+  <div class="stepbar">
+    <div class="step"><b>01 조건</b>지역·기관·주제·타깃</div><div class="step"><b>02 이용</b>미디어·OTT 이용</div>
+    <div class="step"><b>03 비교</b>기관 vs 유사기관</div><div class="step"><b>04 효과</b>인지·반응·접점</div><div class="step"><b>05 추천</b>우선 매체·세부 채널</div>
+  </div>
 
+  <details><summary>🗂️ 사용 데이터와 해석 범위</summary>
+    <div class="table-wrap" style="margin-top:12px"><table>
+      <thead><tr><th>데이터</th><th>활용</th></tr></thead>
+      <tbody>
+        <tr><td>gov_ad_execution_2023_2026</td><td>기관·매체별 광고명, 광고료, 수수료, VAT 포함 총액, 집행기간, 유사 사례</td></tr>
+        <tr><td>mcr_2019_summary</td><td>연령대별 지상파·종편·케이블·인터넷·모바일·라디오 이용시간</td></tr>
+        <tr><td>ott_usage_by_demographic</td><td>성별 또는 연령별 유튜브·넷플릭스·티빙 등 OTT 이용비율</td></tr>
+        <tr><td>public_ad_effect_*</td><td>과거 공익광고 인지경로·인지도·수용도·긍정반응·기억요소</td></tr>
+        <tr><td>broadcast_ad_market_size</td><td>방송 매체 유형별 시장 매출액·구성비</td></tr>
+        <tr><td>broadcast_ad_sales_by_type</td><td>프로그램·토막·중간·자막·시보광고 등 광고유형별 시장구성</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">정부광고 집행금액은 실제 집행사례이며 공식 매체 단가표가 아닙니다. MCR·OTT·효과조사는 서로 다른 조사이므로 개인 단위의 하나의 점수로 합치지 않습니다.</p>
+  </details>
+
+  <section class="section">
+    <h2 class="section-title">1️⃣ 지역·기관과 광고 조건을 설정합니다</h2>
     <div class="card">
-      <h3>1️⃣ 분석 조건</h3>
       <div class="form-grid">
         <div class="field"><label>기관 분류</label><select id="institutionType"></select></div>
         <div class="field"><label>지역</label><select id="region"></select></div>
-        <div class="field" style="grid-column:span 2"><label>분석 기관</label><select id="institution"></select></div>
+        <div class="field span2"><label>분석 기관</label><select id="institution"></select></div>
+
         <div class="field"><label>광고 분야</label><select id="topicField"></select></div>
         <div class="field"><label>세부 주제 / 정책 목표</label><select id="topic"></select></div>
         <div class="field"><label>핵심 연령</label><select id="targetAge"></select></div>
         <div class="field"><label>성별 참고</label><select id="targetSex"></select></div>
-        <div class="field"><label>가용 예산(백만원)</label><input id="budget" type="number" min="1" value="50"></div>
-        <div class="field" style="grid-column:span 3"><label>기관 집행실적 연도</label><select id="years" multiple size="4"></select></div>
+
+        <div class="field"><label>가용 예산 (백만원)</label><input id="budget" type="number" min="1" max="10000" value="50" step="10"></div>
+        <div class="field"><label>OTT 조사연도</label><select id="ottYear"></select></div>
+        <div class="field span2"><label>기관 집행실적 연도</label><select id="years" multiple size="4"></select></div>
+        <div class="full"><p class="small">정부광고 집행연도는 기관 집행실적 비교에만 적용됩니다. MCR·OTT는 각 조사자료의 기준연도를 별도로 표시합니다.</p></div>
         <div class="full"><button id="runSupport" class="btn">📊 집행 근거 분석 시작</button></div>
       </div>
     </div>
+  </section>
 
-    <div id="supportStatus" class="card loader hidden"><span class="dot"></span><span>데이터를 분석하고 있습니다.</span></div>
-    <div id="supportError" class="error hidden"></div>
+  <div id="supportStatus" class="card loader hidden"><span class="dot"></span><span>조건에 맞는 근거자료를 분석하고 있습니다.</span></div>
+  <div id="supportError" class="error hidden"></div>
 
-    <div id="results" class="hidden">
-      <h2 class="section-title">2️⃣ 타깃의 미디어 이용</h2>
+  <div id="results" class="hidden">
+    <section class="section">
+      <h2 class="section-title">2️⃣ 타깃의 하루에서 광고 접점을 찾습니다</h2>
+      <p class="sub">평일·주말 이용 패턴과 OTT 플랫폼 이용률을 각각 확인합니다. MCR 이용시간과 OTT 이용률은 같은 점수로 합산하지 않습니다.</p>
       <div class="grid cols4" id="mediaMetrics"></div>
       <div class="grid cols2">
-        <div class="card"><h3>MCR 평균 이용시간</h3><div id="mcrBars"></div><p class="small">MCR 조사 관측값이며 신규 광고 성과 예측치가 아닙니다.</p></div>
-        <div class="card"><h3>OTT 이용 상위 플랫폼</h3><div id="ottBars"></div><p class="small">연령별·성별 자료는 각각 별도 집계이며 교차 이용률로 해석하지 않습니다.</p></div>
+        <div class="card">
+          <h3 id="mcrTitle">🕒 평일·주말 미디어 사용 패턴</h3>
+          <div class="legend"><span><i style="background:#2563eb"></i>평일</span><span><i style="background:#d97706"></i>주말</span></div>
+          <div id="mcrDumbbell"></div>
+          <div id="mcrSelectedDetail" class="detailbox"></div>
+          <button id="toggleMcrDetail" class="btn secondary smallbtn">🔎 연령대별 상세 데이터 보기</button>
+          <div id="mcrDetail" class="hidden" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <h3 id="ottTitle">📱 OTT 플랫폼 위치</h3>
+          <div id="ottCompare"></div>
+          <div id="ottSelectedDetail" class="detailbox"></div>
+          <button id="toggleOttDetail" class="btn secondary smallbtn">🔎 연령·성별 상세 데이터 보기</button>
+          <div id="ottDetail" class="hidden" style="margin-top:12px"></div>
+        </div>
       </div>
+    </section>
 
-      <h2 class="section-title">3️⃣ 기관 집행 비교</h2>
+    <section class="section">
+      <h2 class="section-title">3️⃣ 우리 기관의 집행 습관을 유사기관 시장과 비교합니다</h2>
+      <p class="sub">우리 기관이 어디에 집중했는지, 다른 기관은 무엇을 함께 쓰는지, 실제 매체 단위로 얼마를 집행했는지 순서대로 확인합니다.</p>
       <div class="grid cols4" id="spendMetrics"></div>
+
+      <div class="card">
+        <h3>🎯 포트폴리오 편중 · 유사기관과의 차이</h3>
+        <p class="small">우리기관 비중 - 유사기관 중앙값(%p). 유사기관 중앙값은 각 기관의 매체군 비중을 먼저 계산한 뒤 중앙값을 구합니다.</p>
+        <div id="portfolioGap"></div>
+        <div id="portfolioDetail" class="detailbox"></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>🗂️ 유사기관 실제 매체 탐색</h3>
+        <p id="peerScope" class="small"></p>
+        <div id="mediaStatsTable" class="table-wrap"></div>
+        <div class="form-grid" style="margin-top:14px">
+          <div class="field span2"><label>상세 확인할 매체</label><select id="detailMedia"></select></div>
+          <div class="field span2"><label>매체 정보</label><div id="mediaDetailChips" class="chips"></div></div>
+        </div>
+        <h4 style="margin-top:18px">실제 집행 사례</h4>
+        <div id="mediaCasesTable" class="table-wrap"></div>
+        <div class="grid cols2" style="margin-top:12px">
+          <a id="mediaSearchLink" class="btn secondary" target="_blank" rel="noopener noreferrer">🔎 매체 정보 확인</a>
+          <a id="caseSearchLink" class="btn secondary" target="_blank" rel="noopener noreferrer">🔎 실제 광고 사례 확인</a>
+        </div>
+        <p class="small">집행 데이터에는 매체명·광고명·비용·기간이 연결되어 있지만 개별 집행의 노출·클릭·인지도 성과는 포함되어 있지 않습니다.</p>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>📈 유사기관 매체구성 시계열</h3>
+        <div id="peerTrend"></div>
+        <p class="small">각 연도의 유사기관 총 집행액을 100%로 환산한 매체군 비중 추이입니다. 연도별 비교기관 수가 달라질 수 있으므로 전체 광고시장 규모 변화로 해석하지 않습니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">4️⃣ 선택 주제와 동일·연관된 과거 공익광고를 확인합니다</h2>
+      <p class="sub">동일 주제명이 있으면 해당 캠페인을 먼저 보여주고, 필요할 때만 연관 주제로 범위를 넓힙니다.</p>
+      <div class="card">
+        <div class="form-grid">
+          <div class="field"><label>연관 주제 포함</label><select id="includeRelated"><option value="no">동일 주제 우선</option><option value="yes">연관 주제 함께 보기</option></select></div>
+          <div class="field span3"><label>비교할 과거 효과조사 캠페인</label><select id="effectCampaign"></select></div>
+        </div>
+        <div id="effectCallout" class="notice" style="margin-top:14px"></div>
+      </div>
+      <div class="grid cols4" id="effectMetrics" style="margin-top:14px"></div>
       <div class="grid cols2">
-        <div class="card"><h3>선택기관 매체군 비중</h3><div id="selectedMix"></div></div>
-        <div class="card"><h3>동일 기관 분류 전체 집행 비중</h3><div id="peerMix"></div><p class="small">동일 기관 분류의 전체 집행액을 기준으로 한 참고 비중입니다.</p></div>
+        <div class="card"><h3>📍 실제 인지경로</h3><div id="effectBars"></div><p class="small">복수응답 가능 문항이므로 매체별 효과나 비용효율을 직접 의미하지 않습니다.</p></div>
+        <div class="card"><h3>👥 성별 × 연령 인지도</h3><div id="awarenessHeat"></div><p class="small">효과조사에 실제 성별×연령 교차 인지도가 있는 경우만 표시합니다.</p></div>
       </div>
+      <details style="margin-top:14px"><summary>📈 방송광고 시장 구조 참고</summary>
+        <div class="grid cols2" style="margin-top:13px">
+          <div><h4>매체별 시장 구성</h4><div id="marketBars"></div></div>
+          <div><h4>광고유형별 시장 구성</h4><div id="salesBars"></div></div>
+        </div>
+        <p class="small">시장 매출 구조 참고자료이며 개별 매체의 구매단가나 효과를 뜻하지 않습니다.</p>
+      </details>
+    </section>
 
-      <h2 class="section-title">4️⃣ 과거 공익광고 인지경로</h2>
-      <div class="card">
-        <div id="effectTitle" class="notice">관련 과거 캠페인의 인지경로를 확인합니다.</div>
-        <div id="effectBars" style="margin-top:15px"></div>
-        <p class="small">과거 효과조사의 관측값으로 현재 신규 캠페인의 성과를 예측하는 값이 아닙니다.</p>
-      </div>
+    <section class="section">
+      <h2 class="section-title">5️⃣ 조건에 맞는 광고 집행 방향을 추천 브리프로 정리합니다</h2>
+      <p class="sub">타깃 미디어 이용·유사기관 집행·과거 공익광고 인지경로를 종합해 우선 매체와 보조 접점을 제안합니다.</p>
 
-      <h2 class="section-title">5️⃣ 추천 브리프</h2>
-      <div class="card">
-        <div id="brief" class="notice"></div>
-      </div>
-    </div>
-  </section>
+      <h3>① 분석 요청 조건</h3>
+      <div id="conditionTable" class="table-wrap"></div>
 
-  <section id="page-db" class="page">
-    <h2 class="section-title">🗄️ DuckDB 데이터 탐색</h2>
-    <p class="sub">GitHub Pages에서 Parquet 파일을 브라우저로 불러와 DuckDB-WASM으로 직접 SQL을 실행합니다.</p>
+      <h3 style="margin-top:20px">② 조건에서 확인된 핵심 근거</h3>
+      <div class="grid cols3" id="evidenceCards"></div>
 
-    <div class="card">
-      <div class="form-grid">
-        <div class="field" style="grid-column:span 2"><label>데이터 테이블</label><select id="dbTable"></select></div>
-        <div class="field"><label>상태</label><div id="dbState" class="notice">테이블을 선택하세요.</div></div>
-        <div class="field"><label>등록 데이터</label><div class="notice"><b>34종 Parquet</b><br><span class="small">선택 시 필요한 파일만 로드</span></div></div>
-        <div class="field full"><label>SQL</label><textarea id="sql" class="sql"></textarea></div>
-        <div class="full"><button id="runSql" class="btn">🔍 SQL 실행</button> <button id="resetSql" class="btn secondary">기본 쿼리</button></div>
-      </div>
-    </div>
+      <h3 style="margin-top:20px">③ 조건 기반 매체 추천</h3>
+      <div id="recommendTable" class="table-wrap"></div>
+      <div class="grid cols3" id="recommendMetrics" style="margin-top:14px"></div>
 
-    <div id="sqlError" class="error hidden"></div>
-    <div id="sqlInfo" class="ok hidden"></div>
-    <div id="sqlResult" class="table-wrap" style="margin-top:14px"></div>
-  </section>
+      <h3 style="margin-top:20px">④ 추천 브리프</h3>
+      <div id="brief" class="card brief"></div>
+      <button id="downloadBrief" class="btn" style="margin-top:12px">⬇️ 추천 브리프 TXT 다운로드</button>
 
-  <footer class="footer">KOBACO 공공데이터 활용 PoC · Static HTML + DuckDB-WASM</footer>
+      <details style="margin-top:14px"><summary>📐 추천 산정 기준</summary>
+        <div id="weightRule" class="small" style="margin-top:10px;white-space:pre-line"></div>
+      </details>
+    </section>
+  </div>
+</section>
+
+<section id="page-db" class="page">
+  <h2 class="section-title">🗄️ DuckDB 데이터 탐색</h2>
+  <p class="sub">Parquet 파일을 브라우저로 불러와 DuckDB-WASM으로 SQL을 실행합니다.</p>
+  <div class="card"><div class="form-grid">
+    <div class="field span2"><label>데이터 테이블</label><select id="dbTable"></select></div>
+    <div class="field"><label>상태</label><div id="dbState" class="notice">테이블을 선택하세요.</div></div>
+    <div class="field"><label>등록 데이터</label><div class="notice"><b>34종 Parquet</b><br><span class="small">선택 시 필요한 파일만 로드</span></div></div>
+    <div class="field full"><label>SQL</label><textarea id="sql" class="sql"></textarea></div>
+    <div class="full"><button id="runSql" class="btn">🔍 SQL 실행</button> <button id="resetSql" class="btn secondary">기본 쿼리</button></div>
+  </div></div>
+  <div id="sqlError" class="error hidden"></div><div id="sqlInfo" class="ok hidden"></div><div id="sqlResult" class="table-wrap" style="margin-top:14px"></div>
+</section>
+
+<footer class="footer">KOBACO 공공데이터 활용 PoC · Static HTML + DuckDB-WASM</footer>
 </div>
 
 <script type="module">
 let duckdb;
+const TABLES = ["ad_museum_outdoor_archive", "ad_museum_video_archive", "aisac_ad_info", "aisac_ai_keywords", "b2c_user_leaderboard", "b2g_feedback_logs", "broadcast_ad_market_size", "broadcast_ad_sales_by_type", "gov_ad_execution_2023_2026", "industry_ad_effect_market_analysis", "kai_trend_index", "kobaco_public_data_catalog", "mcr_2019_summary", "ott_usage_by_demographic", "public_ad_effect_attributes", "public_ad_effect_awareness", "public_ad_effect_channel", "public_ad_effect_impact", "public_ad_effect_impact_detail", "public_ad_effect_persuasiveness", "public_ad_effect_reception", "public_ad_effect_sentiment", "public_ad_master", "public_ad_topic_expert_opinion", "public_ad_topic_free_proposal", "public_ad_topic_needed", "public_ad_topic_social_issue", "public_ad_topic_urgent_category", "public_ad_topic_urgent_detail", "racoi_internet_reaction_2026", "racoi_ott_reaction", "racoi_overseas_reaction", "racoi_total_reaction_2019", "youth_media_usage_2025"];
+const DATA_BASE="./raw_data/parquet_db/";
+const loaded=new Set();
+let db,conn;
+let APP={};
 
-function setBootMessage(message){
-  const boot = document.getElementById("boot");
-  if(!boot) return;
-  const text = boot.querySelector("span:last-child");
-  if(text) text.textContent = message;
-}
-
-async function importWithTimeout(url, timeoutMs=15000){
-  let timer;
-  try{
-    return await Promise.race([
-      import(url),
-      new Promise((_, reject) => {
-        timer = setTimeout(() => reject(new Error("모듈 로드 시간 초과: " + url)), timeoutMs);
-      })
-    ]);
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+const sqlText=s=>String(s??"").replaceAll("'","''");
+const num=x=>{if(typeof x==="bigint")return Number(x);const n=Number(x);return Number.isFinite(n)?n:null};
+const fmt1=x=>num(x)===null?"-":Number(x).toLocaleString("ko-KR",{maximumFractionDigits:1});
+const money=v=>{v=num(v)||0;if(Math.abs(v)>=1e8)return(v/1e8).toLocaleString("ko-KR",{maximumFractionDigits:2})+"억 원";return(v/1e4).toLocaleString("ko-KR",{maximumFractionDigits:0})+"만 원"};
+const pct=x=>num(x)===null?"-":Number(x).toFixed(1)+"%";
+function rows(table){const cols=table.schema.fields.map(f=>f.name);return table.toArray().map(r=>{const o={};cols.forEach((c,i)=>{let v;try{v=r[c]}catch{v=r[i]}if(typeof v==="bigint")v=Number(v);o[c]=v});return o})}
+async function query(sql){return rows(await conn.query(sql))}
+function setBootMessage(m){const b=$("boot");if(!b)return;const t=b.querySelector("span:last-child");if(t)t.textContent=m}
+async function importWithTimeout(url,timeoutMs=15000){let timer;try{return await Promise.race([import(url),new Promise((_,rej)=>timer=setTimeout(()=>rej(new Error("모듈 로드 시간 초과: "+url)),timeoutMs))])}finally{clearTimeout(timer)}}
 async function loadDuckDBModule(){
-  const candidates = [
-    // DuckDB 공식 plain-html 예제에서 사용되는 계열을 우선 사용
+  const candidates=[
     "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev106.0/+esm",
     "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1-dev222.0/+esm",
     "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1-dev132.0/+esm"
   ];
-
-  const failures = [];
-  for(const url of candidates){
-    try{
-      setBootMessage("DuckDB 브라우저 모듈을 불러오고 있습니다.");
-      return await importWithTimeout(url);
-    }catch(error){
-      failures.push(url + " → " + (error?.message || error));
-    }
-  }
-  throw new Error("DuckDB 모듈을 불러오지 못했습니다.\\n" + failures.join("\\n"));
+  const failures=[];for(const url of candidates){try{setBootMessage("DuckDB 브라우저 모듈을 불러오고 있습니다.");return await importWithTimeout(url)}catch(e){failures.push(url+" → "+(e?.message||e))}}
+  throw new Error("DuckDB 모듈을 불러오지 못했습니다.\n"+failures.join("\n"))
 }
-
-async function fetchWithTimeout(url, timeoutMs=60000){
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try{
-    return await fetch(url, {signal: controller.signal, cache: "default"});
-  }catch(error){
-    if(error?.name === "AbortError"){
-      throw new Error("데이터 파일 로드 시간 초과: " + url);
-    }
-    throw error;
-  }finally{
-    clearTimeout(timer);
-  }
+async function fetchWithTimeout(url,timeoutMs=60000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);try{return await fetch(url,{signal:controller.signal,cache:"default"})}catch(e){if(e?.name==="AbortError")throw new Error("데이터 파일 로드 시간 초과: "+url);throw e}finally{clearTimeout(timer)}}
+async function ensureView(name){if(loaded.has(name))return;const file=name+".parquet";const res=await fetchWithTimeout(DATA_BASE+file);if(!res.ok)throw new Error(file+" 로드 실패 ("+res.status+")");const buf=new Uint8Array(await res.arrayBuffer());await db.registerFileBuffer(file,buf);await conn.query(`CREATE OR REPLACE VIEW "${name}" AS SELECT * FROM read_parquet('${file}')`);loaded.add(name)}
+function options(el,arr,getV=x=>x,getT=x=>x){el.innerHTML=arr.map(x=>`<option value="${esc(getV(x))}">${esc(getT(x))}</option>`).join("")}
+function metric(label,value,delta=""){return `<div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div>${delta?`<div class="delta">${esc(delta)}</div>`:""}</div>`}
+function renderTable(el,data,opts={}){const max=opts.max||200;if(!data?.length){el.innerHTML='<div style="padding:16px" class="small">표시할 데이터가 없습니다.</div>';return}const cols=opts.cols||Object.keys(data[0]);const labels=opts.labels||{};const format=opts.format||{};const body=data.slice(0,max).map(r=>`<tr>${cols.map(c=>`<td>${format[c]?format[c](r[c],r):esc(r[c]??"")}</td>`).join("")}</tr>`).join("");el.innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${esc(labels[c]||c)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table>`}
+function bars(el,data,valueKey,labelKey,suffix="",maxOverride=null){if(!data?.length){el.innerHTML='<p class="small">표시할 데이터가 없습니다.</p>';return}const mx=maxOverride||Math.max(...data.map(d=>num(d[valueKey])||0),1);el.innerHTML=data.map(d=>{const v=num(d[valueKey])||0;return `<div class="bar-row"><div class="bar-label">${esc(d[labelKey])}</div><div class="track"><div class="fill" style="width:${Math.max(1,Math.min(100,v/mx*100))}%"></div></div><div class="bar-val">${v.toLocaleString("ko-KR",{maximumFractionDigits:1})}${suffix}</div></div>`}).join("")}
+function mediaBucketValue(value){const text=String(value||"").toLowerCase().replaceAll(" ","");if(["유튜브","youtube","sns","온라인","인터넷","모바일","포털","검색","디지털","ott","vod"].some(t=>text.includes(t)))return"디지털";if(["지상파","케이블","위성","iptv","tv","방송","종편","dmb"].some(t=>text.includes(t)))return"방송";if(["옥외","버스","지하철","전광판","교통","ooh"].some(t=>text.includes(t)))return"옥외";if(text.includes("라디오"))return"라디오";if(["신문","잡지","인쇄","일보"].some(t=>text.includes(t)))return"인쇄";if(text.includes("해외"))return"해외";return"기타"}
+function mediaBucketExpr(){
+  const t=`LOWER(REPLACE(COALESCE(CAST(매체구분 AS VARCHAR),'') || COALESCE(CAST(매체명 AS VARCHAR),''),' ',''))`;
+  const ors=a=>a.map(x=>`${t} LIKE '%${x}%'`).join(" OR ");
+  return `CASE WHEN ${ors(["유튜브","youtube","sns","온라인","인터넷","모바일","포털","검색","디지털","ott","vod"])} THEN '디지털'
+  WHEN ${ors(["지상파","케이블","위성","iptv","tv","방송","종편","dmb"])} THEN '방송'
+  WHEN ${ors(["옥외","버스","지하철","전광판","교통","ooh"])} THEN '옥외'
+  WHEN ${t} LIKE '%라디오%' THEN '라디오'
+  WHEN ${ors(["신문","잡지","인쇄","일보"])} THEN '인쇄'
+  WHEN ${t} LIKE '%해외%' THEN '해외' ELSE '기타' END`;
 }
-
-const TABLES = ["ad_museum_outdoor_archive", "ad_museum_video_archive", "aisac_ad_info", "aisac_ai_keywords", "b2c_user_leaderboard", "b2g_feedback_logs", "broadcast_ad_market_size", "broadcast_ad_sales_by_type", "gov_ad_execution_2023_2026", "industry_ad_effect_market_analysis", "kai_trend_index", "kobaco_public_data_catalog", "mcr_2019_summary", "ott_usage_by_demographic", "public_ad_effect_attributes", "public_ad_effect_awareness", "public_ad_effect_channel", "public_ad_effect_impact", "public_ad_effect_impact_detail", "public_ad_effect_persuasiveness", "public_ad_effect_reception", "public_ad_effect_sentiment", "public_ad_master", "public_ad_topic_expert_opinion", "public_ad_topic_free_proposal", "public_ad_topic_needed", "public_ad_topic_social_issue", "public_ad_topic_urgent_category", "public_ad_topic_urgent_detail", "racoi_internet_reaction_2026", "racoi_ott_reaction", "racoi_overseas_reaction", "racoi_total_reaction_2019", "youth_media_usage_2025"];
-const DATA_BASE = "./raw_data/parquet_db/";
-const loaded = new Set();
-let db, conn;
-
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-const sqlText = s => String(s ?? "").replaceAll("'","''");
-const num = x => {
-  if (typeof x === "bigint") return Number(x);
-  const n = Number(x); return Number.isFinite(n) ? n : null;
-};
-const money = v => {
-  v=num(v)||0;
-  if(Math.abs(v)>=100000000) return (v/100000000).toLocaleString("ko-KR",{maximumFractionDigits:2})+"억 원";
-  return (v/10000).toLocaleString("ko-KR",{maximumFractionDigits:0})+"만 원";
-};
-function rows(table){
-  const cols = table.schema.fields.map(f=>f.name);
-  return table.toArray().map(r=>{
-    const o={};
-    cols.forEach((c,i)=>{
-      let v;
-      try{ v=r[c]; }catch(e){ v=r[i]; }
-      if(typeof v==="bigint") v=Number(v);
-      o[c]=v;
-    });
-    return o;
-  });
-}
-async function query(sql){ return rows(await conn.query(sql)); }
-async function ensureView(name){
-  if(loaded.has(name)) return;
-  const file = name+".parquet";
-  const res = await fetchWithTimeout(DATA_BASE+file);
-  if(!res.ok) throw new Error(file+" 로드 실패 ("+res.status+")");
-  const buf = new Uint8Array(await res.arrayBuffer());
-  await db.registerFileBuffer(file, buf);
-  await conn.query(`CREATE OR REPLACE VIEW "${name}" AS SELECT * FROM read_parquet('${file}')`);
-  loaded.add(name);
-}
-function options(el, arr, getV=x=>x, getT=x=>x){
-  el.innerHTML=arr.map(x=>`<option value="${esc(getV(x))}">${esc(getT(x))}</option>`).join("");
-}
-function metric(label,value,delta=""){
-  return `<div class="metric"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div>${delta?`<div class="delta">${esc(delta)}</div>`:""}</div>`;
-}
-function bars(el, data, valueKey, labelKey, suffix=""){
-  if(!data?.length){ el.innerHTML='<p class="small">표시할 데이터가 없습니다.</p>'; return; }
-  const mx=Math.max(...data.map(d=>num(d[valueKey])||0),1);
-  el.innerHTML=data.map(d=>{
-    const v=num(d[valueKey])||0; const w=Math.max(2,v/mx*100);
-    return `<div class="bar-row"><div class="bar-label">${esc(d[labelKey])}</div><div class="track"><div class="fill" style="width:${w}%"></div></div><div class="bar-val">${v.toLocaleString("ko-KR",{maximumFractionDigits:1})}${suffix}</div></div>`;
-  }).join("");
-}
-function renderTable(el, data, max=200){
-  if(!data?.length){el.innerHTML='<div style="padding:16px" class="small">결과가 없습니다.</div>';return;}
-  const cols=Object.keys(data[0]);
-  const body=data.slice(0,max).map(r=>`<tr>${cols.map(c=>`<td>${esc(r[c])}</td>`).join("")}</tr>`).join("");
-  el.innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table>`;
-}
-function regionPatterns(region){
-  return ({
-    "전체":[], "서울특별시":["서울특별시","서울시"], "부산광역시":["부산광역시","부산시"],
-    "대구광역시":["대구광역시","대구시"], "인천광역시":["인천광역시","인천시"],
-    "광주광역시":["광주광역시","광주시"], "대전광역시":["대전광역시","대전시"],
-    "울산광역시":["울산광역시","울산시"], "세종특별자치시":["세종특별자치시","세종시"],
-    "경기도":["경기도"], "강원특별자치도":["강원특별자치도","강원도"], "충청북도":["충청북도","충북"],
-    "충청남도":["충청남도","충남"], "전북특별자치도":["전북특별자치도","전라북도","전북"],
-    "전라남도":["전라남도","전남"], "경상북도":["경상북도","경북"], "경상남도":["경상남도","경남"],
-    "제주특별자치도":["제주특별자치도","제주도"]
-  })[region]||[];
-}
-function ageWhere(label){
-  if(label==="전체") return "";
-  if(label.includes("13-19")||label.includes("10대")) return " AND TRY_CAST(A_003 AS INTEGER) BETWEEN 13 AND 19";
-  const m=label.match(/(\d{2})대/);
-  if(m){const s=Number(m[1]);return ` AND TRY_CAST(A_003 AS INTEGER) BETWEEN ${s} AND ${s+9}`;}
-  const m2=label.match(/(\d{2}).*이상/);
-  if(m2) return ` AND TRY_CAST(A_003 AS INTEGER)>=${Number(m2[1])}`;
-  return "";
-}
-function mediaCase(){
-return `CASE
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) SIMILAR TO '%(유튜브|youtube|sns|온라인|인터넷|모바일|포털|검색|디지털|ott|vod)%' THEN '디지털'
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) SIMILAR TO '%(지상파|케이블|위성|iptv|tv|방송|종편|dmb)%' THEN '방송'
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) SIMILAR TO '%(옥외|버스|지하철|전광판|교통|ooh)%' THEN '옥외'
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) LIKE '%라디오%' THEN '라디오'
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) SIMILAR TO '%(신문|잡지|인쇄|일보)%' THEN '인쇄'
-WHEN LOWER(COALESCE(매체구분,'')||' '||COALESCE(매체명,'')) LIKE '%해외%' THEN '해외'
-ELSE '기타' END`;
-}
+function topicTerms(v){const generic=new Set(["광고","홍보","캠페인","정책","지원","활성화","예방","사업","공공","근절"]);return(String(v||"").match(/[가-힣A-Za-z0-9]+/g)||[]).filter(t=>t.length>=2&&!generic.has(t.toLowerCase())).slice(0,5)}
+function topicSimilarity(a,b){const A=new Set(topicTerms(a)),B=new Set(topicTerms(b));if(!A.size||!B.size)return 0;let matched=0;for(const x of A){if([...B].some(y=>x.includes(y)||y.includes(x)))matched++}return matched/Math.max(A.size,B.size)}
+function topicKey(v){return(String(v||"").toLowerCase().match(/[가-힣A-Za-z0-9]+/g)||[]).join("")}
+function splitCampaign(v){const raw=String(v||"").trim();const i=raw.indexOf("-");return i>=0?[raw.slice(0,i).trim(),raw.slice(i+1).trim()]:[raw,""]}
+function regionPatterns(region){return({"전체":[],"서울특별시":["서울특별시","서울시"],"부산광역시":["부산광역시","부산시"],"대구광역시":["대구광역시","대구시"],"인천광역시":["인천광역시","인천시"],"광주광역시":["광주광역시","광주시"],"대전광역시":["대전광역시","대전시"],"울산광역시":["울산광역시","울산시"],"세종특별자치시":["세종특별자치시","세종시"],"경기도":["경기도"],"강원특별자치도":["강원특별자치도","강원도"],"충청북도":["충청북도","충북"],"충청남도":["충청남도","충남"],"전북특별자치도":["전북특별자치도","전라북도","전북"],"전라남도":["전라남도","전남"],"경상북도":["경상북도","경북"],"경상남도":["경상남도","경남"],"제주특별자치도":["제주특별자치도","제주도"]})[region]||[]}
+function ageBounds(label){if(label==="전체")return null;if(label.includes("13-19")||label.includes("10대"))return[13,19];const m=label.match(/(\d{2})대/);if(m){const s=Number(m[1]);return[s,s+9]}const m2=label.match(/(\d{2}).*이상/);if(m2)return[Number(m2[1]),120];return null}
+function normalizeDict(obj){const clean={};Object.entries(obj||{}).forEach(([k,v])=>{v=num(v);if(v!==null&&v>0)clean[k]=v});const total=Object.values(clean).reduce((a,b)=>a+b,0);if(!total)return{};return Object.fromEntries(Object.entries(clean).map(([k,v])=>[k,v/total*100]))}
+function safeName(s){return String(s??"").replace(/[\\/:*?"<>|]/g,"_")}
 
 async function boot(){
   try{
-    setBootMessage("DuckDB 브라우저 모듈을 불러오고 있습니다.");
-    duckdb = await loadDuckDBModule();
-
-    setBootMessage("DuckDB 엔진을 시작하고 있습니다.");
-    const bundles = duckdb.getJsDelivrBundles();
-    const bundle = await duckdb.selectBundle(bundles);
-
-    const workerUrl = URL.createObjectURL(
-      new Blob([`importScripts("${bundle.mainWorker}");`], {type:"text/javascript"})
-    );
-    const worker = new Worker(workerUrl);
-    db = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(), worker);
-    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-    URL.revokeObjectURL(workerUrl);
-    conn = await db.connect();
-
-    // 처음 화면에 꼭 필요한 데이터만 순차적으로 로드해
-    // 어떤 단계에서 실패했는지 사용자가 알 수 있게 한다.
-    const startupTables = [
-      ["gov_ad_execution_2023_2026", "정부광고 집행 데이터(약 20MB)를 불러오고 있습니다."],
-      ["ott_usage_by_demographic", "OTT 이용 데이터를 불러오고 있습니다."],
-      ["public_ad_topic_social_issue", "광고 주제 데이터를 불러오고 있습니다."],
-      ["public_ad_topic_expert_opinion", "전문가 의견 데이터를 불러오고 있습니다."],
-      ["public_ad_topic_needed", "국민 필요도 데이터를 불러오고 있습니다."]
+    duckdb=await loadDuckDBModule();setBootMessage("DuckDB 엔진을 시작하고 있습니다.");
+    const bundles=duckdb.getJsDelivrBundles(),bundle=await duckdb.selectBundle(bundles);
+    const workerUrl=URL.createObjectURL(new Blob([`importScripts("${bundle.mainWorker}");`],{type:"text/javascript"}));
+    const worker=new Worker(workerUrl);db=new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(),worker);await db.instantiate(bundle.mainModule,bundle.pthreadWorker);URL.revokeObjectURL(workerUrl);conn=await db.connect();
+    const startup=[
+      ["gov_ad_execution_2023_2026","정부광고 집행 데이터(약 20MB)를 불러오고 있습니다."],
+      ["ott_usage_by_demographic","OTT 이용 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_social_issue","사회이슈 주제 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_expert_opinion","전문가 의견 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_needed","국민 필요도 데이터를 불러오고 있습니다."],
+      ["public_ad_effect_channel","공익광고 효과조사 인지경로를 불러오고 있습니다."]
     ];
-
-    for(const [name, message] of startupTables){
-      setBootMessage(message);
-      await ensureView(name);
-    }
-
-    setBootMessage("화면 선택 항목을 구성하고 있습니다.");
-    await initSupport();
-    initDb();
-
-    $("boot").classList.add("hidden");
-  }catch(e){
-    $("boot").classList.add("hidden");
-    $("bootError").textContent =
-      "데이터 초기화 실패\n\n" +
-      (e?.message || e) +
-      "\n\n새로고침 후에도 계속되면 브라우저 개발자도구(F12) → Console의 첫 번째 오류를 확인해주세요.";
-    $("bootError").classList.remove("hidden");
-    console.error("[KOBACO boot error]", e);
-  }
+    for(const [n,m] of startup){setBootMessage(m);await ensureView(n)}
+    setBootMessage("선택 항목을 구성하고 있습니다.");await initSupport();initDb();$("boot").classList.add("hidden")
+  }catch(e){$("boot").classList.add("hidden");$("bootError").textContent="데이터 초기화 실패\n\n"+(e?.message||e)+"\n\n새로고침 후에도 계속되면 F12 → Console의 첫 번째 오류를 확인해주세요.";$("bootError").classList.remove("hidden");console.error("[KOBACO boot error]",e)}
 }
+
 async function initSupport(){
   const types=await query(`SELECT DISTINCT TRIM(기관분류) 기관분류 FROM gov_ad_execution_2023_2026 WHERE 기관분류 IS NOT NULL ORDER BY 1`);
   options($("institutionType"),types,x=>x.기관분류,x=>x.기관분류);
-  const regions=["전체","서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시","울산광역시","세종특별자치시","경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도","제주특별자치도"];
-  options($("region"),regions);
-  const yrs=await query(`SELECT DISTINCT TRY_CAST(집행년도 AS INTEGER) y FROM gov_ad_execution_2023_2026 WHERE TRY_CAST(집행년도 AS INTEGER) IS NOT NULL ORDER BY y`);
-  options($("years"),yrs,x=>x.y,x=>x.y); [...$("years").options].forEach(o=>o.selected=true);
-  const ages=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' ORDER BY 1`);
-  options($("targetAge"),["전체",...ages.map(x=>x.v).filter(Boolean)]);
-  const sex=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' ORDER BY 1`);
-  options($("targetSex"),["전체",...sex.map(x=>x.v).filter(Boolean)]);
-  const topics=await query(`
-    SELECT DISTINCT 분야, 주제 FROM (
-      SELECT TRIM(분야) 분야, TRIM(주제) 주제 FROM public_ad_topic_social_issue WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
-      UNION ALL SELECT TRIM(분야), TRIM(주제) FROM public_ad_topic_expert_opinion WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
-      UNION ALL SELECT '국민 필요도 주요의제', TRIM(주제) FROM public_ad_topic_needed WHERE 주제 IS NOT NULL
-    ) WHERE 분야<>'' AND 주제<>'' ORDER BY 1,2`);
-  window.topicRows=topics;
-  const fields=[...new Set(topics.map(x=>x.분야))];
-  options($("topicField"),fields); refreshTopics();
-  await refreshInstitutions();
-
-  $("institutionType").addEventListener("change",refreshInstitutions);
-  $("region").addEventListener("change",refreshInstitutions);
-  $("topicField").addEventListener("change",refreshTopics);
-  $("runSupport").addEventListener("click",runSupport);
+  const regions=["전체","서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시","울산광역시","세종특별자치시","경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도","제주특별자치도"];options($("region"),regions);
+  const years=await query(`SELECT DISTINCT TRY_CAST(집행년도 AS INTEGER) y FROM gov_ad_execution_2023_2026 WHERE TRY_CAST(집행년도 AS INTEGER) IS NOT NULL ORDER BY y`);
+  options($("years"),years,x=>x.y,x=>x.y);[...$("years").options].forEach(o=>o.selected=true);
+  const ages=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' ORDER BY 1`);options($("targetAge"),["전체",...ages.map(x=>x.v).filter(Boolean)]);
+  const sex=await query(`SELECT DISTINCT TRIM(구분2) v FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' ORDER BY 1`);options($("targetSex"),["전체",...sex.map(x=>x.v).filter(Boolean)]);
+  const ottYears=await query(`SELECT DISTINCT TRY_CAST(연도 AS INTEGER) y FROM ott_usage_by_demographic WHERE TRY_CAST(연도 AS INTEGER) IS NOT NULL ORDER BY y`);options($("ottYear"),ottYears,x=>x.y,x=>x.y);if($("ottYear").options.length)$("ottYear").selectedIndex=$("ottYear").options.length-1;
+  const topics=await query(`SELECT DISTINCT 분야,주제,출처 FROM(
+    SELECT TRIM(분야) 분야,TRIM(주제) 주제,'사회이슈 조사' 출처 FROM public_ad_topic_social_issue WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
+    UNION ALL SELECT TRIM(분야),TRIM(주제),'전문가 의견' FROM public_ad_topic_expert_opinion WHERE 분야 IS NOT NULL AND 주제 IS NOT NULL
+    UNION ALL SELECT '국민 필요도 주요의제',TRIM(주제),'국민 필요도 조사' FROM public_ad_topic_needed WHERE 주제 IS NOT NULL
+    UNION ALL SELECT '과거 공익광고 주제',TRIM(SPLIT_PART(주제,'-',1)),'공익광고 효과조사' FROM public_ad_effect_channel WHERE 주제 IS NOT NULL
+  ) t WHERE 분야<>'' AND 주제<>'' ORDER BY 1,2`);
+  APP.topicRows=topics;options($("topicField"),[...new Set(topics.map(x=>x.분야))]);refreshTopics();await refreshInstitutions();
+  $("institutionType").addEventListener("change",refreshInstitutions);$("region").addEventListener("change",refreshInstitutions);$("topicField").addEventListener("change",refreshTopics);
+  $("runSupport").addEventListener("click",runSupport);$("detailMedia").addEventListener("change",renderSelectedMediaDetail);
+  $("includeRelated").addEventListener("change",()=>{buildEffectCampaignOptions();renderEffectCampaign()});$("effectCampaign").addEventListener("change",renderEffectCampaign);
+  $("toggleMcrDetail").addEventListener("click",()=>$("mcrDetail").classList.toggle("hidden"));$("toggleOttDetail").addEventListener("click",()=>$("ottDetail").classList.toggle("hidden"));
+  $("downloadBrief").addEventListener("click",downloadBrief)
 }
-function refreshTopics(){
-  const f=$("topicField").value;
-  const arr=(window.topicRows||[]).filter(x=>x.분야===f).map(x=>x.주제);
-  options($("topic"),arr);
-}
+function refreshTopics(){const f=$("topicField").value;options($("topic"),(APP.topicRows||[]).filter(x=>x.분야===f).map(x=>x.주제))}
 async function refreshInstitutions(){
-  const t=sqlText($("institutionType").value), r=$("region").value, pats=regionPatterns(r);
-  let where=`TRIM(기관분류)='${t}'`;
-  if(pats.length) where+=` AND (${pats.map(p=>`기관명 ILIKE '%${sqlText(p)}%'`).join(" OR ")})`;
-  const data=await query(`SELECT DISTINCT TRIM(기관명) 기관명 FROM gov_ad_execution_2023_2026 WHERE ${where} ORDER BY 1 LIMIT 2000`);
-  options($("institution"),data,x=>x.기관명,x=>x.기관명);
+  const t=sqlText($("institutionType").value),p=regionPatterns($("region").value);let w=`TRIM(기관분류)='${t}'`;if(p.length)w+=` AND (${p.map(x=>`기관명 ILIKE '%${sqlText(x)}%'`).join(" OR ")})`;
+  const rs=await query(`SELECT DISTINCT TRIM(기관명) 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} ORDER BY 1 LIMIT 2000`);options($("institution"),rs,x=>x.기관명,x=>x.기관명)
 }
-async function getMcr(age){
+
+async function getMediaProfiles(age){
   await ensureView("mcr_2019_summary");
-  const w=ageWhere(age);
-  const q=`SELECT
-   (AVG(TRY_CAST(B_03_001 AS DOUBLE))+AVG(TRY_CAST(B_03_002 AS DOUBLE))+AVG(TRY_CAST(B_03_003 AS DOUBLE)))/3 지상파,
-   (AVG(TRY_CAST(B_03_004 AS DOUBLE))+AVG(TRY_CAST(B_03_005 AS DOUBLE))+AVG(TRY_CAST(B_03_006 AS DOUBLE)))/3 종편,
-   (AVG(TRY_CAST(B_03_007 AS DOUBLE))+AVG(TRY_CAST(B_03_008 AS DOUBLE))+AVG(TRY_CAST(B_03_009 AS DOUBLE)))/3 케이블,
-   (AVG(TRY_CAST(B_03_020 AS DOUBLE))+AVG(TRY_CAST(B_03_021 AS DOUBLE))+AVG(TRY_CAST(B_03_022 AS DOUBLE)))/3 라디오,
-   (AVG(TRY_CAST(B_03_023 AS DOUBLE))+AVG(TRY_CAST(B_03_024 AS DOUBLE))+AVG(TRY_CAST(B_03_025 AS DOUBLE)))/3 DMB,
-   (AVG(TRY_CAST(B_03_026 AS DOUBLE))+AVG(TRY_CAST(B_03_027 AS DOUBLE))+AVG(TRY_CAST(B_03_028 AS DOUBLE)))/3 인터넷,
-   (AVG(TRY_CAST(B_03_029 AS DOUBLE))+AVG(TRY_CAST(B_03_030 AS DOUBLE))+AVG(TRY_CAST(B_03_031 AS DOUBLE)))/3 모바일
-   FROM mcr_2019_summary WHERE 1=1 ${w}`;
-  const r=(await query(q))[0]||{};
-  return Object.entries(r).map(([k,v])=>({매체:k,분:num(v)||0})).sort((a,b)=>b.분-a.분);
+  const y=(await query(`SELECT MAX(TRY_CAST(YEAR AS INTEGER)) y FROM mcr_2019_summary WHERE TRY_CAST(YEAR AS INTEGER) IS NOT NULL`))[0]?.y||2019;
+  const groups={
+    "지상파":["B_03_001","B_03_002","B_03_003"],"종편":["B_03_004","B_03_005","B_03_006"],"케이블":["B_03_007","B_03_008","B_03_009"],
+    "라디오":["B_03_020","B_03_021","B_03_022"],"DMB":["B_03_023","B_03_024","B_03_025"],"인터넷":["B_03_026","B_03_027","B_03_028"],"모바일":["B_03_029","B_03_030","B_03_031"]
+  };
+  const build=where=>Object.entries(groups).map(([name,c])=>`AVG(TRY_CAST(${c[0]} AS DOUBLE)) ${name}_평일,AVG(TRY_CAST(${c[1]} AS DOUBLE)) ${name}_토,AVG(TRY_CAST(${c[2]} AS DOUBLE)) ${name}_일`).join(",");
+  const b=ageBounds(age);const where=b?` WHERE TRY_CAST(A_003 AS INTEGER) BETWEEN ${b[0]} AND ${b[1]}`:"";
+  const cur=(await query(`SELECT ${build()} FROM mcr_2019_summary${where}`))[0]||{},all=(await query(`SELECT ${build()} FROM mcr_2019_summary`))[0]||{};
+  const toProfile=r=>Object.keys(groups).map(name=>{const wd=num(r[name+"_평일"]),sa=num(r[name+"_토"]),su=num(r[name+"_일"]);const vals=[wd,sa,su].filter(v=>v!==null);const weekend=[sa,su].filter(v=>v!==null);return{매체:name,평일:wd||0,토요일:sa||0,일요일:su||0,주말:weekend.length?weekend.reduce((a,b)=>a+b,0)/weekend.length:0,"평균 이용시간(분)":vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0}}).filter(x=>Number.isFinite(x["평균 이용시간(분)"]));
+  const p=toProfile(cur),pa=toProfile(all),lookup=Object.fromEntries(pa.map(x=>[x.매체,x["평균 이용시간(분)"]]));
+  p.forEach(x=>{x["전체 평균(분)"]=lookup[x.매체]||0;x["전체 대비(분)"]=x["평균 이용시간(분)"]-x["전체 평균(분)"];x["주말 변화(분)"]=x.주말-x.평일});
+  return{year:Number(y),profile:p,allProfile:pa,groups}
 }
-async function getOtt(age,sex){
-  const mode=age!=="전체"?"연령별":(sex!=="전체"?"성별":"연령별");
-  const label=age!=="전체"?age:(sex!=="전체"?sex:null);
-  let q=`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='${sqlText(mode)}'`;
-  if(label) q+=` AND TRIM(구분2)='${sqlText(label)}'`;
-  const rs=await query(q);
-  if(!rs.length) return [];
-  const meta=new Set(["연도","구분1","구분2","사례수","OTT 비이용","기타"]);
-  const cols=Object.keys(rs[0]).filter(c=>!meta.has(c));
-  const out=[];
-  for(const c of cols){
-    let sw=0,sv=0;
-    rs.forEach(r=>{const v=num(r[c]),w=num(r["사례수"])||1;if(v!==null){sv+=v*w;sw+=w}});
-    if(sw) out.push({플랫폼:c,이용률:sv/sw});
-  }
-  return out.sort((a,b)=>b.이용률-a.이용률).slice(0,8);
+async function getOttProfiles(age,sex,year){
+  const ageRows=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='연령별' AND TRY_CAST(연도 AS INTEGER)=${Number(year)}`);
+  const sexRows=await query(`SELECT * FROM ott_usage_by_demographic WHERE TRIM(구분1)='성별' AND TRY_CAST(연도 AS INTEGER)=${Number(year)}`);
+  if(!ageRows.length)return{long:[],ageRows,sexRows,platforms:[],basis:"전체"};
+  const meta=new Set(["연도","구분1","구분2","사례수","OTT 비이용","기타"]),platforms=Object.keys(ageRows[0]).filter(c=>!meta.has(c));
+  const weighted=(rs,label)=>platforms.map(p=>{let sw=0,sv=0;rs.forEach(r=>{const v=num(r[p]),w=num(r["사례수"]);if(v!==null&&w!==null&&w>0){sv+=v*w;sw+=w}});return sw?{기준:label,플랫폼:p,이용비율:sv/sw}:null}).filter(Boolean);
+  let long=weighted(ageRows,"전체");
+  if(age!=="전체"){const r=ageRows.filter(x=>String(x.구분2).trim()===String(age).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:age,플랫폼:p,이용비율:v})}))}
+  if(sex!=="전체"){const r=sexRows.filter(x=>String(x.구분2).trim()===String(sex).trim());r.forEach(row=>platforms.forEach(p=>{const v=num(row[p]);if(v!==null)long.push({기준:sex,플랫폼:p,이용비율:v})}))}
+  return{long,ageRows,sexRows,platforms,basis:age!=="전체"?age:(sex!=="전체"?sex:"전체")}
 }
-async function getEffect(topic){
-  await ensureView("public_ad_effect_channel");
-  const tokens=String(topic).match(/[가-힣A-Za-z0-9]{2,}/g)||[];
-  let where=tokens.length?`WHERE ${tokens.slice(0,3).map(t=>`주제 ILIKE '%${sqlText(t)}%'`).join(" OR ")}`:"";
-  let camps=await query(`SELECT DISTINCT TRIM(조사) 조사, TRIM(주제) 주제 FROM public_ad_effect_channel ${where} LIMIT 20`);
-  if(!camps.length) camps=await query(`SELECT DISTINCT TRIM(조사) 조사, TRIM(주제) 주제 FROM public_ad_effect_channel LIMIT 20`);
-  if(!camps.length) return {title:"관련 과거 캠페인 자료 없음",data:[]};
-  const c=camps[0];
-  const data=await query(`SELECT TRIM(매체) 매체, TRY_CAST(비중 AS DOUBLE) 비중 FROM public_ad_effect_channel WHERE TRIM(조사)='${sqlText(c.조사)}' AND TRIM(주제)='${sqlText(c.주제)}' ORDER BY 비중 DESC`);
-  return {title:`${c.조사} · ${c.주제}`,data};
+function renderDumbbell(el,data,aKey,bKey,labelKey){
+  if(!data.length){el.innerHTML='<p class="small">자료가 없습니다.</p>';return}const max=Math.max(...data.flatMap(x=>[num(x[aKey])||0,num(x[bKey])||0]),1)*1.12;
+  el.innerHTML=data.map(x=>{const a=(num(x[aKey])||0)/max*100,b=(num(x[bKey])||0)/max*100;return`<div class="dumb-row"><div class="bar-label">${esc(x[labelKey])}</div><div class="dumb-track"><div class="dumb-line"></div><span class="dotA" style="left:${a}%"></span><span class="dotB" style="left:${b}%"></span></div><div class="bar-val">${fmt1(x[aKey])} / ${fmt1(x[bKey])}</div></div>`}).join("")
 }
+async function renderMcrDetail(mediaName){
+  const cols=APP.mcr.groups[mediaName];if(!cols)return;$("mcrSelectedDetail").innerHTML=`<h4>🕒 ${esc(mediaName)}</h4><div class="chips"><span class="chip">현재 관점 3일 평균 ${fmt1(APP.mcr.profile.find(x=>x.매체===mediaName)?.["평균 이용시간(분)"])}분</span><span class="chip">평일 ${fmt1(APP.mcr.profile.find(x=>x.매체===mediaName)?.평일)}분</span><span class="chip">토요일 ${fmt1(APP.mcr.profile.find(x=>x.매체===mediaName)?.토요일)}분</span><span class="chip">일요일 ${fmt1(APP.mcr.profile.find(x=>x.매체===mediaName)?.일요일)}분</span></div>`;
+  const q=`SELECT CASE WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 13 AND 19 THEN '13-19세' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 20 AND 29 THEN '20대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 30 AND 39 THEN '30대' WHEN TRY_CAST(A_003 AS INTEGER) BETWEEN 40 AND 49 THEN '40대' WHEN TRY_CAST(A_003 AS INTEGER)>=50 THEN '50대 이상' ELSE NULL END 연령대,
+  AVG(TRY_CAST(${cols[0]} AS DOUBLE)) 평일,AVG(TRY_CAST(${cols[1]} AS DOUBLE)) 토요일,AVG(TRY_CAST(${cols[2]} AS DOUBLE)) 일요일,
+  (AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/2 주말,
+  (AVG(TRY_CAST(${cols[0]} AS DOUBLE))+AVG(TRY_CAST(${cols[1]} AS DOUBLE))+AVG(TRY_CAST(${cols[2]} AS DOUBLE)))/3 "3일 평균"
+  FROM mcr_2019_summary GROUP BY 1 HAVING 연령대 IS NOT NULL ORDER BY CASE 연령대 WHEN '13-19세' THEN 1 WHEN '20대' THEN 2 WHEN '30대' THEN 3 WHEN '40대' THEN 4 ELSE 5 END`;
+  const rs=await query(q);renderTable($("mcrDetail"),rs,{cols:["연령대","평일","토요일","일요일","주말","3일 평균"],format:Object.fromEntries(["평일","토요일","일요일","주말","3일 평균"].map(k=>[k,v=>fmt1(v)+"분"]))})
+}
+function renderOttDetails(platform){
+  const overall=APP.ott.long.filter(x=>x.기준==="전체").find(x=>x.플랫폼===platform)?.이용비율;
+  const selected=APP.ott.long.filter(x=>x.기준===APP.ott.basis).find(x=>x.플랫폼===platform)?.이용비율??overall;
+  $("ottSelectedDetail").innerHTML=`<h4>📱 ${esc(platform)}</h4><div class="chips"><span class="chip">${esc(APP.ott.basis)} ${pct(selected)}</span>${APP.ott.basis!=="전체"?`<span class="chip">전체 대비 ${((selected||0)-(overall||0)).toFixed(1)}%p</span>`:""}</div>`;
+  const age=APP.ott.ageRows.map(r=>({연령대:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
+  const sex=APP.ott.sexRows.map(r=>({성별:r.구분2,사례수:r.사례수,"이용률(%)":r[platform]})).sort((a,b)=>(num(b["이용률(%)"])||0)-(num(a["이용률(%)"])||0));
+  $("ottDetail").innerHTML='<div class="grid cols2"><div><h4>연령대별 이용률</h4><div id="ottAgeTbl" class="table-wrap"></div></div><div><h4>성별 이용률</h4><div id="ottSexTbl" class="table-wrap"></div></div></div>';
+  renderTable($("ottAgeTbl"),age,{cols:["연령대","사례수","이용률(%)"],format:{"이용률(%)":v=>pct(v)}});renderTable($("ottSexTbl"),sex,{cols:["성별","사례수","이용률(%)"],format:{"이용률(%)":v=>pct(v)}})
+}
+
+async function buildPeerData(inst,type,region,topic,years){
+  const ysql=years.join(","),instE=sqlText(inst),typeE=sqlText(type),terms=topicTerms(topic),topicCond=terms.length?" AND ("+terms.map(t=>`광고명 ILIKE '%${sqlText(t)}%'`).join(" OR ")+")":"";
+  const regionP=regionPatterns(region),regionCond=regionP.length?" AND ("+regionP.map(p=>`기관명 ILIKE '%${sqlText(p)}%'`).join(" OR ")+")":"";
+  const base=`TRIM(기관분류)='${typeE}' AND TRIM(기관명)<>'${instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})`;
+  const scopes=[];if(region!=="전체"&&regionCond){if(terms.length)scopes.push([`${region} · 동일 기관분류 · 주제 유사`,base+regionCond+topicCond]);scopes.push([`${region} · 동일 기관분류 · 전체 광고`,base+regionCond])}
+  if(terms.length)scopes.push(["전국 · 동일 기관분류 · 주제 유사",base+topicCond]);scopes.push(["전국 · 동일 기관분류 · 전체 광고",base]);
+  let chosen=null;const candidates=[];
+  for(const [label,w] of scopes){const c=(await query(`SELECT COUNT(DISTINCT TRIM(기관명)) n FROM (SELECT 기관명 FROM gov_ad_execution_2023_2026 WHERE ${w} LIMIT 12000)`))[0]?.n||0;candidates.push([label,w,Number(c)]);if(Number(c)>=5){chosen=candidates[candidates.length-1];break}}
+  if(!chosen)chosen=candidates.sort((a,b)=>b[2]-a[2])[0]||["비교자료 없음","1=0",0];
+  return{label:chosen[0],where:chosen[1],institutions:chosen[2],ysql,instE,typeE}
+}
+async function getSelectedMix(instE,ysql){
+  const b=mediaBucketExpr();return query(`WITH r AS(SELECT ${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액 FROM gov_ad_execution_2023_2026 WHERE TRIM(기관명)='${instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})),g AS(SELECT 매체군,SUM(금액) 집행액,COUNT(*) 집행건수 FROM r GROUP BY 1),t AS(SELECT SUM(금액) total FROM r) SELECT g.매체군,g.집행액,g.집행건수,CASE WHEN t.total>0 THEN g.집행액/t.total*100 ELSE 0 END 비중 FROM g,t ORDER BY 비중 DESC`)
+}
+async function getPeerMix(peer){
+  const b=mediaBucketExpr();
+  return query(`WITH r AS(SELECT TRIM(기관명) 기관명,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액 FROM gov_ad_execution_2023_2026 WHERE ${peer.where} LIMIT 12000),
+  inst AS(SELECT DISTINCT 기관명 FROM r), buckets(매체군) AS(VALUES ('방송'),('디지털'),('옥외'),('인쇄'),('라디오'),('해외'),('기타')),
+  sums AS(SELECT 기관명,매체군,SUM(금액) amt FROM r GROUP BY 1,2), totals AS(SELECT 기관명,SUM(금액) total FROM r GROUP BY 1),
+  shares AS(SELECT i.기관명,b.매체군,CASE WHEN t.total>0 THEN COALESCE(s.amt,0)/t.total*100 ELSE 0 END sh,CASE WHEN COALESCE(s.amt,0)>0 THEN 1 ELSE 0 END used FROM inst i CROSS JOIN buckets b JOIN totals t ON t.기관명=i.기관명 LEFT JOIN sums s ON s.기관명=i.기관명 AND s.매체군=b.매체군)
+  SELECT 매체군,MEDIAN(sh) 비중,AVG(sh) 평균비중,QUANTILE_CONT(sh,.25) Q25,QUANTILE_CONT(sh,.75) Q75,SUM(used) 기관수 FROM shares GROUP BY 1 ORDER BY 비중 DESC`)
+}
+async function getMediaStats(peer){
+  const b=mediaBucketExpr();return query(`WITH r AS(SELECT TRIM(기관명) 기관명,TRIM(매체구분) 매체구분,TRIM(매체명) 매체명,TRIM(광고명) 광고명,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 총계,TRY_CAST(집행년도 AS INTEGER) 집행년도 FROM gov_ad_execution_2023_2026 WHERE ${peer.where} LIMIT 12000),
+  a AS(SELECT 매체명,MODE(매체군) 매체군,MODE(매체구분) 매체구분,COUNT(DISTINCT 기관명) 사용기관,COUNT(*) 집행건수,MEDIAN(총계) 중앙집행액,AVG(총계) 평균집행액,SUM(총계) 총집행액,MAX(집행년도) 최근집행연도 FROM r WHERE 매체명 IS NOT NULL AND 총계 IS NOT NULL GROUP BY 1),
+  rep AS(SELECT 매체명,광고명 최근대표광고,기관명 최근집행기관 FROM(SELECT *,ROW_NUMBER() OVER(PARTITION BY 매체명 ORDER BY 집행년도 DESC,총계 DESC) rn FROM r) WHERE rn=1)
+  SELECT a.*,rep.최근대표광고,rep.최근집행기관 FROM a LEFT JOIN rep USING(매체명) ORDER BY 사용기관 DESC,집행건수 DESC,총집행액 DESC LIMIT 40`)
+}
+async function renderSelectedMediaDetail(){
+  if(!APP.mediaStats?.length)return;const name=$("detailMedia").value,row=APP.mediaStats.find(x=>String(x.매체명)===name);if(!row)return;
+  $("mediaDetailChips").innerHTML=[row.매체군,`사용기관 ${row.사용기관}곳`,`집행 ${row.집행건수}건`,`1건 중앙값 ${money(row.중앙집행액)}`,`1건 평균 ${money(row.평균집행액)}`,`총 집행 ${money(row.총집행액)}`,`최근 ${row.최근집행연도||"-"}년`].map(x=>`<span class="chip">${esc(x)}</span>`).join("");
+  const q=`SELECT CASE WHEN TRIM(기관명)='${APP.peer.instE}' THEN '선택기관' ELSE '유사기관' END 비교구분,TRIM(기관명) 기관명,TRIM(광고명) 광고명,TRIM(매체구분) 매체구분,TRY_CAST(광고료 AS DOUBLE) 광고료,TRY_CAST(수수료 AS DOUBLE) 수수료,TRY_CAST("총계(VAT포함)" AS DOUBLE) 총계,CAST(광고시작일 AS VARCHAR) 광고시작일,CAST(광고종료일 AS VARCHAR) 광고종료일,TRY_CAST(집행년도 AS INTEGER) 집행년도 FROM gov_ad_execution_2023_2026 WHERE TRIM(매체명)='${sqlText(name)}' AND ((TRIM(기관명)='${APP.peer.instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${APP.peer.ysql})) OR (${APP.peer.where})) ORDER BY 집행년도 DESC,총계 DESC LIMIT 12`;
+  const cases=await query(q);renderTable($("mediaCasesTable"),cases,{cols:["비교구분","기관명","광고명","매체구분","광고료","수수료","총계","광고시작일","광고종료일","집행년도"],labels:{총계:"VAT포함 총액"},format:{광고료:v=>money(v),수수료:v=>money(v),총계:v=>money(v)}})
+  $("mediaSearchLink").href="https://search.naver.com/search.naver?query="+encodeURIComponent(name+" 광고 매체 정보");
+  const c=cases[0];$("caseSearchLink").href="https://search.naver.com/search.naver?query="+encodeURIComponent(c?`${c.기관명} ${c.광고명}`:name)
+}
+async function renderPeerTrend(peer){
+  const b=mediaBucketExpr();const rs=await query(`WITH r AS(SELECT TRY_CAST(집행년도 AS INTEGER) 연도,${b} 매체군,TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액 FROM gov_ad_execution_2023_2026 WHERE ${peer.where} LIMIT 12000),g AS(SELECT 연도,매체군,SUM(금액) 금액 FROM r GROUP BY 1,2),t AS(SELECT 연도,SUM(금액) total FROM r GROUP BY 1) SELECT g.연도,g.매체군,CASE WHEN t.total>0 THEN g.금액/t.total*100 ELSE 0 END 구성비 FROM g JOIN t USING(연도) ORDER BY 연도,매체군`);
+  const years=[...new Set(rs.map(x=>x.연도))].sort(),buckets=["방송","디지털","옥외","인쇄","라디오","해외","기타"].filter(b=>rs.some(x=>x.매체군===b));
+  if(years.length<2){$("peerTrend").innerHTML='<p class="small">선택 범위에서 연도별 비교가 가능한 자료가 부족합니다.</p>';return}
+  $("peerTrend").innerHTML=`<div class="table-wrap"><table><thead><tr><th>매체군</th>${years.map(y=>`<th>${y}</th>`).join("")}</tr></thead><tbody>${buckets.map(b=>`<tr><td><b>${b}</b></td>${years.map(y=>`<td>${pct(rs.find(x=>x.매체군===b&&x.연도===y)?.구성비||0)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
+}
+
+function buildEffectCampaignOptions(){
+  const topic=$("topic").value,key=topicKey(topic);const all=(APP.effectCampaigns||[]).map(r=>{const [theme,campaign]=splitCampaign(r.주제);return{...r,theme,campaign,similarity:topicSimilarity(topic,theme),exact:topicKey(theme)===key}});
+  const exact=all.filter(x=>x.exact),related=all.filter(x=>!x.exact&&x.similarity>=.34);let chosen=exact.length?exact:(related.length?related:[]);
+  if(exact.length&&$("includeRelated").value==="yes")chosen=[...exact,...related];
+  APP.effectChoices=chosen.sort((a,b)=>(b.exact-a.exact)||(b.similarity-a.similarity)||String(b.조사).localeCompare(String(a.조사)));
+  if(!APP.effectChoices.length){$("effectCampaign").innerHTML='<option value="">연결 가능한 캠페인 없음</option>';$("effectCallout").textContent=`현재 효과조사에서 ‘${topic}’과 동일하거나 직접 연결되는 과거 캠페인을 찾지 못했습니다.`;return}
+  options($("effectCampaign"),APP.effectChoices.map((x,i)=>({i,label:`[${x.exact?"동일 주제":"연관 주제"}] ${x.theme} | ${x.campaign||"캠페인명 미분리"} · ${x.조사}`})),x=>x.i,x=>x.label)
+}
+async function renderEffectCampaign(){
+  const idx=Number($("effectCampaign").value),r=APP.effectChoices?.[idx];if(!r){APP.effect={channel:[],share:{}};$("effectMetrics").innerHTML=[1,2,3,4].map(()=>metric("-","-")).join("");$("effectBars").innerHTML='<p class="small">자료가 없습니다.</p>';$("awarenessHeat").innerHTML='<p class="small">자료가 없습니다.</p>';return}
+  await Promise.all(["public_ad_effect_reception","public_ad_effect_sentiment","public_ad_effect_persuasiveness","public_ad_effect_awareness"].map(ensureView));
+  const s=sqlText(r.조사),t=sqlText(r.주제);
+  const [channel,reception,sentiment,persuasion,awareness]=await Promise.all([
+    query(`SELECT TRIM(매체) 매체,TRY_CAST(비중 AS DOUBLE) 비중 FROM public_ad_effect_channel WHERE TRIM(조사)='${s}' AND TRIM(주제)='${t}' ORDER BY 비중 DESC`),
+    query(`SELECT TRIM(구분) 구분,TRY_CAST(비율 AS DOUBLE) 비율 FROM public_ad_effect_reception WHERE TRIM(조사)='${s}' AND TRIM(주제)='${t}'`),
+    query(`SELECT TRIM(구분) 구분,TRY_CAST(비율 AS DOUBLE) 비율 FROM public_ad_effect_sentiment WHERE TRIM(조사)='${s}' AND TRIM(주제)='${t}'`),
+    query(`SELECT TRIM(구분) 구분,TRIM(세부) 세부,TRY_CAST(비율 AS DOUBLE) 비율 FROM public_ad_effect_persuasiveness WHERE TRIM(조사)='${s}' AND TRIM(주제)='${t}'`),
+    query(`SELECT TRIM(구분) 성별,TRIM(세부) 연령,TRY_CAST(인지도 AS DOUBLE) 인지도 FROM public_ad_effect_awareness WHERE TRIM(조사)='${s}' AND TRIM(주제)='${t}'`)
+  ]);
+  const mv=(rs,c,v,key="비율")=>num(rs.find(x=>String(x[c]).trim()===v)?.[key]);
+  const seen=mv(reception,"구분","본 적 있다"),positive=mv(sentiment,"구분","긍정"),overall=persuasion.filter(x=>String(x.구분).trim()==="전체"),satisfaction=mv(overall,"세부","전반적 만족도"),acceptance=mv(overall,"세부","수용도");
+  APP.effect={choice:r,channel,seen,positive,satisfaction,acceptance};
+  $("effectCallout").innerHTML=`<b>${r.exact?"동일 주제":"연관 주제"}</b> · <b>주제</b> ${esc(r.theme)} · <b>캠페인명</b> ${esc(r.campaign||"-")} · <b>조사</b> ${esc(r.조사)}<br><span class="small">원자료의 주제 컬럼은 ‘주제-캠페인명’ 결합 문자열로 저장되어 있어 첫 번째 하이픈을 기준으로 나눠 표시합니다.</span>`;
+  $("effectMetrics").innerHTML=metric("광고 본 적 있음",pct(seen))+metric("긍정 반응",pct(positive))+metric("전반적 만족도",pct(satisfaction))+metric("수용도",pct(acceptance));
+  bars($("effectBars"),channel.slice().sort((a,b)=>(num(b.비중)||0)-(num(a.비중)||0)),"비중","매체","%");
+  renderHeatmap(awareness);await renderMarket();renderRecommendation()
+}
+function renderHeatmap(rs){
+  if(!rs.length){$("awarenessHeat").innerHTML='<p class="small">인지도 교차자료가 없습니다.</p>';return}
+  const sexes=[...new Set(rs.map(x=>x.성별))],ages=[...new Set(rs.map(x=>x.연령))],vals=rs.map(x=>num(x.인지도)).filter(v=>v!==null),max=Math.max(...vals,1);
+  $("awarenessHeat").innerHTML=`<div class="table-wrap"><table class="heat"><thead><tr><th>성별</th>${ages.map(a=>`<th>${esc(a)}</th>`).join("")}</tr></thead><tbody>${sexes.map(s=>`<tr><th>${esc(s)}</th>${ages.map(a=>{const v=num(rs.find(x=>x.성별===s&&x.연령===a)?.인지도);const alpha=v===null?.04:.12+.58*(v/max);return`<td style="background:rgba(109,40,217,${alpha})">${v===null?"-":v.toFixed(1)+"%"}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`
+}
+async function renderMarket(){
+  await Promise.all(["broadcast_ad_market_size","broadcast_ad_sales_by_type"].map(ensureView));
+  const [m,s]=await Promise.all([
+    query(`SELECT * FROM broadcast_ad_market_size WHERE TRY_CAST(년도 AS INTEGER)=(SELECT MAX(TRY_CAST(년도 AS INTEGER)) FROM broadcast_ad_market_size) ORDER BY TRY_CAST(구성비율 AS DOUBLE) DESC LIMIT 8`),
+    query(`SELECT * FROM broadcast_ad_sales_by_type WHERE TRY_CAST(년도 AS INTEGER)=(SELECT MAX(TRY_CAST(년도 AS INTEGER)) FROM broadcast_ad_sales_by_type) ORDER BY TRY_CAST(구성비율 AS DOUBLE) DESC LIMIT 8`)
+  ]);bars($("marketBars"),m,"구성비율","세부 광고유형","%");bars($("salesBars"),s,"구성비율","세부 광고유형","%")
+}
+
 async function runSupport(){
-  $("supportError").classList.add("hidden"); $("results").classList.add("hidden"); $("supportStatus").classList.remove("hidden");
+  $("supportError").classList.add("hidden");$("results").classList.add("hidden");$("supportStatus").classList.remove("hidden");
   try{
-    const inst=$("institution").value, type=$("institutionType").value;
-    const years=[...$("years").selectedOptions].map(o=>Number(o.value));
-    if(!inst||!years.length) throw new Error("분석 기관과 집행연도를 선택해주세요.");
-    const ysql=years.join(",");
-    const selected=await query(`WITH b AS (
-      SELECT ${mediaCase()} 매체군, TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액, 광고명, 매체명
-      FROM gov_ad_execution_2023_2026
-      WHERE TRIM(기관명)='${sqlText(inst)}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})
-    ), g AS (SELECT 매체군,SUM(금액) 금액 FROM b GROUP BY 1),
-    t AS (SELECT SUM(금액) 총액 FROM b)
-    SELECT g.매체군,g.금액,CASE WHEN t.총액>0 THEN g.금액/t.총액*100 ELSE 0 END 비중 FROM g,t ORDER BY 비중 DESC`);
-    const peer=await query(`WITH b AS (
-      SELECT ${mediaCase()} 매체군, TRY_CAST("총계(VAT포함)" AS DOUBLE) 금액
-      FROM gov_ad_execution_2023_2026
-      WHERE TRIM(기관분류)='${sqlText(type)}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})
-    ), g AS (SELECT 매체군,SUM(금액) 금액 FROM b GROUP BY 1),
-    t AS (SELECT SUM(금액) 총액 FROM b)
-    SELECT g.매체군,g.금액,CASE WHEN t.총액>0 THEN g.금액/t.총액*100 ELSE 0 END 비중 FROM g,t ORDER BY 비중 DESC`);
-    const stats=(await query(`SELECT
-      SUM(TRY_CAST("총계(VAT포함)" AS DOUBLE)) 총액,
-      COUNT(DISTINCT 광고명) 광고수,
-      COUNT(DISTINCT 매체명) 매체수,
-      COUNT(*) 집행건수
-      FROM gov_ad_execution_2023_2026
-      WHERE TRIM(기관명)='${sqlText(inst)}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})`))[0]||{};
-    const peerStats=(await query(`SELECT COUNT(DISTINCT 기관명) 기관수 FROM gov_ad_execution_2023_2026 WHERE TRIM(기관분류)='${sqlText(type)}' AND TRY_CAST(집행년도 AS INTEGER) IN (${ysql})`))[0]||{};
-    const mcr=await getMcr($("targetAge").value);
-    const ott=await getOtt($("targetAge").value,$("targetSex").value);
-    const eff=await getEffect($("topic").value);
-
-    $("mediaMetrics").innerHTML=
-      metric("MCR 상위 매체",mcr[0]?.매체||"-",mcr[0]?`${mcr[0].분.toFixed(1)}분`:"")+
-      metric("OTT 상위 플랫폼",ott[0]?.플랫폼||"-",ott[0]?`${ott[0].이용률.toFixed(1)}%`:"")+
-      metric("핵심 연령",$("targetAge").value)+metric("성별 참고",$("targetSex").value);
-    bars($("mcrBars"),mcr.slice(0,7),"분","매체","분");
-    bars($("ottBars"),ott,"이용률","플랫폼","%");
-
-    $("spendMetrics").innerHTML=
-      metric("선택기관 집행액",money(stats.총액))+
-      metric("광고 / 실제 매체",`${Number(stats.광고수||0).toLocaleString()}건 / ${Number(stats.매체수||0).toLocaleString()}개`)+
-      metric("집행 레코드",Number(stats.집행건수||0).toLocaleString()+"건")+
-      metric("동일 기관분류",Number(peerStats.기관수||0).toLocaleString()+"개 기관");
-    bars($("selectedMix"),selected,"비중","매체군","%");
-    bars($("peerMix"),peer,"비중","매체군","%");
-    $("effectTitle").textContent=eff.title;
-    bars($("effectBars"),eff.data.slice(0,10),"비중","매체","%");
-
-    const topSel=selected[0], topPeer=peer[0], topEff=eff.data[0];
-    const budget=Number($("budget").value||0);
-    $("brief").innerHTML=
-      `<b>${esc(inst)}</b>의 선택 연도 실제 집행에서는 <b>${esc(topSel?.매체군||"확인 불가")}</b>의 비중이 가장 높습니다. `+
-      `동일 기관 분류 전체에서는 <b>${esc(topPeer?.매체군||"확인 불가")}</b>의 집행 비중이 가장 높습니다. `+
-      `타깃 미디어 이용 자료를 보면 MCR에서는 <b>${esc(mcr[0]?.매체||"-")}</b>${mcr[0]?`(${mcr[0].분.toFixed(1)}분)`:""}, `+
-      `OTT에서는 <b>${esc(ott[0]?.플랫폼||"-")}</b>${ott[0]?`(${ott[0].이용률.toFixed(1)}%)`:""}가 상위입니다. `+
-      (topEff?`관련 과거 캠페인에서는 <b>${esc(topEff.매체)}</b>를 통한 인지 비중이 ${Number(topEff.비중).toFixed(1)}%로 나타났습니다. `:"")+
-      `가용예산 <b>${budget.toLocaleString()}백만원</b>은 우선·보조 매체를 검토하기 위한 입력값입니다. 이 화면은 단가·ROI·도달수를 임의로 예측하지 않습니다.`;
-    $("results").classList.remove("hidden");
-  }catch(e){
-    $("supportError").textContent="분석 오류: "+e.message;
-    $("supportError").classList.remove("hidden");
-  }finally{$("supportStatus").classList.add("hidden");}
+    const inst=$("institution").value,type=$("institutionType").value,region=$("region").value,topic=$("topic").value,years=[...$("years").selectedOptions].map(o=>Number(o.value)),age=$("targetAge").value,sex=$("targetSex").value,ottYear=Number($("ottYear").value);
+    if(!inst||!years.length)throw new Error("분석 기관과 집행연도를 선택해주세요.");
+    APP.input={inst,type,region,topic,topicField:$("topicField").value,years,age,sex,ottYear,budget:Number($("budget").value||0)};
+    const peer=await buildPeerData(inst,type,region,topic,years);APP.peer=peer;
+    const [selectedMix,peerMix,stats,mcr,ott,mediaStats,effectCampaigns]=await Promise.all([
+      getSelectedMix(peer.instE,peer.ysql),getPeerMix(peer),
+      query(`SELECT SUM(TRY_CAST("총계(VAT포함)" AS DOUBLE)) 총액,COUNT(DISTINCT 광고명) 광고수,COUNT(DISTINCT 매체명) 매체수,COUNT(*) 집행건수 FROM gov_ad_execution_2023_2026 WHERE TRIM(기관명)='${peer.instE}' AND TRY_CAST(집행년도 AS INTEGER) IN (${peer.ysql})`).then(r=>r[0]||{}),
+      getMediaProfiles(age),getOttProfiles(age,sex,ottYear),getMediaStats(peer),
+      query(`SELECT DISTINCT TRIM(조사) 조사,TRIM(주제) 주제 FROM public_ad_effect_channel WHERE 주제 IS NOT NULL ORDER BY 조사,주제`)
+    ]);
+    APP.selectedMix=selectedMix;APP.peerMix=peerMix;APP.stats=stats;APP.mcr=mcr;APP.ott=ott;APP.mediaStats=mediaStats;APP.effectCampaigns=effectCampaigns;
+    renderMediaSection();renderInstitutionSection();await renderPeerTrend(peer);buildEffectCampaignOptions();await renderEffectCampaign();
+    $("results").classList.remove("hidden");$("results").scrollIntoView({behavior:"smooth",block:"start"})
+  }catch(e){$("supportError").textContent="분석 오류: "+(e?.message||e);$("supportError").classList.remove("hidden");console.error(e)}
+  finally{$("supportStatus").classList.add("hidden")}
 }
-function initDb(){
-  options($("dbTable"),TABLES);
-  const reset=()=>{$("sql").value=`SELECT * FROM "${$("dbTable").value}" LIMIT 20`;};
-  reset();
-  $("dbTable").addEventListener("change",()=>{reset();$("dbState").textContent="선택 완료 · 실행 시 데이터 로드";});
-  $("resetSql").addEventListener("click",reset);
-  $("runSql").addEventListener("click",runSql);
+function renderMediaSection(){
+  const p=APP.mcr.profile,basis=APP.ott.basis,overall=APP.ott.long.filter(x=>x.기준==="전체"),selected=APP.ott.long.filter(x=>x.기준===basis),topMedia=p.slice().sort((a,b)=>b["평균 이용시간(분)"]-a["평균 이용시간(분)"])[0],shift=p.slice().sort((a,b)=>Math.abs(b["주말 변화(분)"])-Math.abs(a["주말 변화(분)"]))[0];
+  const ottComp=overall.map(o=>({플랫폼:o.플랫폼,전체:o.이용비율,선택:selected.find(x=>x.플랫폼===o.플랫폼)?.이용비율??o.이용비율})).sort((a,b)=>b.선택-a.선택).slice(0,8);const topOtt=ottComp[0];
+  APP.topMedia=topMedia;APP.topOtt=topOtt;
+  $("mediaMetrics").innerHTML=metric("가장 오래 쓰는 매체",topMedia?.매체||"-",topMedia?fmt1(topMedia["평균 이용시간(분)"])+"분":"")+metric("평일↔주말 변화 최대",shift?.매체||"-",shift?(shift["주말 변화(분)"]>=0?"+":"")+fmt1(shift["주말 변화(분)"])+"분":"")+metric(`OTT 1위 · ${APP.input.ottYear}`,topOtt?.플랫폼||"-",topOtt?pct(topOtt.선택):"")+metric("분석 관점",`${APP.input.age} · ${APP.input.sex}`);
+  $("mcrTitle").textContent=`🕒 평일·주말 미디어 사용 패턴 · MCR ${APP.mcr.year}`;renderDumbbell($("mcrDumbbell"),p.slice().sort((a,b)=>a["평균 이용시간(분)"]-b["평균 이용시간(분)"]),"평일","주말","매체");renderMcrDetail(topMedia?.매체||"모바일");
+  $("ottTitle").textContent=`📱 OTT 플랫폼 위치 · ${APP.input.ottYear}`;
+  if(basis==="전체")bars($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,이용비율:x.전체})),"이용비율","플랫폼","%");
+  else renderDumbbell($("ottCompare"),ottComp.map(x=>({플랫폼:x.플랫폼,전체:x.전체,선택:x.선택})),"전체","선택","플랫폼");
+  renderOttDetails(topOtt?.플랫폼||APP.ott.platforms[0])
 }
-async function runSql(){
-  $("sqlError").classList.add("hidden");$("sqlInfo").classList.add("hidden");
-  try{
-    const t=$("dbTable").value;
-    $("dbState").textContent="데이터 로드 중...";
-    await ensureView(t);
-    const start=performance.now();
-    const rs=await query($("sql").value);
-    const ms=performance.now()-start;
-    renderTable($("sqlResult"),rs);
-    $("dbState").textContent="로드 완료";
-    $("sqlInfo").textContent=`쿼리 완료 · ${rs.length.toLocaleString()}행 반환 · ${ms.toFixed(1)} ms`;
-    $("sqlInfo").classList.remove("hidden");
-  }catch(e){
-    $("dbState").textContent="오류";
-    $("sqlError").textContent="SQL 오류: "+e.message;
-    $("sqlError").classList.remove("hidden");
-  }
+function renderInstitutionSection(){
+  const total=num(APP.stats.총액)||0,campaigns=Number(APP.stats.광고수||0),mediaNames=Number(APP.stats.매체수||0),buckets=APP.selectedMix.length,topShare=APP.selectedMix.length?Math.max(...APP.selectedMix.map(x=>num(x.비중)||0)):null;
+  $("spendMetrics").innerHTML=metric("선택기관 집행액",money(total))+metric("광고 / 실제 매체",`${campaigns.toLocaleString()}건 / ${mediaNames.toLocaleString()}개`)+metric("사용 매체군",`${buckets}개`,topShare!==null?`상위 ${topShare.toFixed(0)}% 집중`:"")+metric("비교 표본",`${APP.peer.institutions.toLocaleString()}개 기관`,APP.peer.label);
+  const s=Object.fromEntries(APP.selectedMix.map(x=>[x.매체군,num(x.비중)||0])),p=Object.fromEntries(APP.peerMix.map(x=>[x.매체군,num(x.비중)||0]));
+  const all=["방송","디지털","옥외","인쇄","라디오","해외","기타"].filter(b=>b in s||b in p);APP.bucketCompare=all.map(b=>{const pr=APP.peerMix.find(x=>x.매체군===b)||{};return{매체군:b,우리기관:s[b]||0,"유사기관 중앙값":p[b]||0,차이:(s[b]||0)-(p[b]||0),기관수:Number(pr.기관수||0),Q25:num(pr.Q25),Q75:num(pr.Q75)}});renderGap(APP.bucketCompare);
+  $("peerScope").textContent=`비교범위: ${APP.peer.label}. 실제 매체명을 기준으로 기관 수·집행 빈도·비용·최근 사례를 함께 봅니다.`;
+  renderTable($("mediaStatsTable"),APP.mediaStats,{max:40,cols:["매체명","매체군","매체구분","사용기관","집행건수","중앙집행액","평균집행액","총집행액","최근집행연도","최근대표광고"],labels:{매체명:"실제 매체 / 플랫폼",중앙집행액:"1건 중앙값",평균집행액:"1건 평균",총집행액:"총 집행액",최근집행연도:"최근연도",최근대표광고:"최근 대표 광고"},format:{중앙집행액:v=>money(v),평균집행액:v=>money(v),총집행액:v=>money(v)}});
+  options($("detailMedia"),APP.mediaStats,x=>x.매체명,x=>x.매체명);renderSelectedMediaDetail()
 }
-document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x===b));
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  $("page-"+b.dataset.page).classList.add("active");
-}));
+function renderGap(data){
+  if(!data.length){$("portfolioGap").innerHTML='<p class="small">매체군 비교자료가 없습니다.</p>';return}const max=Math.max(...data.map(x=>Math.abs(x.차이)),1);
+  $("portfolioGap").innerHTML=data.slice().sort((a,b)=>a.차이-b.차이).map(x=>{const w=Math.abs(x.차이)/max*50;return`<div class="gap-row"><div class="bar-label">${esc(x.매체군)}</div><div class="gap-track"><div class="gap-zero"></div><div class="${x.차이>=0?"gap-fill-pos":"gap-fill-neg"}" style="width:${w}%"></div></div><div class="bar-val">${x.차이>=0?"+":""}${x.차이.toFixed(1)}%p</div></div>`}).join("");
+  const x=data.slice().sort((a,b)=>Math.abs(b.차이)-Math.abs(a.차이))[0],sel=APP.selectedMix.find(r=>r.매체군===x.매체군),interval=x.Q25!==null&&x.Q75!==null?`${x.Q25.toFixed(1)}% ~ ${x.Q75.toFixed(1)}%`:"-";
+  $("portfolioDetail").innerHTML=`<h4>${esc(x.매체군)} 편중값은 이렇게 계산했습니다</h4><b>① 우리기관 ${esc(x.매체군)} 비중</b><br>${money(sel?.집행액||0)} ÷ ${money(APP.stats.총액||0)} = <b>${x.우리기관.toFixed(1)}%</b><br><br><b>② 유사기관 기준</b><br>각 기관마다 ${esc(x.매체군)} 집행액 ÷ 그 기관 전체 집행액을 계산한 뒤 ${APP.peer.institutions.toLocaleString()}개 비교기관의 중앙값을 사용했습니다. → 중앙값 <b>${x["유사기관 중앙값"].toFixed(1)}%</b> · 25~75% 범위 <b>${interval}</b> · 실제 사용기관 <b>${x.기관수.toLocaleString()}곳</b><br><br><b>③ 포트폴리오 차이</b><br>${x.우리기관.toFixed(1)}% − ${x["유사기관 중앙값"].toFixed(1)}% = <b>${x.차이>=0?"+":""}${x.차이.toFixed(1)}%p</b>`
+}
+
+function detailChannel(bucket){if(bucket==="디지털")return APP.topOtt?.플랫폼?`${APP.topOtt.플랫폼} 중심 디지털 접점`:(["인터넷","모바일"].includes(APP.topMedia?.매체)?`${APP.topMedia.매체} 중심 디지털 접점`:"인터넷·모바일 중심 디지털 접점");if(bucket==="방송")return["지상파","종편","케이블","DMB"].includes(APP.topMedia?.매체)?`${APP.topMedia.매체} 중심 방송 접점`:"지상파·종편·케이블 중 타깃 이용 상위 채널";if(bucket==="라디오")return"라디오 접점";if(bucket==="옥외")return"옥외·교통 접점";if(bucket==="인쇄")return"신문·인쇄 접점";return`${bucket} 접점`}
+function renderRecommendation(){
+  if(!APP.input||!APP.effect)return;
+  const m=Object.fromEntries((APP.mcr.profile||[]).map(x=>[x.매체,num(x["평균 이용시간(분)"])||0]));
+  const targetShare=normalizeDict({방송:["지상파","종편","케이블","DMB"].reduce((a,k)=>a+(m[k]||0),0),디지털:(m.인터넷||0)+(m.모바일||0),라디오:m.라디오||0});
+  const eraw={};(APP.effect.channel||[]).forEach(x=>{const b=mediaBucketValue(x.매체);eraw[b]=(eraw[b]||0)+(num(x.비중)||0)});const effectShare=normalizeDict(eraw);
+  const peerShare=normalizeDict(Object.fromEntries(APP.peerMix.map(x=>[x.매체군,num(x.비중)])));
+  const ourShare=Object.fromEntries(APP.selectedMix.map(x=>[x.매체군,num(x.비중)]));
+  const specs=[];if(Object.keys(targetShare).length)specs.push(["타깃 미디어 이용",.50,targetShare]);if(Object.keys(effectShare).length)specs.push(["과거 공익광고 인지경로",.30,effectShare]);if(Object.keys(peerShare).length)specs.push(["유사기관 집행구성",.20,peerShare]);
+  const available=specs.reduce((a,x)=>a+x[1],0),weights=Object.fromEntries(specs.map(x=>[x[0],available?x[1]/available:0]));
+  const candidates=[];specs.forEach(x=>Object.keys(x[2]).forEach(b=>{if(!["기타","해외"].includes(b)&&!candidates.includes(b))candidates.push(b)}));
+  const rec=candidates.map(b=>{let score=0;specs.forEach(x=>score+=weights[x[0]]*(x[2][b]||0));return{매체군:b,"추천 근거점수":score,"타깃 이용 구성(%)":targetShare[b],"과거 인지경로(%)":effectShare[b],"유사기관 구성(%)":peerShare[b],"우리기관 과거비중(%)":ourShare[b]}}).sort((a,b)=>b["추천 근거점수"]-a["추천 근거점수"]||((b["타깃 이용 구성(%)"]||0)-(a["타깃 이용 구성(%)"]||0))).map((x,i)=>({...x,순위:i+1}));
+  APP.recommendation={rows:rec,targetShare,effectShare,peerShare,ourShare,weights};
+  renderRecommendationUI()
+}
+function renderRecommendationUI(){
+  const I=APP.input,R=APP.recommendation,rec=R.rows,primary=rec[0],secondary=rec[1],targetText=[I.age!=="전체"?I.age:null,I.sex!=="전체"?I.sex:null].filter(Boolean).join(" · ")||"전체",yearText=I.years.join(", ");
+  renderTable($("conditionTable"),[
+    {항목:"기관 분류",설정값:I.type},{항목:"지역",설정값:I.region},{항목:"분석 기관",설정값:I.inst},{항목:"광고 분야",설정값:I.topicField},{항목:"세부 주제 / 정책 목표",설정값:I.topic},{항목:"핵심 연령",설정값:I.age},{항목:"성별 참고",설정값:I.sex},{항목:"가용 예산",설정값:`${I.budget.toLocaleString()}백만원`},{항목:"기관 집행실적 연도",설정값:yearText}
+  ],{cols:["항목","설정값"]});
+  const topM=APP.topMedia,topO=APP.topOtt,instTop=APP.selectedMix[0],gap=(APP.bucketCompare||[]).slice().sort((a,b)=>Math.abs(b.차이)-Math.abs(a.차이))[0],e=APP.effect,ec=e.choice;
+  const mediaSummary=topM?`${topM.매체} 하루 평균 ${fmt1(topM["평균 이용시간(분)"])}분`:"확인 가능한 MCR 자료 없음";
+  const ottSummary=topO?`${APP.ott.basis} 기준 ${topO.플랫폼} 이용률 ${fmt1(topO.선택)}% · ${I.ottYear}년`:"확인 가능한 OTT 자료 없음";
+  const instSummary=instTop?`선택기간 총 집행액 ${money(APP.stats.총액)} · 상위 매체군 ${instTop.매체군} ${fmt1(instTop.비중)}%`:"선택 기관의 집행실적 없음";
+  const peerSummary=gap?`비교 표본 ${APP.peer.institutions.toLocaleString()}개 기관 · 차이 최대 ${gap.매체군} (우리기관 ${gap.우리기관.toFixed(1)}% / 유사기관 중앙값 ${gap["유사기관 중앙값"].toFixed(1)}%, ${gap.차이>=0?"+":""}${gap.차이.toFixed(1)}%p)`:"비교 가능한 유사기관 자료 없음";
+  const effectSummary=ec?`${ec.theme}${ec.campaign?` - ${ec.campaign}`:""} · ${ec.조사}`:"선택 주제와 연결된 효과조사 자료 없음";
+  const metricParts=[["본 적 있음",e.seen],["긍정 반응",e.positive],["전반적 만족도",e.satisfaction],["수용도",e.acceptance]].filter(x=>x[1]!==null&&x[1]!==undefined).map(x=>`${x[0]} ${Number(x[1]).toFixed(1)}%`);
+  const ch=e.channel?.[0],channelSummary=ch?`인지경로 상위 ${ch.매체} ${fmt1(ch.비중)}%`:"인지경로 자료 없음";
+  $("evidenceCards").innerHTML=`<div class="card"><h4>🎯 타깃 미디어 이용</h4><p><b>${esc(mediaSummary)}</b><br><br>${esc(ottSummary)}</p></div><div class="card"><h4>🏢 기관 집행 비교</h4><p><b>${esc(instSummary)}</b><br><br>${esc(peerSummary)}</p></div><div class="card"><h4>📢 과거 공익광고 효과</h4><p><b>${esc(effectSummary)}</b><br><br>${esc(metricParts.join(" · ")||"효과지표 확인 불가")}<br>${esc(channelSummary)}</p></div>`;
+  renderTable($("recommendTable"),rec,{cols:["순위","매체군","추천 근거점수","타깃 이용 구성(%)","과거 인지경로(%)","유사기관 구성(%)","우리기관 과거비중(%)"],format:{"추천 근거점수":v=>`<div>${fmt1(v)}</div><div class="reco-score"><span style="width:${Math.min(100,num(v)||0)}%"></span></div>`,"타깃 이용 구성(%)":v=>pct(v),"과거 인지경로(%)":v=>pct(v),"유사기관 구성(%)":v=>pct(v),"우리기관 과거비중(%)":v=>pct(v)}});
+  $("recommendMetrics").innerHTML=metric("🥇 1순위 추천 매체",primary?.매체군||"-",primary?`근거점수 ${fmt1(primary["추천 근거점수"])}/100`:"")+metric("🥈 보조 매체",secondary?.매체군||"-",secondary?`근거점수 ${fmt1(secondary["추천 근거점수"])}/100`:"")+`<div class="metric"><div class="label">🎯 추천 실행 방향</div><div class="delta" style="font-size:13px;margin-top:8px"><span class="chip">1순위 ${esc(primary?detailChannel(primary.매체군):"추천 근거 부족")}</span>${secondary?`<span class="chip">보조 ${esc(detailChannel(secondary.매체군))}</span>`:""}<br><br>관측자료의 근거 일치도를 이용한 우선순위이며 미래 성과를 보장하는 예측값은 아닙니다.</div></div>`;
+  const pBucket=primary?.매체군,pOur=pBucket?R.ourShare[pBucket]:null,pPeer=pBucket?R.peerShare[pBucket]:null,pEffect=pBucket?R.effectShare[pBucket]:null;
+  const targetSentence=`핵심 타깃은 ${targetText}입니다.${topM?` MCR에서는 ${topM.매체} 이용시간이 하루 평균 ${fmt1(topM["평균 이용시간(분)"])}분으로 가장 길게 나타났습니다.`:""}${topO?` OTT에서는 ${APP.ott.basis} 기준 ${topO.플랫폼} 이용률이 ${fmt1(topO.선택)}%로 가장 높았습니다.`:""}`;
+  let institutionSentence=instSummary+".";if(pBucket&&pOur!=null&&pPeer!=null)institutionSentence+=` 추천 1순위인 ${pBucket}은 우리기관 과거비중 ${fmt1(pOur)}%이며, 유사기관 구성 참고값은 ${fmt1(pPeer)}%입니다.`;
+  let effectSentence=`연결 가능한 과거 캠페인은 ${effectSummary}입니다. ${metricParts.join(" · ")||"효과지표 확인 불가"}.`;if(ch)effectSentence+=` ${channelSummary}로 확인됩니다.`;
+  const recoParts=[];if(primary){recoParts.push(`${I.inst}에서 '${I.topic}' 광고를 ${targetText} 대상으로, 가용 예산 ${I.budget.toLocaleString()}백만원 조건으로 집행한다면 현재 확보된 KOBACO 관측자료 기준 최우선 검토안은 ${pBucket}을 주매체군으로 두는 것입니다.`);recoParts.push(`${pBucket}의 추천 근거점수는 ${fmt1(primary["추천 근거점수"])}/100으로 현재 후보 중 가장 높습니다.`);
+    const evid=[];if(topM)evid.push(`MCR에서 ${topM.매체} 이용시간이 하루 평균 ${fmt1(topM["평균 이용시간(분)"])}분`);if(topO)evid.push(`OTT에서는 ${APP.ott.basis} 기준 ${topO.플랫폼} 이용률이 ${fmt1(topO.선택)}%`);if(pPeer!=null)evid.push(`유사기관의 ${pBucket} 구성 참고값이 ${fmt1(pPeer)}%`);if(pEffect!=null)evid.push(`과거 관련 공익광고 인지경로에서 ${pBucket} 구성비가 ${fmt1(pEffect)}%`);if(evid.length)recoParts.push("판단 근거는 "+evid.join(", ")+"로 확인된 점입니다.");
+    let mediaCandidates=APP.mediaStats.filter(x=>x.매체군===pBucket);if(pBucket==="디지털"&&topO){const m=mediaCandidates.filter(x=>String(x.매체명).toLowerCase().includes(String(topO.플랫폼).toLowerCase()));if(m.length)mediaCandidates=[...m,...mediaCandidates.filter(x=>!m.includes(x))]}const mr=mediaCandidates[0];if(mr)recoParts.push(`유사기관 실제 집행에서 '${mr.매체명}'은 ${Number(mr.사용기관||0).toLocaleString()}개 기관이 ${Number(mr.집행건수||0).toLocaleString()}건 사용; VAT 포함 1건 평균 집행액 ${money(mr.평균집행액)}; 1건 중앙값 ${money(mr.중앙집행액)}; 최근 확인연도 ${mr.최근집행연도||"-"}년입니다. 이 값들은 실제 견적·집행기간을 확인할 때의 비용 기준선으로 활용할 수 있습니다.`);
+    recoParts.push(`실행 시에는 ${detailChannel(pBucket)}을 핵심 접점으로 먼저 검토합니다.`);if(secondary)recoParts.push(`보조 매체군은 ${secondary.매체군}(${detailChannel(secondary.매체군)})입니다(추천 근거점수 ${fmt1(secondary["추천 근거점수"])}/100). 주매체 한 곳에 예산을 전부 배분하기보다 보조 접점을 함께 두어 타깃 접촉 경로를 분산하는 안을 검토할 수 있습니다.`);
+    if(pOur!=null&&pPeer!=null){const g=pOur-pPeer;if(g>=10)recoParts.push(`다만 우리기관의 기존 ${pBucket} 비중은 ${fmt1(pOur)}%로 유사기관 참고값보다 ${fmt1(g)}%p 높으므로, 추가 확대보다 실제 집행단가와 성과확인 후 유지·조정하는 방식을 검토할 필요가 있습니다.`);else if(g<=-10)recoParts.push(`우리기관의 기존 ${pBucket} 비중은 ${fmt1(pOur)}%로 유사기관 참고값보다 ${fmt1(Math.abs(g))}%p 낮아, 현재 타깃 적합 근거와 함께 우선 확대를 검토할 수 있는 영역입니다.`)}
+  }else recoParts.push("추천 근거가 부족해 단일 우선매체를 제안하지 않습니다.");
+  APP.briefText=`[KOBACO 지자체 광고 집행 추천 브리프]\n\n1. 요청 조건\n- 기관: ${I.inst} (${I.type})\n- 지역: ${I.region}\n- 광고 분야 / 주제: ${I.topicField} / ${I.topic}\n- 핵심 타깃: ${targetText}\n- 가용 예산: ${I.budget.toLocaleString()}백만원\n- 기관 집행실적 검토연도: ${yearText}\n\n2. 타깃 미디어 특성\n- ${targetSentence}\n\n3. 기관·유사기관 집행 현황\n- ${institutionSentence}\n\n4. 과거 관련 공익광고 반응\n- ${effectSentence}\n\n5. 최종 추천\n- ${recoParts.join(" ")}\n\n[해석 주의]\n- 추천 근거점수는 타깃 MCR 상대구성 50%, 과거 공익광고 인지경로 30%, 유사기관 집행구성 20%를 기본 가중치로 사용함.\n- 특정 근거자료가 없으면 존재하는 근거끼리 가중치를 비례 재배분함.\n- OTT 최상위 플랫폼은 세부 채널 후보를 정하는 참고값이며 추천 근거점수에 직접 합산하지 않음.\n- 서로 다른 조사·집행자료를 이용한 의사결정 지원용 휴리스틱이며 미래 성과·ROI를 예측하지 않음.`;
+  $("brief").innerHTML=`<h3>📄 ${esc(I.inst)} · ${esc(I.topic)} 광고 집행 추천 브리프</h3><b>1. 요청 조건</b><br>${esc(I.region)} · ${esc(I.type)} · ${esc(I.inst)}을 대상으로 <b>${esc(I.topicField)} / ${esc(I.topic)}</b> 광고를 검토합니다. 핵심 타깃은 <b>${esc(targetText)}</b>, 가용 예산은 <b>${I.budget.toLocaleString()}백만원</b>, 기관 집행실적 검토연도는 <b>${esc(yearText)}</b>입니다.<br><br><b>2. 타깃 미디어 특성</b><br>${esc(targetSentence)}<br><br><b>3. 기관·유사기관 집행 현황</b><br>${esc(institutionSentence)}<br><br><b>4. 과거 관련 공익광고 반응</b><br>${esc(effectSentence)}<br><br><b>5. 최종 추천</b><br>${esc(recoParts.join(" "))}`;
+  const weightText=Object.entries(R.weights).map(([k,v])=>`${k} ${(v*100).toFixed(0)}%`).join(" / ")||"가용 근거 없음";
+  $("weightRule").textContent=`- 타깃 미디어 이용: 선택 연령의 MCR 이용시간을 방송·디지털·라디오 매체군 안에서 상대비중으로 환산\n- 과거 공익광고 인지경로: 선택한 관련 캠페인의 인지경로 응답을 매체군으로 묶어 상대비중으로 환산\n- 유사기관 집행구성: 비교기관의 매체군 중앙값을 다시 100% 기준 상대비중으로 환산\n- 현재 적용 가중치: ${weightText}\n- 기본 가중치는 타깃 50% · 과거 인지경로 30% · 유사기관 20%이며, 누락 자료가 있으면 가용 근거끼리 비례 재배분\n- OTT 최상위 플랫폼은 디지털 세부 실행 채널을 제안하는 참고 근거로만 사용하고 점수에는 직접 합산하지 않음\n- 우리기관 과거 집행비중은 현재 편중 상태 확인용으로 표시하며 추천점수에는 직접 가중하지 않음\n- 본 추천은 통계모형의 미래효과 예측이 아니라 관측 근거 기반의 의사결정 우선순위임`
+}
+function downloadBrief(){if(!APP.briefText)return;const blob=new Blob(["\ufeff"+APP.briefText],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kobaco_b2g_recommendation_brief.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+
+function initDb(){options($("dbTable"),TABLES);const reset=()=>$("sql").value=`SELECT * FROM "${$("dbTable").value}" LIMIT 20`;reset();$("dbTable").addEventListener("change",()=>{reset();$("dbState").textContent="선택됨 · 실행 시 데이터 로드"});$("resetSql").addEventListener("click",reset);$("runSql").addEventListener("click",runSql)}
+async function runSql(){$("sqlError").classList.add("hidden");$("sqlInfo").classList.add("hidden");try{const t=$("dbTable").value;$("dbState").textContent="데이터 로드 중...";await ensureView(t);const st=performance.now(),rs=await query($("sql").value),ms=performance.now()-st;renderTable($("sqlResult"),rs);$("dbState").textContent="로드 완료";$("sqlInfo").textContent=`쿼리 완료 · ${rs.length.toLocaleString()}행 반환 · ${ms.toFixed(1)} ms`;$("sqlInfo").classList.remove("hidden")}catch(e){$("dbState").textContent="오류";$("sqlError").textContent="SQL 오류: "+(e?.message||e);$("sqlError").classList.remove("hidden")}}
+document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("page-"+b.dataset.page).classList.add("active")}));
 boot();
 </script>
 </body>
