@@ -634,15 +634,32 @@ async function renderPeerTrend(peer){
 
 
 async function buildCampaignCatalog(){
-  await ensureView("public_ad_master");
-  const master=await query(`SELECT TRY_CAST(제작연도 AS INTEGER) 제작연도,TRIM(공익광고작품명) 공익광고작품명,TRIM(대분류) 대분류,TRIM(소분류) 소분류,"영상링크-코바코 홈페이지","영상링크-유튜브","썸네일 이미지" FROM public_ad_master WHERE 공익광고작품명 IS NOT NULL ORDER BY 제작연도 DESC`);
+  await Promise.all([ensureView("public_ad_master"),ensureView("public_ad_effect_awareness")]);
+  const [master,awarenessRows]=await Promise.all([
+    query(`SELECT TRY_CAST(제작연도 AS INTEGER) 제작연도,TRIM(공익광고작품명) 공익광고작품명,TRIM(대분류) 대분류,TRIM(소분류) 소분류,"영상링크-코바코 홈페이지","영상링크-유튜브","썸네일 이미지" FROM public_ad_master WHERE 공익광고작품명 IS NOT NULL ORDER BY 제작연도 DESC`),
+    query(`SELECT DISTINCT TRIM(조사) 조사,TRIM(주제) 주제 FROM public_ad_effect_awareness WHERE 주제 IS NOT NULL`)
+  ]);
   APP.masterCampaigns=master;
-  const effect=(APP.effectCampaigns||[]).map(r=>{const [theme,campaign]=splitCampaign(r.주제);return{kind:"effect",theme,campaign:campaign||theme,label:campaign||theme,조사:r.조사,주제:r.주제}});
-  const masterItems=master.map(r=>({kind:"master",theme:[r.대분류,r.소분류].filter(Boolean).join(" "),campaign:r.공익광고작품명,label:r.공익광고작품명,master:r}));
+  const awarenessKeys=new Set(awarenessRows.map(r=>`${String(r.조사||"").trim()}|||${String(r.주제||"").trim()}`));
+  const masterByTitle=new Map();
+  for(const r of master){const k=normalizeMarker(r.공익광고작품명);if(k&&!masterByTitle.has(k))masterByTitle.set(k,r)}
+  const effect=(APP.effectCampaigns||[]).map(r=>{
+    const [theme,campaign]=splitCampaign(r.주제),title=campaign||theme,key=normalizeMarker(title),matchedMaster=masterByTitle.get(key)||null;
+    return{kind:"effect",theme,campaign:title,label:title,조사:r.조사,주제:r.주제,master:matchedMaster,hasAwareness:awarenessKeys.has(`${String(r.조사||"").trim()}|||${String(r.주제||"").trim()}`)}
+  });
+  const masterItems=master.map(r=>({kind:"master",theme:[r.대분류,r.소분류].filter(Boolean).join(" "),campaign:r.공익광고작품명,label:r.공익광고작품명,master:r,hasAwareness:false}));
   const all=[...effect,...masterItems],seen=new Set(),out=[];
   for(const item of all){const key=normalizeMarker(item.campaign||item.주제);if(!key||seen.has(key))continue;seen.add(key);out.push(item)}
   APP.campaignCatalog=out;
 }
+function campaignCapabilityRank(item){
+  if(item?.hasAwareness)return 1;
+  const youtube=String(item?.master?.["영상링크-유튜브"]||"").trim();
+  const impact=impactMatchFor([item?.theme,item?.campaign].filter(Boolean).join(" "),item?.master?[item.master]:[]);
+  if(youtube||(impact?.video_ids||[]).length)return 2;
+  return 3;
+}
+function campaignYear(item){return Number(item?.master?.제작연도||0)||0}
 function campaignRelevance(item,topic){
   const t=normalizeMarker(topic),blob=normalizeMarker([item.theme,item.campaign,item.주제,item.master?.대분류,item.master?.소분류].filter(Boolean).join(" "));
   let score=topicSimilarity(topic,[item.theme,item.campaign,item.주제].filter(Boolean).join(" "));
@@ -653,12 +670,27 @@ function campaignRelevance(item,topic){
 }
 function buildEffectCampaignOptions(){
   const topic=$("topic").value,mode=$("includeRelated").value,all=(APP.campaignCatalog||[]).map((x,i)=>({...x,_i:i,similarity:campaignRelevance(x,topic)}));
-  let chosen=[],manual=false;
-  if(mode==="all"){chosen=all;manual=true}else{const exact=all.filter(x=>x.similarity>=.90),related=all.filter(x=>x.similarity>=.34&&x.similarity<.90);chosen=exact.length?(mode==="yes"?[...exact,...related]:exact):related;if(!chosen.length){chosen=all;manual=true}}
-  APP.effectChoices=chosen.sort((a,b)=>b.similarity-a.similarity||(Number(b.master?.제작연도||0)-Number(a.master?.제작연도||0))||String(a.campaign).localeCompare(String(b.campaign)));
-  const placeholder=manual?`<option value="-1">자동 연결 없음 · 전체 목록에서 직접 선택</option>`:"";
-  $("effectCampaign").innerHTML=placeholder+APP.effectChoices.map((x,i)=>{const tag=x.similarity>=.90?"동일/직접":(x.similarity>=.34?"연관":"직접 선택");const yr=x.master?.제작연도?` · ${x.master.제작연도}`:"";const survey=x.조사?` · ${x.조사}`:"";return`<option value="${i}">[${tag}] ${esc(x.campaign||x.주제)}${yr}${survey}</option>`}).join("");
-  if(manual){$("effectCampaign").value="-1";$("effectCallout").innerHTML=`현재 자료에서 <b>‘${esc(topic)}’</b>과 자동 연결되는 과거 캠페인을 찾지 못했습니다.<br><span class="small">전체 공익광고 목록을 열었습니다. 직접 선택하기 전까지 효과조사 가중치는 추천점수에서 제외합니다.</span>`}
+  let chosen=[],manual=false,manualReason="";
+  if(mode==="all"){
+    chosen=all;manual=true;manualReason="all";
+  }else{
+    const exact=all.filter(x=>x.similarity>=.90),related=all.filter(x=>x.similarity>=.34&&x.similarity<.90);
+    chosen=exact.length?(mode==="yes"?[...exact,...related]:exact):related;
+    if(!chosen.length){chosen=all;manual=true;manualReason="fallback"}
+  }
+  APP.effectChoices=chosen.sort((a,b)=>{
+    if(manual){const rank=campaignCapabilityRank(a)-campaignCapabilityRank(b);if(rank)return rank}
+    const relevance=b.similarity-a.similarity;if(relevance&&!manual)return relevance;
+    const year=campaignYear(b)-campaignYear(a);if(year)return year;
+    return String(a.campaign||a.주제).localeCompare(String(b.campaign||b.주제),"ko")
+  });
+  const placeholder=manual?`<option value="-1">전체 공익광고에서 직접 선택</option>`:"";
+  $("effectCampaign").innerHTML=placeholder+APP.effectChoices.map((x,i)=>{const yr=x.master?.제작연도?` · ${x.master.제작연도}`:"";return`<option value="${i}">${esc(x.campaign||x.주제)}${yr}</option>`}).join("");
+  if(manual){
+    $("effectCampaign").value="-1";
+    const lead=manualReason==="fallback"?`현재 자료에서 <b>‘${esc(topic)}’</b>과 자동 연결되는 과거 캠페인을 찾지 못해 전체 목록을 열었습니다.`:`전체 공익광고 목록을 열었습니다.`;
+    $("effectCallout").innerHTML=`${lead}<br><span class="small">효과조사·성별×연령 인지도까지 연결되는 작품 → 유튜브 영상이 확인되는 작품 → 아카이브만 확인되는 작품 순으로 정렬했습니다. 직접 선택하기 전까지 효과조사 가중치는 추천점수에서 제외합니다.</span>`
+  }
 }
 async function getMasterRowsForChoice(choice){
   if(!choice)return[];if(choice.master)return[choice.master];await ensureView("public_ad_master");
