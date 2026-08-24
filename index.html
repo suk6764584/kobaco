@@ -215,7 +215,63 @@ tbody tr:hover{background:#fbf9ff}
 </div>
 
 <script type="module">
-import * as duckdb from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1/+esm";
+let duckdb;
+
+function setBootMessage(message){
+  const boot = document.getElementById("boot");
+  if(!boot) return;
+  const text = boot.querySelector("span:last-child");
+  if(text) text.textContent = message;
+}
+
+async function importWithTimeout(url, timeoutMs=15000){
+  let timer;
+  try{
+    return await Promise.race([
+      import(url),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error("모듈 로드 시간 초과: " + url)), timeoutMs);
+      })
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function loadDuckDBModule(){
+  const candidates = [
+    // DuckDB 공식 plain-html 예제에서 사용되는 계열을 우선 사용
+    "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.1-dev106.0/+esm",
+    "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1-dev222.0/+esm",
+    "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1-dev132.0/+esm"
+  ];
+
+  const failures = [];
+  for(const url of candidates){
+    try{
+      setBootMessage("DuckDB 브라우저 모듈을 불러오고 있습니다.");
+      return await importWithTimeout(url);
+    }catch(error){
+      failures.push(url + " → " + (error?.message || error));
+    }
+  }
+  throw new Error("DuckDB 모듈을 불러오지 못했습니다.\\n" + failures.join("\\n"));
+}
+
+async function fetchWithTimeout(url, timeoutMs=60000){
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try{
+    return await fetch(url, {signal: controller.signal, cache: "default"});
+  }catch(error){
+    if(error?.name === "AbortError"){
+      throw new Error("데이터 파일 로드 시간 초과: " + url);
+    }
+    throw error;
+  }finally{
+    clearTimeout(timer);
+  }
+}
 
 const TABLES = ["ad_museum_outdoor_archive", "ad_museum_video_archive", "aisac_ad_info", "aisac_ai_keywords", "b2c_user_leaderboard", "b2g_feedback_logs", "broadcast_ad_market_size", "broadcast_ad_sales_by_type", "gov_ad_execution_2023_2026", "industry_ad_effect_market_analysis", "kai_trend_index", "kobaco_public_data_catalog", "mcr_2019_summary", "ott_usage_by_demographic", "public_ad_effect_attributes", "public_ad_effect_awareness", "public_ad_effect_channel", "public_ad_effect_impact", "public_ad_effect_impact_detail", "public_ad_effect_persuasiveness", "public_ad_effect_reception", "public_ad_effect_sentiment", "public_ad_master", "public_ad_topic_expert_opinion", "public_ad_topic_free_proposal", "public_ad_topic_needed", "public_ad_topic_social_issue", "public_ad_topic_urgent_category", "public_ad_topic_urgent_detail", "racoi_internet_reaction_2026", "racoi_ott_reaction", "racoi_overseas_reaction", "racoi_total_reaction_2019", "youth_media_usage_2025"];
 const DATA_BASE = "./raw_data/parquet_db/";
@@ -251,7 +307,7 @@ async function query(sql){ return rows(await conn.query(sql)); }
 async function ensureView(name){
   if(loaded.has(name)) return;
   const file = name+".parquet";
-  const res = await fetch(DATA_BASE+file);
+  const res = await fetchWithTimeout(DATA_BASE+file);
   if(!res.ok) throw new Error(file+" 로드 실패 ("+res.status+")");
   const buf = new Uint8Array(await res.arrayBuffer());
   await db.registerFileBuffer(file, buf);
@@ -312,28 +368,50 @@ ELSE '기타' END`;
 
 async function boot(){
   try{
-    const bundles=duckdb.getJsDelivrBundles();
-    const bundle=await duckdb.selectBundle(bundles);
-    const workerUrl=URL.createObjectURL(new Blob([`importScripts("${bundle.mainWorker}");`],{type:"text/javascript"}));
-    const worker=new Worker(workerUrl);
-    db=new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING),worker);
-    await db.instantiate(bundle.mainModule,bundle.pthreadWorker);
-    conn=await db.connect();
+    setBootMessage("DuckDB 브라우저 모듈을 불러오고 있습니다.");
+    duckdb = await loadDuckDBModule();
 
-    await Promise.all([
-      ensureView("gov_ad_execution_2023_2026"),
-      ensureView("ott_usage_by_demographic"),
-      ensureView("public_ad_topic_social_issue"),
-      ensureView("public_ad_topic_expert_opinion"),
-      ensureView("public_ad_topic_needed")
-    ]);
+    setBootMessage("DuckDB 엔진을 시작하고 있습니다.");
+    const bundles = duckdb.getJsDelivrBundles();
+    const bundle = await duckdb.selectBundle(bundles);
+
+    const workerUrl = URL.createObjectURL(
+      new Blob([`importScripts("${bundle.mainWorker}");`], {type:"text/javascript"})
+    );
+    const worker = new Worker(workerUrl);
+    db = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(), worker);
+    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+    URL.revokeObjectURL(workerUrl);
+    conn = await db.connect();
+
+    // 처음 화면에 꼭 필요한 데이터만 순차적으로 로드해
+    // 어떤 단계에서 실패했는지 사용자가 알 수 있게 한다.
+    const startupTables = [
+      ["gov_ad_execution_2023_2026", "정부광고 집행 데이터(약 20MB)를 불러오고 있습니다."],
+      ["ott_usage_by_demographic", "OTT 이용 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_social_issue", "광고 주제 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_expert_opinion", "전문가 의견 데이터를 불러오고 있습니다."],
+      ["public_ad_topic_needed", "국민 필요도 데이터를 불러오고 있습니다."]
+    ];
+
+    for(const [name, message] of startupTables){
+      setBootMessage(message);
+      await ensureView(name);
+    }
+
+    setBootMessage("화면 선택 항목을 구성하고 있습니다.");
     await initSupport();
     initDb();
+
     $("boot").classList.add("hidden");
   }catch(e){
     $("boot").classList.add("hidden");
-    $("bootError").textContent="초기화 실패: "+e.message+"\\n\\nGitHub Pages 또는 로컬 웹서버(http)에서 실행해야 데이터 파일을 읽을 수 있습니다.";
+    $("bootError").textContent =
+      "데이터 초기화 실패\n\n" +
+      (e?.message || e) +
+      "\n\n새로고침 후에도 계속되면 브라우저 개발자도구(F12) → Console의 첫 번째 오류를 확인해주세요.";
     $("bootError").classList.remove("hidden");
+    console.error("[KOBACO boot error]", e);
   }
 }
 async function initSupport(){
